@@ -11,7 +11,7 @@ bind = $mainMod, V, togglefloating,
 bind = $mainMod, R, exec, $menu
 bind = $mainMod SHIFT, S, exec, $flameshot
 bind = $mainMod, P, pseudo, # dwindle
-bind = $mainMod, J, togglesplit, # dwindle
+bind = $mainMod, J, layoutmsg, swapsplit
 
 {{- if eq .device "kabuki" }}
 bind = $mainMod, T, exec, hyprctl dispatch swapactiveworkspaces eDP-1 DP-1
