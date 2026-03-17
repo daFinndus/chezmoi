@@ -9,19 +9,19 @@ input {
 
     follow_mouse = 1
 
-    sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+    {{ if eq .device "krabby" -}}
+    sensitivity = -0.5
+    {{- end -}}
+    {{- if eq .device "kabuki" -}}
+    sensitivity = 0
 
     touchpad {
         natural_scroll = true
     }
+    {{- end }}
 }
 
+{{- if eq .device "kabuki" -}}
 # Gestures
 gesture = 3, horizontal, workspace
-
-# Example per-device config
-# See device config docs
-device {
-    name = epic-mouse-v1
-    sensitivity = -0.5
-}
+{{- end }}

@@ -5,7 +5,6 @@ $mainMod = SUPER # Sets "Windows" key as main modifier
 bind = $mainMod, Q, exec, $terminal
 bind = $mainMod, C, killactive,
 bind = $mainMod, B, exec, $browser
-bind = $mainMod, F, exec, $statusbarToggle
 bind = $mainMod, L, exec, hyprlock
 bind = $mainMod, E, exec, $fileManager
 bind = $mainMod, V, togglefloating,
@@ -13,7 +12,10 @@ bind = $mainMod, R, exec, $menu
 bind = $mainMod SHIFT, S, exec, $flameshot
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
+
+{{- if eq .device "kabuki" }}
 bind = $mainMod, T, exec, hyprctl dispatch swapactiveworkspaces eDP-1 DP-1
+{{ end }}
 
 # Move focus with mainMod + arrow keys
 bind = $mainMod, left, movefocus, l
@@ -45,13 +47,16 @@ bind = $mainMod SHIFT, 8, movetoworkspace, 8
 bind = $mainMod SHIFT, 9, movetoworkspace, 9
 bind = $mainMod SHIFT, 0, movetoworkspace, 10
 
+{{- if eq .device "kabuki" }}
 # Execute hyprlock on laptop close
 bind = , switch:on:Lid Switch, exec, hyprlock 
+{{ end }}
 
 # Move/resize windows with mainMod + LMB/RMB and dragging
 bindm = $mainMod, mouse:272, movewindow
 bindm = $mainMod, mouse:273, resizewindow
 
+{{- if eq .device "kabuki" }}
 # Laptop multimedia keys for volume and LCD brightness
 bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
 bindel = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
@@ -65,3 +70,4 @@ bindl = , XF86AudioNext, exec, playerctl next
 bindl = , XF86AudioPause, exec, playerctl play-pause
 bindl = , XF86AudioPlay, exec, playerctl play-pause
 bindl = , XF86AudioPrev, exec, playerctl previous
+{{ end }}
