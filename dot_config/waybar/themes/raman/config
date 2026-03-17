@@ -1,0 +1,26 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 36,
+  "margin": "8 8 0 8",
+  "spacing": 4,
+  "include": ["/home/finn/.config/waybar/modules.json"],
+  "modules-left": [
+    "clock",
+    "custom/space",
+    "hyprland/workspaces"
+  ],
+  "modules-center": [
+    "hyprland/window"
+  ],
+  "modules-right": [
+    "tray",
+    "group/system",
+    "custom/space",
+    "custom/power"
+  ],
+  "group/system": {
+    "orientation": "horizontal",
+    "modules": [ "network", "bluetooth", "backlight", "pulseaudio", "battery" ]
+  },
+}

@@ -1,0 +1,22 @@
+{
+  "output": "DP-3",
+  "layer": "top",
+  "position": "top",
+  "margin": "8 8 0 8",
+  "spacing": 4,
+  "include": ["/home/finn/.config/waybar/modules.json"],
+  "modules-left": [
+    "clock",
+    "hyprland/workspaces",
+    "idle_inhibitor",
+    "power-profiles-daemon",
+    "custom/updater"
+  ],
+  "modules-right": [
+    "tray",
+    "network",
+    "pulseaudio",
+    "battery",
+    "custom/power"
+  ],
+}

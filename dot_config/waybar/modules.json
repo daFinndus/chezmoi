@@ -1,0 +1,67 @@
+{
+  "network": {
+    "format-wifi": "{essid} at {signalStrength}%",
+    "format-ethernet": "Connected via ethernet",
+    "format-disconnected": "No network",
+    "format-disabled": "Interface disabled",
+    "on-click-right": "kitty --title iwctl --class kitty -e iwctl",
+    "tooltip": true,
+    "tooltip-format": "{ipaddr}/{cidr} via {gwaddr}",
+  },
+  "idle_inhibitor": {
+    "format": "Inhibitor: {icon}",
+    "format-icons": {
+      "activated": "Activated",
+      "deactivated": "Deactivated",
+    },
+    "tooltip": false,
+  },
+  "pulseaudio": {
+    "format": "Volume at {volume}%",
+    "format-muted": "Volume muted",
+    "format-bluetooth": "Connected via bluetooth",
+    "on-click-right": "pavucontrol",
+  },
+  "battery": {
+    "format": "Battery at {capacity}%",
+    "format-charging": "Charging...",
+    "format-full": "Battery full",
+    "format-warning": "Battery dying...",
+    "design-capacity": true,
+  },
+  "custom/space": {
+    "format": " ",
+    "tooltip": false,
+  },
+  "clock": {
+    "format": "{:%I:%M %p}",
+    "tooltip": true,
+    "tooltip-format": "{:%d. %B on a %A}",
+  },
+  "tray": {
+    "icon-size": 16,
+    "spacing": 16,
+  },
+  "custom/power": {
+    "format": "󰐥",
+    "tooltip": true,
+    "tooltip-format": "Power menu (wlogout)",
+    "on-click": "wlogout",
+  },
+  "power-profiles-daemon": {
+    "format": "Profile: {icon}",
+    "format-icons": {
+      "balanced": "Balanced",
+      "power-saver": "Chillin'",
+      "performance": "Performance",
+    }
+  },
+  "custom/updater":{
+    "format": "{}",
+    "exec": "~/.config/waybar/scripts/update-check.sh",
+    "return-type": "json",
+    "exec-if": "[[ $(checkupdates | wc -l) ]]",
+    "interval": 15,
+    "on-click": "kitty --class kitty --title updater -e yay -Syu && notify-send 'Updater' 'The system has been updated'",
+  },
+}

@@ -1,0 +1,136 @@
+/* Colors imported from theme file */
+@import "static-colors.css";
+
+* {
+  font-family: "Minecraft";
+  font-size: 12pt;
+}
+
+window#waybar {
+  color: @fg;
+  background-color: transparent;
+}
+
+#workspaces,
+#clock,
+#idle_inhibitor,
+#network,
+#pulseaudio,
+#battery,
+#custom-updater,
+#power-profiles-daemon {
+  background: @bg;
+  border: 2px solid @inactive;
+  border-radius: 8px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#clock,
+#custom-updater,
+#idle_inhibitor,
+#network,
+#pulseaudio,
+#pulseaudio,
+#battery,
+#power-profiles-daemon {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+#workspaces button {
+  min-width: 12px;
+  color: @inactive;
+  transition: color 0.3s ease;
+}
+
+#workspaces button.active {
+  color: @lime;
+}
+
+#workspaces button:hover {
+  color: @fg-darker;
+  box-shadow: inherit;
+  text-shadow: inherit;
+  background: transparent;
+}
+
+#tray {
+  padding-right: 12px;
+}
+
+#idle_inhibitor.activated {
+  color: @green;
+}
+
+#idle_inhibitor.deactivated {
+  color: @red;
+}
+
+#network {
+  color: @cyan;
+}
+
+#bluetooth {
+  color: @blue;
+}
+
+#pulseaudio {
+  color: @yellow;
+}
+
+#battery {
+  color: @white;
+}
+
+#battery.charging {
+  color: @green;
+}
+
+#battery.warning {
+  color: @red;
+}
+
+#custom-updater.updated {
+  color: @green;
+}
+
+#custom-updater.pending {
+  color: #9d8888;
+}
+
+#power-profiles-daemon.power-saver {
+  color: @green;
+}
+
+#power-profiles-daemon.balanced {
+  color: @cyan;
+}
+
+#power-profiles-daemon.performance {
+  color: @yellow;
+}
+
+#custom-power {
+  color: @fg;
+  font-size: 22px;
+  background-color: @red;
+  border-radius: 8px;
+  padding-right: 14px;
+  padding-left: 12px;
+}
+
+/* Styling the main tooltip box under the custom updater */
+tooltip {
+  background: @bg; /* Match your background */
+  border-radius: 8px;
+  border: 0.5px solid @inactive;
+}
+
+/* Adjusting the text inside the tooltip under the custom updater */
+tooltip label {
+  font-size: 12px; /* Make text smaller */
+  color: @fg;
+  padding: 2px 6px; /* Shrink the box by reducing internal space */
+  margin: 2px; /* Remove extra outer spacing */
+}
