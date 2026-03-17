@@ -9,6 +9,7 @@ fi
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 export PATH=$PATH:/usr/local/texlive/2025/bin/x86_64-linux
+export EDITOR=nvim
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -122,7 +123,7 @@ alias lx='eza -lbhHigUmuSa@'
 alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
-alias rmshit='python /home/finn/.config/rmshit.py'
+alias rmshit='python /home/finn/.config/scripts/rmshit.py'
 
 alias wallpaper='/home/finn/.config/scripts/wallpaper.sh'
 
