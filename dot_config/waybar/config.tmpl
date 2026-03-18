@@ -21,7 +21,9 @@
     "tray",
     "network",
     "pulseaudio",
+    {{- if eq .device "kabuki" }}
     "battery",
+    {{ end }}
     "custom/power"
   ],
 }
