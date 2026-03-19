@@ -123,16 +123,11 @@ alias lx='eza -lbhHigUmuSa@'
 alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
-alias rmshit='python /home/finn/.config/scripts/rmshit.py'
-
 alias wallpaper='/home/finn/.config/scripts/wallpaper.sh'
-
-alias work='/home/finn/Sandevistan/Documents/NetUSE/Scripts/toggle-work.sh'
-alias work-route='/home/finn/Sandevistan/Documents/NetUSE/Scripts/toggle-routes.sh'
-
 alias wireguard='/home/finn/.config/scripts/wireguard.sh'
 
-alias wakeup='/home/finn/.config/scripts/wakeonlan.sh'
+alias rmshit='python /home/finn/.config/scripts/rmshit.py'
+alias reconnoisseur='python /home/finn/Coding/reconnoisseur/reconnoisseur.py'
 
 alias vim='nvim'
 
