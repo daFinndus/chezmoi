@@ -120,6 +120,7 @@ DEFAULT_CONFIG = """
 - ~/.swt/                            # Standard Widget Toolkit cache
 - ~/.texlive/                        # TeX Live cache
 - ~/.thumbnails                      # Image thumbnails cache
+- ~/tmp
 - ~/.tox/                            # Cache directory for tox
 - ~/.var/app/*/cache/                # Flatpak app caches
 - ~/.viminfo                         # Sometimes created wrongfully
