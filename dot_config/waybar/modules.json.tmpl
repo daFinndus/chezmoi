@@ -20,8 +20,8 @@
     "format": "Volume at {volume}%",
     "format-muted": "Volume muted",
     "format-bluetooth": "Connected via bluetooth",
-    "on-click-left": "pactl get-default-sink | xargs -I {} pactl set-sink-mute {} toggle"
-    "on-click-middle": "~/.config/waybar/scripts/audio-device.sh"
+    "on-click-left": "pactl get-default-sink | xargs -I {} pactl set-sink-mute {} toggle",
+    "on-click-middle": "~/.config/waybar/scripts/audio-device.sh",
     "on-click-right": "pavucontrol",
   },
   {{- if eq .device "kabuki" }}
