@@ -43,7 +43,7 @@ change() {
   echo "[WALLPAPER] Applying wallpaper: $WALLPAPER_PATH"
   echo "[WALLPAPER] Updating wallpaper..."
 
-  swww img $WALLPAPER_PATH --transition-type grow --transition-duration 0.75
+  awww img $WALLPAPER_PATH --transition-type grow --transition-duration 0.75
 
   echo "$WALLPAPER_PATH" >"$WALLPAPER_FILE"
   echo "[WALLPAPER] Saved to $WALLPAPER_FILE"
