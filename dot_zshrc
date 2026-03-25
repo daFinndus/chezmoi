@@ -142,6 +142,9 @@ source ~/.powerlevel10k/powerlevel10k.zsh-theme
 # This is so the color theme will automatically update on wallpaper change
 (cat ~/.cache/wal/sequences &)
 
+# This is for metasploit
+export RUBYOPT="-W0"
+
 # pnpm
 export PNPM_HOME="/home/finn/.local/share/pnpm"
 case ":$PATH:" in
