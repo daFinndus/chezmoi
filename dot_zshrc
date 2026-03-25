@@ -123,6 +123,8 @@ alias lx='eza -lbhHigUmuSa@'
 alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
+alias metasploit='sudo /home/finn/.config/scripts/setup-metasploit.sh'
+
 alias thesis='firefox /home/finn/Nextcloud/Documents/LaTeX/Bachelor/main.pdf & disown'
 
 alias wallpaper='/home/finn/.config/scripts/wallpaper.sh'

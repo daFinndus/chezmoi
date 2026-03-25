@@ -127,29 +127,39 @@ init_msfdb() {
     exit 1
   }
 
+  # Fix duplicate values in database.yml caused by msfdb init quirk
+  local db_yml="$HOME/.msf4/database.yml"
+
+  if [[ -f "$db_yml" ]]; then
+    sed -i 's/localhost,localhost/localhost/' "$db_yml"
+    sed -i 's/5432,5432/5432/' "$db_yml"
+    log_success "Fixed database.yml configuration."
+  fi
+
   log_success "Metasploit database initialized."
 }
 
 launch_msf() {
-  log_step "Checking database status and launching msfconsole..."
-  echo ""
-  sudo -u "$SUDO_USER" msfconsole -x "db_status"
+  log_step "Checking database status..."
+
+  # Get the output of db_status
+  local db_check
+  db_check=$(sudo -u "$SUDO_USER" msfconsole -q -x "db_status; exit" 2>/dev/null)
+
+  if echo "$db_check" | grep -q "Connected to msf"; then
+    log_success "Database connected successfully."
+    log_step "Launching msfconsole..."
+    echo ""
+    sudo -u "$SUDO_USER" msfconsole
+  else
+    log_error "Database connection failed. Manual intervention required."
+    log_error "Check ~/.msf4/database.yml and verify PostgreSQL is running."
+    exit 1
+  fi
+
 }
 
 main() {
-  echo -e "${RED}"
-  cat <<'EOF'
-  __  __ ____  _____   ____       _
- |  \/  / ___||  ___| / ___|  ___| |_ _   _ _ __
- | |\/| \___ \| |_    \___ \ / _ \ __| | | | '_ \
- | |  | |___) |  _|    ___) |  __/ |_| |_| | |_) |
- |_|  |_|____/|_|     |____/ \___|\__|\__,_| .__/
-                                            |_|
-EOF
-  echo -e "${RESET}"
-  echo -e "${CYAN}Arch Linux Metasploit Setup${RESET}"
-  echo -e "${CYAN}============================${RESET}\n"
-
   check_root
   install_deps
   setup_ruby
