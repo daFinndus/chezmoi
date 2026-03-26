@@ -1,0 +1,34 @@
+export PATH=$PATH:/usr/local/texlive/2025/bin/x86_64-linux
+export EDITOR=nvim
+export RUBYOPT="-W0"
+
+# pnpm
+export PNPM_HOME="/home/finn/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# Aliases
+alias ff="fzf --style full --bind 'focus:transform-header:file --brief {}'"
+
+alias ls='eza'
+alias l='eza --git-ignore'
+alias ll='eza --all --header --long'
+alias llm='eza --all --header --long --sort=modified'
+alias la='eza -lbhHigUmuSa'
+alias lx='eza -lbhHigUmuSa@'
+alias lt='eza --tree'
+alias tree='eza --tree'
+
+alias metasploit='sudo /home/finn/.config/scripts/setup-metasploit.sh'
+
+alias thesis='firefox /home/finn/Nextcloud/Documents/LaTeX/Bachelor/main.pdf & disown'
+
+alias wallpaper='/home/finn/.config/scripts/wallpaper.sh'
+alias wireguard='/home/finn/.config/scripts/wireguard.sh'
+
+alias rmshit='python /home/finn/.config/scripts/rmshit.py'
+alias reconnoisseur='python /home/finn/Coding/reconnoisseur/reconnoisseur.py'
+
+alias vim='nvim'
