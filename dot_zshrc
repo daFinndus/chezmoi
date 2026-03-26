@@ -133,6 +133,8 @@ alias wireguard='/home/finn/.config/scripts/wireguard.sh'
 alias rmshit='python /home/finn/.config/scripts/rmshit.py'
 alias reconnoisseur='python /home/finn/Coding/reconnoisseur/reconnoisseur.py'
 
+alias bash='kitty --config NONE bash & disown'
+
 alias vim='nvim'
 
 # This is for p10k
