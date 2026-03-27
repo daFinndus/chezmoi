@@ -48,7 +48,7 @@ bind = $mainMod SHIFT, 8, movetoworkspace, 8
 bind = $mainMod SHIFT, 9, movetoworkspace, 9
 bind = $mainMod SHIFT, 0, movetoworkspace, 10
 
-{{- if eq .device "kabuki" }}
+{{ if eq .device "kabuki" }}
 # Execute hyprlock on laptop close
 bind = , switch:on:Lid Switch, exec, hyprlock 
 {{ end }}
