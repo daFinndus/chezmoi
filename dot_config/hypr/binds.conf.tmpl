@@ -9,10 +9,11 @@ bind = $mainMod, B, exec, $browser
 bind = $mainMod, L, exec, hyprlock
 bind = $mainMod, E, exec, $filemanager
 bind = $mainMod, V, togglefloating,
+bind = $mainMod SHIFT, W, exec, $toggleStatusbar
 bind = $mainMod, R, exec, $menu
 bind = $mainMod SHIFT, S, exec, $screenshot
-bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, layoutmsg, swapsplit
+bind = $mainMod, N, layoutmsg, togglesplit
 
 {{- if eq .device "kabuki" }}
 bind = $mainMod, T, exec, hyprctl dispatch swapactiveworkspaces eDP-1 DP-1

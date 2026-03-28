@@ -11,6 +11,21 @@ window#waybar {
   background-color: transparent;
 }
 
+/* Styling the main tooltip box under the custom updater */
+tooltip {
+  background: @bg; /* Match your background */
+  border-radius: 8px;
+  border: 0.5px solid @inactive;
+}
+
+/* Adjusting the text inside the tooltip under the custom updater */
+tooltip label {
+  font-size: 12px; /* Make text smaller */
+  color: @fg;
+  padding: 2px 6px; /* Shrink the box by reducing internal space */
+  margin: 2px; /* Remove extra outer spacing */
+}
+
 #workspaces,
 #clock,
 #idle_inhibitor,
@@ -68,7 +83,19 @@ window#waybar {
 }
 
 #network {
-  color: @cyan;
+  color: @green;
+}
+
+#network.disabled,
+#network.disconnected {
+  color: @red;
+}
+
+#network.disabled tooltip,
+#network.disconnected tooltip {
+  background: transparent;
+  border: none;
+  font-size: 40px;
 }
 
 #bluetooth {
@@ -80,7 +107,7 @@ window#waybar {
 }
 
 #battery {
-  color: @white;
+  color: @blue;
 }
 
 #battery.charging {
@@ -97,6 +124,10 @@ window#waybar {
 
 #custom-updater.pending {
   color: #9d8888;
+}
+
+#custom-updater.error {
+  color: @red;
 }
 
 #power-profiles-daemon.power-saver {
@@ -120,17 +151,4 @@ window#waybar {
   padding-left: 12px;
 }
 
-/* Styling the main tooltip box under the custom updater */
-tooltip {
-  background: @bg; /* Match your background */
-  border-radius: 8px;
-  border: 0.5px solid @inactive;
-}
 
-/* Adjusting the text inside the tooltip under the custom updater */
-tooltip label {
-  font-size: 12px; /* Make text smaller */
-  color: @fg;
-  padding: 2px 6px; /* Shrink the box by reducing internal space */
-  margin: 2px; /* Remove extra outer spacing */
-}
