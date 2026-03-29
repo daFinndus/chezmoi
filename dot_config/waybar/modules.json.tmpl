@@ -67,6 +67,6 @@
     "return-type": "json",
     "exec-if": "[[ $(checkupdates | wc -l) ]]",
     "interval": 15,
-    "on-click": "kitty --class kitty --title updater -e yay -Syu && notify-send 'Updater' 'Script is hella done for today'",
+    "on-click": "~/.config/waybar/scripts/update-script.sh",
   },
 }
