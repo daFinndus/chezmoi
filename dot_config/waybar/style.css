@@ -32,6 +32,7 @@ tooltip label {
 #network,
 #pulseaudio,
 #battery,
+#custom-vpn,
 #custom-updater,
 #power-profiles-daemon {
   background: @bg;
@@ -47,6 +48,7 @@ tooltip label {
 #network,
 #pulseaudio,
 #pulseaudio,
+#custom-vpn,
 #battery,
 #power-profiles-daemon {
   padding-left: 12px;
@@ -116,6 +118,14 @@ tooltip label {
 
 #battery.warning {
   color: @red;
+}
+
+#custom-vpn.active {
+  color: @cyan;
+}
+
+#custom-vpn.inactive {
+  color: @blue;
 }
 
 #custom-updater.updated {

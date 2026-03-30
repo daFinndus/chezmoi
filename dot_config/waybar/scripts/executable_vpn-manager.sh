@@ -1,0 +1,145 @@
+#!/bin/bash
+
+# ==============================================================================
+# VPN Toggle Script for Waybar
+# ==============================================================================
+
+RED="\033[38;2;220;50;50m"
+GREEN="\033[38;2;50;200;50m"
+CYAN="\033[38;2;0;180;180m"
+YELLOW="\033[38;2;220;180;0m"
+BLUE="\033[38;2;50;120;220m"
+RESET="\033[0m"
+
+ACADEMY_OVPN="$HOME/Nextcloud/VPNs/academy-regular.ovpn"
+LABS_OVPN="$HOME/Nextcloud/VPNs/labs_eu-2.ovpn"
+
+# Check if wireguard is active
+is_wireguard_active() {
+  ip link show wg0 &>/dev/null && ip link show wg0 | grep -q "UP"
+}
+
+# Check if openvpn is active
+is_openvpn_active() {
+  pgrep -x openvpn &>/dev/null
+}
+
+# If active, check which VPN is used
+get_openvpn_vpn() {
+  local cmdline
+  cmdline=$(ps -eo args | grep openvpn | grep -v grep)
+
+  if echo "$cmdline" | grep -q "academy"; then
+    echo "HTB Academy"
+  elif echo "$cmdline" | grep -q "labs"; then
+    echo "HTB Labs"
+  else
+    echo "OpenVPN"
+  fi
+}
+
+notify() {
+  notify-send "VPN" "$1"
+}
+
+# This will be used by waybar
+status() {
+  local active_vpns=()
+
+  if is_wireguard_active; then
+    active_vpns+=("Wireguard")
+  fi
+
+  if is_openvpn_active; then
+    active_vpns+=("$(get_openvpn_vpn)")
+  fi
+
+  if [[ "${#active_vpns[@]}" -gt 0 ]]; then
+    local tooltip
+    tooltip=$(printf "%s\n" "${active_vpns[@]}")
+
+    echo "{\"text\": \"VPN on\", \"tooltip\": \"$tooltip\", \"class\": \"active\"}"
+  else
+    echo "{\"text\": \"VPN off\", \"tooltip\": \"No VPN active\", \"class\": \"inactive\"}"
+  fi
+}
+
+# Disconnect them all
+disconnect_all() {
+  if is_wireguard_active; then
+    sudo wg-quick down wg0
+  fi
+
+  if is_openvpn_active; then
+    sudo pkill openvpn
+    sleep 1
+  fi
+
+  notify "All VPNs disconnected."
+}
+
+# This will run in the terminal
+interactive() {
+  echo ""
+
+  # Show current state
+  if is_wireguard_active; then
+    echo -e "  Wireguard:   ${GREEN}connected${RESET}"
+  else
+    echo -e "  Wireguard:   ${RED}disconnected${RESET}"
+  fi
+
+  if is_openvpn_active; then
+    echo -e "  OpenVPN:     ${GREEN}$(get_openvpn_vpn) connected${RESET}"
+  else
+    echo -e "  OpenVPN:     ${RED}disconnected${RESET}"
+  fi
+
+  echo ""
+  echo -e "${YELLOW}  0${RESET} — Disconnect all"
+  echo -e "${YELLOW}  1${RESET} — Wireguard"
+  echo -e "${YELLOW}  2${RESET} — HTB Academy"
+  echo -e "${YELLOW}  3${RESET} — HTB Labs"
+  echo ""
+  echo -n "  Choose: "
+  read -r choice
+
+  case "$choice" in
+  0)
+    echo -e "\n${RED}Disconnecting all VPNs...${RESET}"
+    disconnect_all
+    ;;
+  1)
+    echo -e "\n${BLUE}Connecting Wireguard...${RESET}"
+    disconnect_all
+    sudo wg-quick up wg0
+    notify "Wireguard connected."
+    ;;
+  2)
+    echo -e "\n${BLUE}Connecting HTB Academy VPN...${RESET}"
+    disconnect_all
+    sudo openvpn "$ACADEMY_OVPN"
+    notify "HTB Academy VPN connected."
+    ;;
+  3)
+    echo -e "\n${BLUE}Connecting HTB Labs VPN...${RESET}"
+    disconnect_all
+    sudo openvpn "$LABS_OVPN"
+    notify "HTB Labs VPN connected."
+    ;;
+  *)
+    echo -e "\n${RED}Invalid option.${RESET}"
+    sleep 1
+    ;;
+  esac
+}
+
+# Execution logic
+case "$1" in
+status) status ;;
+toggle)
+  kitty --title vpn-manager -e bash -c "$0 interactive"
+  ;;
+interactive) interactive ;;
+*) status ;;
+esac
