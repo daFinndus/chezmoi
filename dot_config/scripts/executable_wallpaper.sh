@@ -51,11 +51,6 @@ change() {
   echo "[PYWAL] Applying pywal colorscheme..."
 
   wal -i "$WALLPAPER_PATH"
-
-  # echo "[WAYBAR] Killing waybar, restart will be executed by statusbar.sh..."
-  # kitty -e systemctl --user restart statusbar.service 2>/dev/null
-
-  kitty -e notify-send "Wallpaper" "Updated wallpaper to $WALLPAPER_PATH"
 }
 
 change "$1"
