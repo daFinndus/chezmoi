@@ -1,0 +1,62 @@
+[global]
+    monitor = 0
+    follow = mouse
+    width = 320
+    height = (0/X)
+    origin = top-right
+    offset = (20, 20)
+
+    font = Minecraft 11
+    line_height = 2
+
+    padding = 10
+    horizontal_padding = 12
+    separator_height = 2
+
+    frame_width = 2
+    frame_color = "#454545"
+    corner_radius = 8
+
+    background = "#1c1c1c"
+    foreground = "#eeeeee"
+    separator_color = frame
+    transparency = 10
+
+    markup = full
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    vertical_alignment = center
+    word_wrap = yes
+    ellipsize = middle
+
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 48
+
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_age_threshold = 60
+
+    sticky_history = yes
+    history_length = 20
+
+    browser = firefox
+    always_run_script = true
+
+[urgency_low]
+    timeout = 3
+    background = "#1c1c1c"
+    foreground = "#9d8888"
+    frame_color = "#454545"
+
+[urgency_normal]
+    timeout = 6
+    background = "#1c1c1c"
+    foreground = "#eeeeee"
+    frame_color = "#5f7a8c"
+
+[urgency_critical]
+    timeout = 0
+    background = "#1c1c1c"
+    foreground = "#865054"
+    frame_color = "#865054"
