@@ -2,7 +2,6 @@
     monitor = 0
     follow = mouse
     width = 320
-    height = (0/X)
     origin = top-right
     offset = (20, 20)
 
