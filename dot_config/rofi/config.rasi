@@ -1,6 +1,7 @@
 @import "~/.config/rofi/colors.rasi"
 
 window {
+  font: "Minecraft Regular 12";
 	border: 2px;
 	border-color: @normal-foreground; 
 	border-radius: 4px;
