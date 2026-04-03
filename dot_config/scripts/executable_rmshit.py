@@ -1,4 +1,11 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
+
+"""Interactive junk cleaner for common cache and temporary paths."""
+
+# This is stolen from here:
+# https://github.com/lahwaacz/Scripts/blob/master/rmshit.py
+
+# It is modified though
 
 import os
 import sys
@@ -6,12 +13,8 @@ import yaml
 import shutil
 import subprocess
 
+
 from pathlib import Path
-
-# This is stolen from here:
-# https://github.com/lahwaacz/Scripts/blob/master/rmshit.py
-
-# It is modified though
 
 DEFAULT_CONFIG = """
 - ~/.FRD/links.txt                   # FRD
@@ -120,7 +123,6 @@ DEFAULT_CONFIG = """
 - ~/.swt/                            # Standard Widget Toolkit cache
 - ~/.texlive/                        # TeX Live cache
 - ~/.thumbnails                      # Image thumbnails cache
-- ~/tmp
 - ~/.tox/                            # Cache directory for tox
 - ~/.var/app/*/cache/                # Flatpak app caches
 - ~/.viminfo                         # Sometimes created wrongfully
@@ -134,37 +136,44 @@ DEFAULT_CONFIG = """
 - ~/unison.log                       # Unison log file
 """
 
-CONFIG_PATH = Path(os.getenv("XDG_CONFIG_HOME", Path.home() / ".config")) / "rmshit.yaml"
+CONFIG_PATH = (
+    Path(os.getenv("XDG_CONFIG_HOME", Path.home() / ".config"))
+    / "scripts"
+    / "rmshit.yaml"
+)
 
-# Format size function to convert bytes to human-readable format
+
 def format_size(size: float) -> str:
+    """Convert a byte count to a human-readable binary unit string."""
     for unit in ("B", "KiB", "MiB", "GiB", "TiB"):
         if size < 1024:
             return f"{size:.1f} {unit}"
         size /= 1024
-    
+
     return f"{size:.1f} PiB"
 
-# Get directory size function to calculate total size of files in a directory
+
 def get_dir_size(path: Path) -> int:
+    """Return total file size for a file or recursively for a directory."""
     total = 0
-    
+
     try:
         if path.is_file():
             return path.stat().st_size
-        for p in path.rglob("*"):
+        for entry in path.rglob("*"):
             try:
-                if p.is_file():
-                    total += p.stat().st_size
+                if entry.is_file():
+                    total += entry.stat().st_size
             except (OSError, FileNotFoundError):
                 continue
     except Exception:
         pass
-    
+
     return total
 
-# Load configuration function to read paths from the config file 
+
 def load_config() -> list[Path]:
+    """Load cleanup paths from YAML config, creating default config if missing."""
     if not CONFIG_PATH.exists():
         CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
         CONFIG_PATH.write_text(DEFAULT_CONFIG.strip() + "\n")
@@ -176,18 +185,22 @@ def load_config() -> list[Path]:
 
     return [Path(os.path.expanduser(str(p))) for p in raw]
 
-# Function to prompt user for yes/no input
+
 def yesno(question: str, default="n") -> bool:
+    """Ask a yes/no question and return True when the answer starts with 'y'."""
     prompt = f"\n{question} (y/[n]) " if default == "n" else f"{question} ([y]/n) "
     ans = input(prompt).strip().lower()
-    
+
     if not ans:
         ans = default
-    
+
     return ans.startswith("y")
 
-# This is a helper for cleaning up via a command
-def run_cleanup_command(name: str, command: list[str], path_to_measure: Path | None = None) -> int:
+
+def run_cleanup_command(
+    name: str, command: list[str], path_to_measure: Path | None = None
+) -> int:
+    """Run an external cleanup command and estimate reclaimed size."""
     before = get_dir_size(path_to_measure) if path_to_measure else 0
 
     print(f"\nRunning {name}...")
@@ -198,7 +211,7 @@ def run_cleanup_command(name: str, command: list[str], path_to_measure: Path | N
 
         if result.stderr.strip():
             print(result.stderr.strip())
-        
+
         return 0
 
     after = get_dir_size(path_to_measure) if path_to_measure else 0
@@ -208,17 +221,23 @@ def run_cleanup_command(name: str, command: list[str], path_to_measure: Path | N
 
     return freed
 
-# This is the main function
+
 def rmshit():
+    """Scan configured junk paths, prompt, and delete selected targets."""
     junk_paths = load_config()
-    found = []
+    found: list[tuple[Path, int]] = []
     total_size = 0
 
     print("Scanning for junk files...")
 
-    for p in junk_paths:
-        expanded = list(sorted(p.parent.glob(p.name))) if "*" in p.name else [p]
-        for path in expanded:
+    for junk_path in junk_paths:
+        expanded_paths = (
+            list(sorted(junk_path.parent.glob(junk_path.name)))
+            if "*" in junk_path.name
+            else [junk_path]
+        )
+
+        for path in expanded_paths:
             if path.exists():
                 size = get_dir_size(path)
                 total_size += size
@@ -229,7 +248,7 @@ def rmshit():
         return
 
     print("\nFound junk files/directories:")
-    
+
     for path, size in found:
         print(f"  {path}  ({format_size(size)})")
 
@@ -247,6 +266,26 @@ def rmshit():
                 path.unlink(missing_ok=True)
             else:
                 shutil.rmtree(path, ignore_errors=True)
+            freed += size
+        except Exception as e:
+            print(f"Failed to delete {path}: {e}")
+
+    print("\nClearing /tmp directory.")
+
+    if yesno("Remove everything in /tmp?", default="n"):
+        tmp_path = Path("/tmp")
+        size = get_dir_size(tmp_path)
+
+        print(f"Found {format_size(size)} in {tmp_path}.")
+
+        try:
+            for path in tmp_path.iterdir():
+                print(f"  Removing {path}...")
+
+                if path.is_file() or path.is_symlink():
+                    path.unlink(missing_ok=True)
+                else:
+                    shutil.rmtree(path, ignore_errors=True)
             freed += size
         except Exception as e:
             print(f"Failed to delete {path}: {e}")
@@ -275,6 +314,7 @@ def rmshit():
         )
 
     print(f"\nTotal freed overall: {format_size(freed)}")
+
 
 if __name__ == "__main__":
     rmshit()
