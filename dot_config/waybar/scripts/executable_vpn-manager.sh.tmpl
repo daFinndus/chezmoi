@@ -10,6 +10,7 @@ RESET="\033[0m"
 ACADEMY_OVPN="$HOME/Nextcloud/VPNs/academy-regular.ovpn"
 LABS_OVPN="$HOME/Nextcloud/VPNs/labs_eu-2.ovpn"
 
+{{- if eq .device "kabuki" }}
 # Check if wireguard is active
 is_wireguard_active() {
   {{- if eq .device "krabby" }}
@@ -19,6 +20,7 @@ is_wireguard_active() {
   ip link show kabuki &>/dev/null & ip link show kabuki | grep -q "UP"
   {{- end }}
 }
+{{- end }}
 
 # Check if openvpn is active
 is_openvpn_active() {
@@ -47,9 +49,11 @@ notify() {
 status() {
   local active_vpns=()
 
+  {{- if eq .device "kabuki" }}
   if is_wireguard_active; then
     active_vpns+=("Wireguard")
   fi
+  {{- end }}
 
   if is_openvpn_active; then
     active_vpns+=("$(get_openvpn_vpn)")
@@ -67,9 +71,11 @@ status() {
 
 # Disconnect them all
 disconnect_all() {
+  {{- if eq .device "kabuki" }}
   if is_wireguard_active; then
     sudo wg-quick down wg0
   fi
+  {{- end }}
 
   if is_openvpn_active; then
     sudo pkill openvpn
@@ -83,12 +89,14 @@ disconnect_all() {
 interactive() {
   echo ""
 
+  {{- if eq .device "kabuki" }}
   # Show current state
   if is_wireguard_active; then
     echo -e "  Wireguard:   ${GREEN}connected${RESET}"
   else
     echo -e "  Wireguard:   ${RED}disconnected${RESET}"
   fi
+  {{- end }}
 
   if is_openvpn_active; then
     echo -e "  OpenVPN:     ${GREEN}$(get_openvpn_vpn) connected${RESET}"
@@ -98,9 +106,11 @@ interactive() {
 
   echo ""
   echo -e "${YELLOW}  0${RESET} — Disconnect all"
-  echo -e "${YELLOW}  1${RESET} — Wireguard"
-  echo -e "${YELLOW}  2${RESET} — HTB Academy"
-  echo -e "${YELLOW}  3${RESET} — HTB Labs"
+  echo -e "${YELLOW}  1${RESET} — HTB Academy"
+  echo -e "${YELLOW}  2${RESET} — HTB Labs"
+  {{- if eq .device "kabuki" }}
+  echo -e "${YELLOW}  3${RESET} - Wireguard"
+  {{- end }}
   echo ""
   echo -n "  Choose: "
   read -r choice
@@ -111,23 +121,25 @@ interactive() {
     disconnect_all
     ;;
   1)
-    echo -e "\n${BLUE}Connecting Wireguard...${RESET}"
-    disconnect_all
-    sudo wg-quick up wg0
-    notify "Wireguard connected."
-    ;;
-  2)
     echo -e "\n${BLUE}Connecting HTB Academy VPN...${RESET}"
     disconnect_all
     sudo openvpn "$ACADEMY_OVPN"
     notify "HTB Academy VPN connected."
     ;;
-  3)
+  2)
     echo -e "\n${BLUE}Connecting HTB Labs VPN...${RESET}"
     disconnect_all
     sudo openvpn "$LABS_OVPN"
     notify "HTB Labs VPN connected."
     ;;
+  {{- if eq .device "kabuki" }}
+  3)
+    echo -e "\n${BLUE}Connecting Wireguard...${RESET}"
+    disconnect_all
+    sudo wg-quick up wg0
+    notify "Wireguard connected."
+    ;;
+  {{- end }}
   *)
     echo -e "\n${RED}Invalid option.${RESET}"
     sleep 1
