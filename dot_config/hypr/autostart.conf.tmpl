@@ -11,8 +11,8 @@ exec-once = "/home/finn/.config/scripts/wallpaper.sh"
 {{- if eq .device "krabby" }}
 # This is only for my guitar interface
 exec-once = "/home/finn/.config/scripts/guitar-loopback.sh"
-{{ end -}}
+{{ end }}
 
 # Set dark mode and remote button layouts
 exec = gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
-exec = gsettings set org.gnome.desktop.wm.preferences button-layout ':' 
+exec = gsettings set org.gnome.desktop.wm.preferences button-layout ':'
