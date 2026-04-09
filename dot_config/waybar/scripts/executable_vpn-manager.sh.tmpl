@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# ==============================================================================
-# VPN Toggle Script for Waybar
-# ==============================================================================
-
 RED="\033[38;2;220;50;50m"
 GREEN="\033[38;2;50;200;50m"
 CYAN="\033[38;2;0;180;180m"
@@ -16,7 +12,12 @@ LABS_OVPN="$HOME/Nextcloud/VPNs/labs_eu-2.ovpn"
 
 # Check if wireguard is active
 is_wireguard_active() {
+  {{- if eq .device "krabby" }}
   ip link show wg0 &>/dev/null && ip link show wg0 | grep -q "UP"
+  {{- end }}
+  {{- if eq .device "kabuki" }}
+  ip link show kabuki &>/dev/null & ip link show kabuki | grep -q "UP"
+  {{- end }}
 }
 
 # Check if openvpn is active
