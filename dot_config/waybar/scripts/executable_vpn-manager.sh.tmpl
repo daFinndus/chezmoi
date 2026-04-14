@@ -13,7 +13,12 @@ LABS_OVPN="$HOME/Nextcloud/VPNs/labs_eu-2.ovpn"
 {{- if eq .device "kabuki" }}
 # Check if wireguard is active
 is_wireguard_active() {
+  {{- if eq .device "krabby" }}
   ip link show wg0 &>/dev/null && ip link show wg0 | grep -q "UP"
+  {{- end }}
+  {{- if eq .device "kabuki" }}
+  ip link show kabuki &>/dev/null & ip link show kabuki | grep -q "UP"
+  {{- end }}
 }
 {{- end }}
 
