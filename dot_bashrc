@@ -30,7 +30,7 @@ alias wireguard='/home/finn/.config/scripts/wireguard.sh'
 
 alias rmshit='python /home/finn/.config/scripts/rmshit.py'
 
-alias hibernate='sudo systemctl hibernate'
+alias suspend='sudo systemctl suspend'
 alias shutdown='sudo shutdown now'
 alias reboot='sudo reboot'
 
