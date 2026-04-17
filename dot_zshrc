@@ -134,6 +134,10 @@ alias rmshit='python /home/finn/.config/scripts/rmshit.py'
 
 alias bash='kitty --config NONE bash & disown'
 
+alias hibernate='sudo systemctl hibernate'
+alias shutdown='sudo shutdown now'
+alias reboot='sudo reboot'
+
 alias vim='nvim'
 
 # This is for p10k
