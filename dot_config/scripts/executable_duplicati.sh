@@ -16,6 +16,27 @@ log_error() { echo -e "${RED}[-]${RESET} $1"; }
 PASSWORD=$1
 TOKEN=""
 
+test_target_reachability() {
+  log_step "Going to test reachability of necessary machines."
+
+  WORKSTATION=$(ping 192.168.0.80 -w 3 | grep "time")
+  DUPLICATI=$(ping 192.168.0.64 -w 3 | grep "time")
+
+  if [[ -n "$WORKSTATION" ]]; then
+    log_success "Workstation 'krabby' seems reachable."
+  else
+    log_error "Workstation 'krabby' seems offline, aborting..."
+    exit 1
+  fi
+
+  if [[ -n "$DUPLICATI" ]]; then
+    log_success "Duplicati seems reachable."
+  else
+    log_error "Duplicati seems not reachable, aborting..."
+    exit 1
+  fi
+}
+
 # This is to curl the auth token.
 curl_auth_token() {
   log_step "Going to curl access token..."
@@ -109,6 +130,7 @@ do_backups() {
   log_success "Successfully did all updates!"
 }
 
+test_target_reachability
 curl_auth_token
 get_backup_ids
 mount_hdd
