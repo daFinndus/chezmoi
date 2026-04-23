@@ -22,13 +22,6 @@ test_target_reachability() {
   WORKSTATION=$(ping 192.168.0.80 -w 3 | grep "time")
   DUPLICATI=$(ping 192.168.0.64 -w 3 | grep "time")
 
-  if [[ -n "$WORKSTATION" ]]; then
-    log_success "Workstation 'krabby' seems reachable."
-  else
-    log_error "Workstation 'krabby' seems offline, aborting..."
-    exit 1
-  fi
-
   if [[ -n "$DUPLICATI" ]]; then
     log_success "Duplicati seems reachable."
   else
@@ -92,16 +85,18 @@ get_backup_ids() {
 
 # This will make sure my HDD is mounted, necessary for one backup.
 mount_hdd() {
-  log_step "Going to make sure HDD is mounted."
+  if [[ "$HOSTNAME" == "krabby" ]]; then
+    log_step "Going to make sure HDD is mounted."
 
-  MOUNTED=$(df -h | grep "/mnt/hdd")
+    MOUNTED=$(df -h | grep "/mnt/hdd")
 
-  if [[ -n "$MOUNTED" ]]; then
-    log_success "Found HDD in mounted drives, nice!"
-  else
-    log_warn "HDD is not mounted, going to mount it now."
+    if [[ -n "$MOUNTED" ]]; then
+      log_success "Found HDD in mounted drives, nice!"
+    else
+      log_warn "HDD is not mounted, going to mount it now."
 
-    sudo mount /dev/sda2 /mnt/hdd -t ntfs
+      sudo mount /dev/sda2 /mnt/hdd -t ntfs
+    fi
   fi
 }
 
@@ -111,6 +106,11 @@ do_backups() {
   log_step "Going to do backups..."
 
   for ((i = 0; i < ${#IDS[@]}; i++)); do
+    if [[ "${NAMES[i]}" != *"Local"* && "$HOSTNAME" != "krabby" ]]; then
+      log_warn "Skipping backup ${NAMES[i]} since it is not a local backup and we are not on krabby.\n"
+      continue
+    fi
+
     echo ""
 
     log_success "Going to run update for backup: ${NAMES[i]}"
@@ -124,10 +124,11 @@ do_backups() {
       log_error "Backup progress failed for ${NAMES[i]}."
     fi
 
+    echo ""
     sleep 3
   done
 
-  log_success "Successfully did all updates!"
+  log_success "Successfully did all backups!"
 }
 
 test_target_reachability
