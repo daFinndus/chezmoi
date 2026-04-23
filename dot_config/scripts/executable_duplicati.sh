@@ -69,13 +69,30 @@ get_backup_ids() {
   fi
 }
 
+# This will make sure my HDD is mounted, necessary for one backup.
+mount_hdd() {
+  log_step "Going to make sure HDD is mounted."
+
+  MOUNTED=$(df -h | grep "/mnt/hdd")
+
+  if [[ -n "$MOUNTED" ]]; then
+    log_success "Found HDD in mounted drives, nice!"
+  else
+    log_warn "HDD is not mounted, going to mount it now."
+
+    sudo mount /dev/sda2 /mnt/hdd -t ntfs
+  fi
+}
+
 # This function will backup everything.
 # Maybe update this to do specific backups later.
 do_backups() {
   log_step "Going to do backups..."
 
   for ((i = 0; i < ${#IDS[@]}; i++)); do
-    log_success "\nGoing to run update for backup: ${NAMES[i]}"
+    echo ""
+
+    log_success "Going to run update for backup: ${NAMES[i]}"
 
     RESPONSE=$(curl -s -X POST http://192.168.0.64:8200/api/v1/backup/${IDS[i]}/run \
       -H "Authorization: Bearer $TOKEN")
@@ -94,4 +111,5 @@ do_backups() {
 
 curl_auth_token
 get_backup_ids
+mount_hdd
 do_backups
