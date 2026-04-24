@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# ==============================================================================
-# Metasploit Framework Setup Script for Arch Linux
-# ==============================================================================
+# This script is used to install metasploit and setup it's dependencies.
+# Afterwards it will start msfconsole.
 
 RED="\033[38;2;220;50;50m"
 YELLOW="\033[38;2;220;180;0m"
