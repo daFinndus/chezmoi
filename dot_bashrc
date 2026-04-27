@@ -28,6 +28,9 @@ alias thesis='firefox /home/finn/Nextcloud/Documents/LaTeX/Bachelor/main.pdf & d
 alias wallpaper='/home/finn/.config/scripts/wallpaper.sh'
 alias wireguard='/home/finn/.config/scripts/wireguard.sh'
 
+alias duplicati='/home/finn/.config/scripts/duplicati.sh'
+alias pihole='/home/finn/.config/scripts/pihole.sh'
+
 alias rmshit='python /home/finn/.config/scripts/rmshit.py'
 
 alias suspend='sudo systemctl suspend'
@@ -35,3 +38,4 @@ alias shutdown='sudo shutdown now'
 alias reboot='sudo reboot'
 
 alias vim='nvim'
+alias zed='zeditor'
