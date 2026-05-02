@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Interactive junk cleaner for common cache and temporary paths."""
+# Interactive junk cleaner for common cache and temporary paths.
 
 # This is stolen from here:
 # https://github.com/lahwaacz/Scripts/blob/master/rmshit.py
@@ -8,13 +8,12 @@
 # It is modified though
 
 import os
-import sys
-import yaml
 import shutil
 import subprocess
-
-
+import sys
 from pathlib import Path
+
+import yaml
 
 DEFAULT_CONFIG = """
 - ~/.FRD/links.txt                   # FRD
@@ -136,6 +135,30 @@ DEFAULT_CONFIG = """
 - ~/unison.log                       # Unison log file
 """
 
+RED = "\033[38;2;220;50;50m"
+YELLOW = "\033[38;2;220;180;0m"
+GREEN = "\033[38;2;50;200;50m"
+BLUE = "\033[38;2;50;120;220m"
+CYAN = "\033[38;2;0;180;180m"
+RESET = "\033[0m"
+
+
+def log_step(message: str) -> None:
+    print(f"\n{BLUE}[*]{RESET} {message}")
+
+
+def log_success(message: str) -> None:
+    print(f"{GREEN}[+]{RESET} {message}")
+
+
+def log_warn(message: str) -> None:
+    print(f"{YELLOW}[!]{RESET} {message}")
+
+
+def log_error(message: str) -> None:
+    print(f"{RED}[-]{RESET} {message}")
+
+
 CONFIG_PATH = (
     Path(os.getenv("XDG_CONFIG_HOME", Path.home() / ".config"))
     / "scripts"
@@ -143,8 +166,8 @@ CONFIG_PATH = (
 )
 
 
+# Convert a byte count to a human-readable binary unit string.
 def format_size(size: float) -> str:
-    """Convert a byte count to a human-readable binary unit string."""
     for unit in ("B", "KiB", "MiB", "GiB", "TiB"):
         if size < 1024:
             return f"{size:.1f} {unit}"
@@ -153,8 +176,8 @@ def format_size(size: float) -> str:
     return f"{size:.1f} PiB"
 
 
+# Return total file size for a file or recursively for a directory.
 def get_dir_size(path: Path) -> int:
-    """Return total file size for a file or recursively for a directory."""
     total = 0
 
     try:
@@ -172,8 +195,8 @@ def get_dir_size(path: Path) -> int:
     return total
 
 
+# Load cleanup paths from YAML config, creating default config if missing.
 def load_config() -> list[Path]:
-    """Load cleanup paths from YAML config, creating default config if missing."""
     if not CONFIG_PATH.exists():
         CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
         CONFIG_PATH.write_text(DEFAULT_CONFIG.strip() + "\n")
@@ -186,8 +209,8 @@ def load_config() -> list[Path]:
     return [Path(os.path.expanduser(str(p))) for p in raw]
 
 
+# Ask a yes/no question and return True when the answer starts with 'y'.
 def yesno(question: str, default="n") -> bool:
-    """Ask a yes/no question and return True when the answer starts with 'y'."""
     prompt = f"\n{question} (y/[n]) " if default == "n" else f"{question} ([y]/n) "
     ans = input(prompt).strip().lower()
 
@@ -200,64 +223,48 @@ def yesno(question: str, default="n") -> bool:
 def run_cleanup_command(
     name: str, command: list[str], path_to_measure: Path | None = None
 ) -> int:
-    """Run an external cleanup command and estimate reclaimed size."""
+    # Run an external cleanup command and estimate reclaimed size.
     before = get_dir_size(path_to_measure) if path_to_measure else 0
 
-    print(f"\nRunning {name}...")
+    log_step(f"Running {name}...")
     result = subprocess.run(command, capture_output=True, text=True)
 
     if result.returncode != 0:
-        print(f"Failed to run {name}:")
+        log_error(f"Failed to run {name}.")
 
         if result.stderr.strip():
-            print(result.stderr.strip())
+            log_error(result.stderr.strip())
 
         return 0
 
     after = get_dir_size(path_to_measure) if path_to_measure else 0
     freed = max(0, before - after)
 
-    print(f"{name} freed {format_size(freed)}.")
+    log_success(f"{name} freed {format_size(freed)}.")
 
     return freed
 
 
-def rmshit():
-    """Scan configured junk paths, prompt, and delete selected targets."""
-    junk_paths = load_config()
-    found: list[tuple[Path, int]] = []
-    total_size = 0
+def expand_glob(path: Path) -> list[Path]:
+    if "*" not in path.name:
+        return [path]
+    return list(sorted(path.parent.glob(path.name)))
 
-    print("Scanning for junk files...")
+
+def scan_junk_paths(junk_paths: list[Path]) -> list[tuple[Path, int]]:
+    found: list[tuple[Path, int]] = []
 
     for junk_path in junk_paths:
-        expanded_paths = (
-            list(sorted(junk_path.parent.glob(junk_path.name)))
-            if "*" in junk_path.name
-            else [junk_path]
-        )
+        for path in expand_glob(junk_path):
+            if not path.exists():
+                continue
+            size = get_dir_size(path)
+            found.append((path, size))
 
-        for path in expanded_paths:
-            if path.exists():
-                size = get_dir_size(path)
-                total_size += size
-                found.append((path, size))
+    return found
 
-    if not found:
-        print("No junk found.")
-        return
 
-    print("\nFound junk files/directories:")
-
-    for path, size in found:
-        print(f"  {path}  ({format_size(size)})")
-
-    print(f"\nTotal size: {format_size(total_size)}")
-
-    if not yesno("Remove all?", default="n"):
-        print("No file removed.")
-        return
-
+def delete_paths(found: list[tuple[Path, int]]) -> int:
     freed = 0
 
     for path, size in found:
@@ -268,33 +275,102 @@ def rmshit():
                 shutil.rmtree(path, ignore_errors=True)
             freed += size
         except Exception as e:
-            print(f"Failed to delete {path}: {e}")
+            log_error(f"Failed to delete {path}: {e}")
 
-    print("\nClearing /tmp directory.")
+    return freed
+
+
+def clear_tmp_dir() -> int:
+    tmp_path = Path("/tmp")
+    size = get_dir_size(tmp_path)
+
+    log_step(f"Found {format_size(size)} in {tmp_path}.")
+
+    try:
+        for path in tmp_path.iterdir():
+            log_success(f"Removing {path}...")
+
+            if path.is_file() or path.is_symlink():
+                path.unlink(missing_ok=True)
+            else:
+                shutil.rmtree(path, ignore_errors=True)
+    except Exception as e:
+        log_error(f"Failed to delete {path}: {e}")
+
+    return size
+
+
+def remove_orphaned_packages() -> None:
+    command = "pacman -Qtdq | sudo pacman -Rns --noconfirm -"
+    result = subprocess.run(command, shell=True,
+                            capture_output=True, text=True)
+
+    if result.returncode != 0:
+        log_error(f"Failed to run {command}.")
+
+    if result.stderr.strip():
+        log_error(result.stderr.strip())
+
+
+def wait_for_keypress(prompt: str = "Press any key to exit...") -> None:
+    print(f"\n{prompt}", end="", flush=True)
+
+    if sys.stdin.isatty():
+        try:
+            import termios
+            import tty
+
+            fd = sys.stdin.fileno()
+            old = termios.tcgetattr(fd)
+            try:
+                tty.setraw(fd)
+                sys.stdin.read(1)
+            finally:
+                termios.tcsetattr(fd, termios.TCSADRAIN, old)
+        except Exception:
+            input()
+    else:
+        input()
+
+    print()
+
+
+# Scan configured junk paths, prompt, and delete selected targets.
+def rmshit() -> None:
+    junk_paths = load_config()
+    total_size = 0
+
+    log_step("Scanning for junk files...")
+    found = scan_junk_paths(junk_paths)
+
+    if not found:
+        log_warn("No junk found.")
+        return
+
+    log_step("Found junk files/directories:")
+
+    for path, size in found:
+        print(f"  {path}  ({format_size(size)})")
+        total_size += size
+
+    log_step(f"Total size: {format_size(total_size)}")
+
+    if not yesno("Remove all?", default="n"):
+        log_warn("No file removed.")
+        return
+
+    freed = delete_paths(found)
+
+    log_step("Clearing /tmp directory.")
 
     if yesno("Remove everything in /tmp?", default="n"):
-        tmp_path = Path("/tmp")
-        size = get_dir_size(tmp_path)
+        freed += clear_tmp_dir()
 
-        print(f"Found {format_size(size)} in {tmp_path}.")
-
-        try:
-            for path in tmp_path.iterdir():
-                print(f"  Removing {path}...")
-
-                if path.is_file() or path.is_symlink():
-                    path.unlink(missing_ok=True)
-                else:
-                    shutil.rmtree(path, ignore_errors=True)
-            freed += size
-        except Exception as e:
-            print(f"Failed to delete {path}: {e}")
-
-    print("\nDeinstalling orphaned packages with pacman.")
+    log_step("Deinstalling orphaned packages with pacman.")
     if yesno("Remove orphaned packages?", default="n"):
-        
+        remove_orphaned_packages()
 
-    print("\nNow clearing pacman caches.")
+    log_step("Now clearing pacman caches.")
 
     if yesno("Run paccache cleanup too?", default="n"):
         freed += run_cleanup_command(
@@ -317,8 +393,12 @@ def rmshit():
             Path("/var/log/journal"),
         )
 
-    print(f"\nTotal freed overall: {format_size(freed)}")
+    log_step("Finished cleanup.")
+    log_success(f"Total freed overall: {format_size(freed)}")
 
 
 if __name__ == "__main__":
-    rmshit()
+    try:
+        rmshit()
+    finally:
+        wait_for_keypress()
