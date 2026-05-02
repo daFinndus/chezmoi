@@ -142,7 +142,6 @@ alias shutdown='sudo shutdown now'
 alias reboot='sudo reboot'
 
 alias vim='nvim'
-alias zed='zeditor'
 
 # This is for p10k
 source ~/.powerlevel10k/powerlevel10k.zsh-theme

@@ -40,4 +40,3 @@ alias reboot='sudo reboot'
 alias ssh='kitten ssh'
 
 alias vim='nvim'
-alias zed='zeditor'
