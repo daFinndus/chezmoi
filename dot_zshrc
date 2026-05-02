@@ -135,7 +135,9 @@ alias pihole='/home/finn/.config/scripts/pihole.sh'
 
 alias rmshit='python /home/finn/.config/scripts/rmshit.py'
 
-alias bash='kitty --config NONE bash & disown'
+alias bash='kitty --config ~/.config/kitty/clean.conf bash & disown'
+
+alias binds='bat -p ~/.config/hypr/binds.conf'
 
 alias suspend='sudo systemctl suspend'
 alias shutdown='sudo shutdown now'
