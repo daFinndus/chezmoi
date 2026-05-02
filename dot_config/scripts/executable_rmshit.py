@@ -290,6 +290,10 @@ def rmshit():
         except Exception as e:
             print(f"Failed to delete {path}: {e}")
 
+    print("\nDeinstalling orphaned packages with pacman.")
+    if yesno("Remove orphaned packages?", default="n"):
+        
+
     print("\nNow clearing pacman caches.")
 
     if yesno("Run paccache cleanup too?", default="n"):
