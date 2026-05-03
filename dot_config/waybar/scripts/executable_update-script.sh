@@ -2,15 +2,15 @@
 count=$(checkupdates | wc -l)
 
 # Proceed doing the update itself
-kitty --class kitty --title updater -e yay -Syu
+kitty --class kitty --title updater -e bash -c "yay -Syu; echo; read -p 'Press any key to continue...'"
 
 # Save new package amount
 current=$(checkupdates | wc -l)
 
 if [[ "$current" -eq 0 ]]; then
-  notify-send "Updater" "All packages are updated"
+	notify-send "Updater" "All packages are updated"
 elif [[ "$current" -lt "$count" ]]; then
-  notify-send "Updater" "Seems some packages were updated"
+	notify-send "Updater" "Seems some packages were updated"
 else
-  notify-send "Updater" "Something went wrong"
+	notify-send "Updater" "Something went wrong"
 fi
