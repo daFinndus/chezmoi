@@ -13,8 +13,28 @@ log_success() { echo -e "${GREEN}[+]${RESET} $1"; }
 log_warn() { echo -e "${YELLOW}[!]${RESET} $1"; }
 log_error() { echo -e "${RED}[-]${RESET} $1"; }
 
-PASSWORD=$1
+PASSWORD=""
 TOKEN=""
+
+prompt_password() {
+  log_step "Please enter your password."
+  read -s -r -p "[:] > " PASSWORD
+  echo
+
+  if [[ -z "$PASSWORD" ]]; then
+    log_error "Please enter a valid password."
+    exit 1
+  fi
+
+  log_step "Please confirm your password."
+  read -s -r -p "[:] > " CONFIRM
+  echo
+
+  if [[ "$PASSWORD" != "$CONFIRM" ]]; then
+    log_error "Passwords do not match!"
+    exit 1
+  fi
+}
 
 test_target_reachability() {
   log_step "Going to test reachability of necessary machines."
@@ -38,8 +58,6 @@ curl_auth_token() {
     log_error "Provided no password, aborting!"
     exit 1
   else
-    log_success "Got password: $PASSWORD"
-
     RESPONSE=$(curl -s -X POST http://192.168.0.64:8200/api/v1/auth/login \
       -H "Content-Type: application/json" \
       -d "{\"Password\": \"$PASSWORD\"}")
@@ -124,13 +142,14 @@ do_backups() {
       log_error "Backup progress failed for ${NAMES[i]}."
     fi
 
-    echo ""
     sleep 3
   done
 
+  echo ""
   log_success "Successfully did all backups!"
 }
 
+prompt_password
 test_target_reachability
 curl_auth_token
 get_backup_ids

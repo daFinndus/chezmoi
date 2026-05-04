@@ -18,18 +18,33 @@ PASSWORD=""
 
 TOKEN=""
 
-iterate_params() {
-  log_step "Going to search for password and time..."
+prompt_password() {
+  log_step "Please enter your password."
+  read -s -r -p "[:] > " PASSWORD
+  echo
 
-  for arg in "$@"; do
-    if [[ $arg =~ ^[0-9]+$ ]]; then
-      TIME=$arg
-      log_success "Identified time: $TIME seconds."
-    else
-      PASSWORD=$arg
-      log_success "Identified password."
-    fi
-  done
+  if [[ -z "$PASSWORD" ]]; then
+    log_error "Please enter a valid password."
+    exit 1
+  fi
+
+  log_step "Please confirm your password."
+  read -s -r -p "[:] > " CONFIRM
+  echo
+
+  if [[ "$PASSWORD" != "$CONFIRM" ]]; then
+    log_error "Passwords do not match!"
+    exit 1
+  fi
+}
+
+get_time() {
+  if [[ -n "$1" ]]; then
+    log_step "Time was provided!"
+    log_success "Using $1 in seconds as time."
+
+    TIME="$1"
+  fi
 }
 
 curl_auth_token() {
@@ -39,8 +54,6 @@ curl_auth_token() {
     log_error "Provided no password, aborting!"
     exit 1
   else
-    log_success "Got password: $PASSWORD"
-
     RESPONSE=$(curl -s -k -X POST "http://pi.hole/api/auth" --data "{\"password\":\"$PASSWORD\"}")
     TOKEN=$(echo "$RESPONSE" | jq -r '.session.sid')
 
@@ -93,9 +106,9 @@ disable_pihole() {
 
   if [[ "$STATUS" == "disabled" ]]; then
     if [[ "$TIMER" == "null" ]]; then
-      log_success "Successfully disabled pi-hole blocking."
+      log_warn "Successfully disabled pi-hole blocking."
     else
-      log_success "Successfully disabled pi-hole blocking for $TIMER seconds."
+      log_warn "Successfully disabled pi-hole blocking for $TIMER seconds."
     fi
   else
     log_error "Something went wrong, pi-hole blocking is still $STATUS! Aborting..."
@@ -113,7 +126,7 @@ enable_pihole() {
   STATUS=$(echo "$RESPONSE" | jq -r '.blocking')
 
   if [[ "$STATUS" == "enabled" ]]; then
-    log_success "Successfully enabled pi-hole blocking."
+    log_warn "Successfully enabled pi-hole blocking."
   else
     log_error "Something went wrong, pi-hole blocking is still $STATUS! Aborting..."
     exit 1
@@ -128,7 +141,8 @@ delete_sid() {
   log_success "SID is now invalid."
 }
 
-iterate_params "$@"
+prompt_password
+get_time
 curl_auth_token
 check_status
 delete_sid
