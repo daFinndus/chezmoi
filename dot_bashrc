@@ -32,6 +32,7 @@ alias duplicati='/home/finn/.config/scripts/duplicati.sh'
 alias pihole='/home/finn/.config/scripts/pihole.sh'
 
 alias rmshit='python /home/finn/.config/scripts/rmshit.py'
+alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist'
 
 alias suspend='sudo systemctl suspend'
 alias shutdown='sudo shutdown now'

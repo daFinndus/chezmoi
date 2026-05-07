@@ -134,6 +134,7 @@ alias duplicati='/home/finn/.config/scripts/duplicati.sh'
 alias pihole='/home/finn/.config/scripts/pihole.sh'
 
 alias rmshit='python /home/finn/.config/scripts/rmshit.py'
+alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist'
 
 alias bash='kitty --config ~/.config/kitty/clean.conf bash & disown'
 
