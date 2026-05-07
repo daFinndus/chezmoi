@@ -280,26 +280,6 @@ def delete_paths(found: list[tuple[Path, int]]) -> int:
     return freed
 
 
-def clear_tmp_dir() -> int:
-    tmp_path = Path("/tmp")
-    size = get_dir_size(tmp_path)
-
-    log_step(f"Found {format_size(size)} in {tmp_path}.")
-
-    try:
-        for path in tmp_path.iterdir():
-            log_success(f"Removing {path}...")
-
-            if path.is_file() or path.is_symlink():
-                path.unlink(missing_ok=True)
-            else:
-                shutil.rmtree(path, ignore_errors=True)
-    except Exception as e:
-        log_error(f"Failed to delete {path}: {e}")
-
-    return size
-
-
 def remove_orphaned_packages() -> None:
     command = "pacman -Qtdq | sudo pacman -Rns --noconfirm -"
     result = subprocess.run(command, shell=True,
@@ -360,11 +340,6 @@ def rmshit() -> None:
         return
 
     freed = delete_paths(found)
-
-    log_step("Clearing /tmp directory.")
-
-    if yesno("Remove everything in /tmp?", default="n"):
-        freed += clear_tmp_dir()
 
     log_step("Deinstalling orphaned packages with pacman.")
     if yesno("Remove orphaned packages?", default="n"):
