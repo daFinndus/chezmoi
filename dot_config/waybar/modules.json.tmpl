@@ -7,7 +7,7 @@
     "on-click-right": "kitty --title iwctl --class kitty -e iwctl",
     "tooltip": true,
     "tooltip-format": "{ipaddr}/{cidr} via {gwaddr}",
-    "tooltip-format-disconnected": "Nothing is connected with an interface",
+    "tooltip-format-disconnected": "Nothing is connected with an interface"
   },
   "idle_inhibitor": {
     "format": "Inhibitor: {icon}",
@@ -15,7 +15,7 @@
       "activated": "Activated",
       "deactivated": "Deactivated",
     },
-    "tooltip": false,
+    "tooltip": false
   },
   "pulseaudio": {
     "format": "Volume at {volume}%",
@@ -23,7 +23,7 @@
     "format-bluetooth": "Connected via bluetooth",
     "on-click": "pactl get-default-sink | xargs -I {} pactl set-sink-mute {} toggle",
     "on-click-middle": "~/.config/waybar/scripts/audio-device.sh",
-    "on-click-right": "pavucontrol",
+    "on-click-right": "pavucontrol"
   },
   {{- if eq .device "kabuki" }}
   "battery": {
@@ -31,39 +31,39 @@
     "format-charging": "Charging...",
     "format-full": "Battery full",
     "format-warning": "Battery dying...",
-    "design-capacity": true,
+    "design-capacity": true
   },
   {{ end }}
   "custom/space": {
     "format": " ",
-    "tooltip": false,
+    "tooltip": false
   },
   "clock": {
     "format": "{:%I:%M %p}",
     "tooltip": true,
-    "tooltip-format": "{:%d. %B on a %A}",
+    "tooltip-format": "{:%d. %B on a %A}"
   },
   "tray": {
     "icon-size": 16,
-    "spacing": 16,
+    "spacing": 16
   },
   "custom/vpn" : {
     "exec": "~/.config/waybar/scripts/vpn-manager.sh",
     "interval": 5,
-    "return-type": "json",
+    "return-type": "json"
   },
   "custom/power": {
     "format": "󰐥",
     "tooltip": true,
     "tooltip-format": "Power menu (wlogout)",
-    "on-click": "wlogout",
+    "on-click": "wlogout"
   },
   "power-profiles-daemon": {
     "format": "Profile: {icon}",
     "format-icons": {
       "balanced": "Balanced",
       "power-saver": "Chillin'",
-      "performance": "Performance",
+      "performance": "Performance"
     }
   },
   "custom/updater":{
@@ -72,6 +72,6 @@
     "return-type": "json",
     "exec-if": "[[ $(checkupdates | wc -l) ]]",
     "interval": 15,
-    "on-click": "~/.config/waybar/scripts/update-script.sh",
+    "on-click": "~/.config/waybar/scripts/update-script.sh"
   },
 }
