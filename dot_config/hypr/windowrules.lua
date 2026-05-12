@@ -2,107 +2,107 @@
 
 -- Fix dragging issues with XWayland
 hl.window_rule({
-    name     = "fix-xwayland-drags",
-    match    = {
-        class      = "^$",
-        title      = "^$",
-        xwayland   = true,
-        float      = true,
-        fullscreen = false,
-        pin        = false,
-    },
+	name = "fix-xwayland-drags",
+	match = {
+		class = "^$",
+		title = "^$",
+		xwayland = true,
+		float = true,
+		fullscreen = false,
+		pin = false,
+	},
 
-    no_focus = true,
+	no_focus = true,
 })
 
 hl.window_rule({
-    name = "float-alsamixer",
-    match = { class = "$terminal", title = "alsamixer" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-alsamixer",
+	match = { class = terminal, title = "alsamixer" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-iwctl",
-    match = { class = "$terminal", title = "iwctl" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-iwctl",
+	match = { class = terminal, title = "iwctl" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-bluetoothctl",
-    match = { class = "$terminal", title = "bluetoothctl" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-bluetoothctl",
+	match = { class = terminal, title = "bluetoothctl" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-updater",
-    match = { class = "$terminal", title = "updater" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-updater",
+	match = { class = terminal, title = "updater" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-pavucontrol",
-    match = { class = "org.pulseaudio.pavucontrol" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-pavucontrol",
+	match = { class = "org.pulseaudio.pavucontrol" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-discord",
-    match = { class = "discord" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-discord",
+	match = { class = "discord" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-bitwarden",
-    match = { class = "Bitwarden", title = "Bitwarden" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-bitwarden",
+	match = { class = "Bitwarden", title = "Bitwarden" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-virt-manager",
-    match = { class = "virt-manager" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-virt-manager",
+	match = { class = "virt-manager" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-spotify",
-    match = { class = "Spotify" },
-    size = { 1200, 800 },
-    float = true,
+	name = "float-spotify",
+	match = { class = "Spotify" },
+	size = { 1200, 800 },
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-yazi",
-    match = { class = "kitty", title = "yazi" },
-    size = { 1200, 800 },
-    float = true,
+	name = "float-yazi",
+	match = { class = terminal, title = "yazi" },
+	size = { 1200, 800 },
+	float = true,
 })
 
 hl.window_rule({
-    name = "float-obs",
-    match = { class = "com.obsproject.Studio" },
-    size = { 1200, 800 },
-    center = true,
-    float = true,
+	name = "float-obs",
+	match = { class = "com.obsproject.Studio" },
+	size = { 1200, 800 },
+	center = true,
+	float = true,
 })
 
 hl.window_rule({
-    name = "gnome-everything",
-    match = { class = ".*" },
-    animation = "gnome",
+	name = "gnome-everything",
+	match = { class = ".*" },
+	animation = "gnome",
 })

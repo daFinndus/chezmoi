@@ -78,6 +78,9 @@ hl.config({
 	animations = {
 		enabled = true,
 	},
+	cursor = {
+		no_hardware_cursors = true,
+	},
 })
 
 -- These are all default animations
