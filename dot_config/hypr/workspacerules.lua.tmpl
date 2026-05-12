@@ -1,0 +1,22 @@
+-- Workspacerules
+
+{{- if eq .device "krabby" }}
+-- First monitor
+hl.workspace_rule({ workspace = "1", monitor = "DP-3" })
+hl.workspace_rule({ workspace = "2", monitor = "DP-3" })
+hl.workspace_rule({ workspace = "3", monitor = "DP-3" })
+
+-- Second monitor
+hl.workspace_rule({ workspace = "4", monitor = "DP-2" })
+hl.workspace_rule({ workspace = "5", monitor = "DP-2" })
+hl.workspace_rule({ workspace = "6", monitor = "DP-2" })
+
+-- Third monitor
+hl.workspace_rule({ workspace = "8", monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "7", monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "9", monitor = "HDMI-A-1" })
+{{- end }}
+{{- if eq .device "kabuki" }}
+-- Notebook shall always be workspace 1
+hl.workspace_rule({ workspace = "1", monitor = "eDP-1" })
+{{- end }}

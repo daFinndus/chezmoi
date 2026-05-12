@@ -56,5 +56,6 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"))
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"))
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"))
 
-hl.bind(mainMod .. " + T", hl.dsp.workspace.swap_monitors ({ eDP-1, DP-1 }))
+-- This doesn't work for some reason
+-- hl.bind(mainMod .. " + T", hl.dsp.workspace.swap_monitors({ eDP-1, DP-1 }))
 {{ end }}
