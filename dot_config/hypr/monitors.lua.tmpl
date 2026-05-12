@@ -1,0 +1,38 @@
+-- Monitors
+{{- if eq .device "krabby" }}
+h1.monitor({
+    output = "HDMI-A-1",
+    mode = "1920x1080@120",
+    position = "0x0",
+    scale = 1
+})
+
+h1.monitor({
+    output = "DP-3",
+    mode = "1920x1080@240",
+    position = "1920x0",
+    scale = 1
+})
+
+h1.monitor({
+    output = "DP-2",
+    mode = "1920x1080@100",
+    position = "3840x0",
+    scale = 1
+})
+{{ end -}}
+{{- if eq .device "kabuki" }}
+h1.monitor({
+    output = "eDP-1",
+    mode = "1920x1200@60",
+    position = "0x1200",
+    scale = 1
+})
+
+-- Fallback monitor rule
+h1.monitor({
+    mode = "1920x1080@60",
+    position = "0x0",
+    scale = 1
+})
+{{ end -}}

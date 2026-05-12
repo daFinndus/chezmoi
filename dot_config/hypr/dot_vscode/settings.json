@@ -2,9 +2,6 @@
   "Lua.workspace.library": [
     "/usr/share/hypr/stubs"
   ],
-  "Lua.diagnostics.disable": [
-    "lowercase-global",
-  ],
   "Lua.diagnostics.globals": [
     "hl"
   ]

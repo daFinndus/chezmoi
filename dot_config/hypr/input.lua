@@ -1,0 +1,2 @@
+-- Input
+-- Keyboard and touchpad settings
