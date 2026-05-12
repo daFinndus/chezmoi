@@ -7,10 +7,10 @@ filemanager = "kitty --class kitty --title yazi -e yazi"
 menu = "rofi -show drun -show-icons"
 browser = "firefox"
 
-screenshot = "hyprshot -m region -o \"$HOME/Downloads\""
+screenshot = 'hyprshot -m region -o "$HOME/Downloads"'
 
-toggleStatusbar = "$CONFIG/.config/scripts/toggle-statusbar.sh"
-execWallpaper = "$CONFIG/.config/scripts/wallpaper.sh"
+toggleStatusbar = "/home/finn/.config/scripts/toggle-statusbar.sh"
+execWallpaper = "/home/finn/.config/scripts/wallpaper.sh"
 
 dark = 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
 button = "gsettings set org.gnome.desktop.wm.preferences button-layout ':'"
