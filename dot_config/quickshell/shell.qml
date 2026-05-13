@@ -9,12 +9,17 @@ Scope {
 
     PanelWindow {
       required property var modelData
+
       screen: modelData
+
+      color: Globals.colors.color0
+
+      Component.onCompleted: {
+        console.log("Globals.colors:", JSON.stringify(Globals.colors.color0))
+      }
 
       anchors.top: true
       margins.top: 10
-
-      color: "#000000"
 
       implicitHeight: 30
       implicitWidth: 1900
