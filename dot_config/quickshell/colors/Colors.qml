@@ -2,109 +2,58 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
+import qs.singletons
+
 pragma Singleton
 
 Singleton {
-  id: root
+    id: root
 
-  readonly property var colors: colorManager.currentColors
-  readonly property var grays: grayManager.currentGrays
+    readonly property var colors: colorManager.currentColors
 
-  QtObject {
-    id: colorManager
+    signal colorReloadRequested()
 
-    property var currentColors: ({})
-    property bool colorsLoaded: false
-    
-    property FileView colorFile: FileView {
-      path: Qt.resolvedUrl("./colors.json")
-      preload: true
-
-      // The next 3 options are necessary to make it interactive
-      watchChanges: true
-      onFileChanged: {
-        colorManager.reloadColors();
-      }
-      onLoaded: {
-        colorManager.reloadColors();
-      }
-    }
-    
     function reloadColors() {
-      colorFile.reload();
+        colorManager.reloadColors();
+    }
 
-      try {
-        var text = colorFile.text;
-        if (!text) {
-          return;
+    onColorReloadRequested: {
+        colorManager.reloadColors();
+    }
+
+    QtObject {
+        id: colorManager
+
+        property var currentColors: ({})
+        property bool colorsLoaded: false
+        property FileView colorFile: FileView {
+            path: Qt.resolvedUrl(Globals.configPath + "/colors/colors.json")
+            preload: true
+
+            // The next 3 options are necessary to make it interactive
+            watchChanges: true
+
+            onFileChanged: {
+                colorManager.reloadColors();
+            }
+
+            onLoaded: {
+                colorManager.reloadColors();
+            }
         }
 
-        currentColors = JSON.parse(text);
-        colorsLoaded = true;
-      } catch (e) {
-        colorsLoaded = false;
-      }
-    }
-  }
+        function reloadColors() {
+            colorFile.reload();
 
-  QtObject {
-    id: grayManager
+            try {
+                var text = colorFile.text();
+                if (!text) return;
 
-    property var currentGrays: ({})
-    property bool graysLoaded: false
-
-    property FileView grayFile: FileView {
-      path: Qt.resolvedUrl("./grays.json")
-      preload: true
-
-      // The next 3 options are necessary to make it interactive
-      watchChanges: true
-      onFileChanged: {
-        grayManager.reloadColors();
-      }
-      onLoaded: {
-        grayManager.reloadColors();
-      }
-    }
-    
-    function reloadColors() {
-      grayFile.reload();
-
-      try {
-        var text = grayFile.text;
-        if (!text) {
-          return;
+                currentColors = JSON.parse(text);
+            } catch (e) {
+                console.log("Error parsing colors file:", e);
+            }
         }
-
-        currentGrays = JSON.parse(text);
-        graysLoaded = true;
-      } catch (e) {
-        graysLoaded = false;
-      }
     }
-  }
 
-  signal colorReloadRequested
-
-  onColorReloadRequested: {
-    colorManager.reloadColors();
-  }
-
-  function reloadColors() {
-    colorManager.reloadColors();
-  }
-
-  signal grayReloadRequested
-
-  onGrayReloadRequested: {
-    grayManager.reloadColors();
-  }
-
-  function reloadGrays() {
-    grayManager.reloadColors();
-  }
-
-  Component.onCompleted: {
-    grayManager.reloadColors();
-  }
 }
