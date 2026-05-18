@@ -45,8 +45,8 @@ Rectangle {
                     font.pixelSize: Globals.fontSize
 
                     color: workspace.focused
-                        ? (hover.hovered ? Globals.colors.lightgray : Globals.colors.lime)
-                        : (hover.hovered ? Globals.colors.lightgray : Globals.colors.gray)
+                        ? (hover.hovered ? Globals.colors.gray : Globals.colors.lime)
+                        : (hover.hovered ? Globals.colors.gray : Globals.colors.lightgray)
 
                     Behavior on color {
                         ColorAnimation {
