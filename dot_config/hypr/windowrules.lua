@@ -41,7 +41,7 @@ hl.window_rule({
 
 hl.window_rule({
 	name = "float-updater",
-	match = { class = terminal, title = "updater" },
+	match = { title = "updater" },
 	size = { 1200, 800 },
 	center = true,
 	float = true,
