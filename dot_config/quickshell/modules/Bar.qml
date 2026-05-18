@@ -8,10 +8,7 @@ Scope {
     id: root
 
     PanelWindow {
-        required property var modelData
         property int margin: 8
-
-        screen: modelData
 
         color: "transparent"
 

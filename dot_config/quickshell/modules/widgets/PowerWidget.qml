@@ -1,33 +1,76 @@
 import QtQuick
 import Quickshell
+import Quickshell.Services.UPower 
 
 import qs.singletons
 
 Rectangle {
-    property real padding: 8
+    property int padding: 8
 
-    width: 74 + padding * 2
+    width: text.implicitWidth + 16 + padding * 4
     height: Globals.barHeight
 
-    color: Globals.backgroundColor
+    color: Colors.colors.background
 
-    border.color: Globals.borderColor
+    border.color: Colors.colors.lightgray
     border.width: Globals.borderWidth
 
     radius: 6
 
+    property int power: PowerProfiles.profile
+
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+        }
+    }
+
+    function getProfile() {
+        switch (power) {
+        case 0:
+            return "Chillin'"
+        case 1:
+            return "Balanced"
+        case 2:
+            return "Performance"
+        default:
+            return "Unknown"
+        }
+    }
+
+    function getColor() {
+        switch (power) {
+        case 0:
+            return Colors.colors.green
+        case 1:
+            return Colors.colors.orange
+        case 2:
+            return Colors.colors.red
+        default:
+            return Colors.colors.gray
+        }
+    }
+    
     Text {
+        id: text
+
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: Globals.foregroundColor
+        color: getColor()
 
         x: parent.padding
         y: parent.padding
 
         anchors.centerIn: parent
 
-        text: "Power"
-    }
+        text: "Profile: " + getProfile()
 
+        Behavior on color {
+            ColorAnimation {
+                duration: 500
+                easing.type: Easing.OutCubic
+            }
+        }        
+    }
 }

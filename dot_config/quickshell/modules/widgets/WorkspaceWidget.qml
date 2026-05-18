@@ -10,12 +10,18 @@ Rectangle {
     width: row.implicitWidth
     height: Globals.barHeight
 
-    color: Globals.backgroundColor
+    color: Colors.colors.background
 
-    border.color: Globals.borderColor
+    border.color: Colors.colors.lightgray
     border.width: Globals.borderWidth
 
     radius: 6
+
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+        }
+    }
 
     Row {
         id: row
@@ -45,8 +51,8 @@ Rectangle {
                     font.pixelSize: Globals.fontSize
 
                     color: workspace.focused
-                        ? (hover.hovered ? Globals.colors.gray : Globals.colors.lime)
-                        : (hover.hovered ? Globals.colors.gray : Globals.colors.lightgray)
+                        ? (hover.hovered ? Colors.colors.gray : Colors.colors.lime)
+                        : (hover.hovered ? Colors.colors.gray : Colors.colors.lightgray)
 
                     Behavior on color {
                         ColorAnimation {

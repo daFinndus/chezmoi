@@ -9,18 +9,24 @@ Rectangle {
     width: 74 + padding * 2
     height: Globals.barHeight
 
-    color: Globals.backgroundColor
+    color: Colors.colors.background
 
-    border.color: Globals.borderColor
+    border.color: Colors.colors.lightgray
     border.width: Globals.borderWidth
 
     radius: 6
+
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+        }
+    }
 
     Text {
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: Globals.foregroundColor
+        color: Colors.colors.white
 
         x: parent.padding
         y: parent.padding

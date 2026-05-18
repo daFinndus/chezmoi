@@ -1,33 +1,53 @@
 import QtQuick
 import Quickshell
+import Quickshell.Widgets
+import Quickshell.Services.SystemTray
 
 import qs.singletons
 
 Rectangle {
     property real padding: 8
 
-    width: 74 + padding * 2
+    width: row.implicitWidth + padding * 2
     height: Globals.barHeight
 
-    color: Globals.backgroundColor
+    color: "transparent"
 
-    border.color: Globals.borderColor
-    border.width: Globals.borderWidth
-
-    radius: 6
-
-    Text {
-        font.family: Globals.fontFamily
-        font.pixelSize: Globals.fontSize
-
-        color: Globals.foregroundColor
-
-        x: parent.padding
-        y: parent.padding
-
-        anchors.centerIn: parent
-
-        text: "Tray"
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+        }
     }
 
+    Row {
+        id: row
+
+        anchors.fill: parent
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+
+        spacing: 16
+
+        Repeater {
+            model: SystemTray.items
+
+            delegate: Item {
+                width: 16
+                height: Globals.barHeight
+
+                Component.onCompleted: {
+                    console.log("Added system tray item:", modelData.icon)
+                }
+ 
+                IconImage {
+                    asynchronous: true
+
+                    width: parent.width
+                    height: parent.height
+
+                    source: Qt.resolvedUrl(modelData.icon)
+                }
+            }
+        }
+    }
 }

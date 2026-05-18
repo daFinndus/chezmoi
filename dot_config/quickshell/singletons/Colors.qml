@@ -23,7 +23,7 @@ Singleton {
         "winered": "#400404",
         "cyan": "#2B9E99",
         "darkcyan": "#28a69a",
-        "green": "#5C9C44",
+        "green": '#63a24c',
         "yellow": "#CDD433",
         "red": "#A33333"
     }

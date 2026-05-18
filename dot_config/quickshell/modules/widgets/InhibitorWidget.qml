@@ -8,17 +8,21 @@ import qs.singletons
 Rectangle {
     property int padding: 8
 
-    property bool inhibited: Wayland.IdleInhibitor.enabled
-
-    width: 172
+    width: text.implicitWidth + padding * 4
     height: Globals.barHeight
 
-    color: Globals.backgroundColor
+    color: Colors.colors.background
 
-    border.color: Globals.borderColor
+    border.color: Colors.colors.lightgray
     border.width: Globals.borderWidth
 
     radius: 6
+
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+        }
+    }
 
     Text {
         id: text
@@ -26,7 +30,7 @@ Rectangle {
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: Globals.inhibited ? Globals.colors.green : Globals.colors.red
+        color: Globals.inhibited ? Colors.colors.green : Colors.colors.red
 
         x: parent.padding
         y: parent.padding
