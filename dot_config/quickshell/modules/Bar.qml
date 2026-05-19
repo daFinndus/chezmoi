@@ -33,6 +33,10 @@ Scope {
                 UpdateWidget {}
             }
 
+            Item {
+                Layout.fillWidth: true
+            }
+
             Row {
                 spacing: 4
 
