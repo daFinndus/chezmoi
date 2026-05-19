@@ -63,11 +63,13 @@ Rectangle {
         command: ["bash", "-c", "sleep 5 && checkupdates | wc -l"]
 
         stdout: StdioCollector  {
+            waitForEnd: true
+
             onStreamFinished: {
                 updatesLoaded = true                
-                updateCount = parseInt(text)
+                updateCount = parseInt(this.text)
 
-                console.log("Updates available: " + updateCount)
+                refreshUpdates()
             }
         }
     }
@@ -86,6 +88,8 @@ Rectangle {
         property string script: Globals.configPath + "/scripts/updater.sh"
 
         command: [script]
+
+        
     }
 
     MouseArea {

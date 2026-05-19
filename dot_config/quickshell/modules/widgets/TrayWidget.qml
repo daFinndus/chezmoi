@@ -36,7 +36,8 @@ Rectangle {
                 height: Globals.barHeight
 
                 Component.onCompleted: {
-                    console.log("Added system tray item:", modelData.icon)
+                    console.log("Added system tray item: ", modelData.icon)
+                    console.log("Tray item: ", modelData.id)
                 }
  
                 IconImage {
