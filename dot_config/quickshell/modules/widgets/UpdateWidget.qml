@@ -18,6 +18,7 @@ Rectangle {
     color: Colors.colors.background
 
     opacity: updateCount > 0 ? 1 : 0
+    visible: updateCount > 0 ? 1 : 0
 
     border.color: Colors.colors.gray
     border.width: Globals.borderWidth
@@ -25,9 +26,9 @@ Rectangle {
     radius: 6
 
     Behavior on width {
-        NumberAnimation {
-            duration: 250
-        }
+      NumberAnimation {
+        duration: 250
+      }
     }
 
     Behavior on opacity {
@@ -84,8 +85,6 @@ Rectangle {
         property string script: Globals.configPath + "/scripts/updater.sh"
 
         command: [script]
-
-        
     }
 
     MouseArea {
@@ -116,5 +115,4 @@ Rectangle {
             }
         }
     }
-
 }
