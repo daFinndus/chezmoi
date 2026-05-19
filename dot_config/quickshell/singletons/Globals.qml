@@ -17,5 +17,10 @@ Singleton {
 
     readonly property int borderWidth: 2
 
+    // This is toggled when an inhibitor is active
     property bool inhibited: false
+
+    // This is toggled when tray is hovered
+    property bool trayHovered: false
+    property point trayPosition: Qt.point(0, 0)
 }

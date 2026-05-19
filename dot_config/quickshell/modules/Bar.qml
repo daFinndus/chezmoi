@@ -8,6 +8,8 @@ Scope {
     id: root
 
     PanelWindow {
+        id: toplevel
+
         property int margin: 8
 
         color: "transparent"
@@ -46,5 +48,7 @@ Scope {
                 SystemWidget {}
             }
         }
+
+        TrayPopupWidget {}
     }
 }

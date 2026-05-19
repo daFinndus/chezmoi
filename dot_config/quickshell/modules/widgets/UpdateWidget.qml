@@ -17,7 +17,9 @@ Rectangle {
 
     color: Colors.colors.background
 
-    border.color: Colors.colors.lightgray
+    opacity: updateCount > 0 ? 1 : 0
+
+    border.color: Colors.colors.gray
     border.width: Globals.borderWidth
 
     radius: 6
@@ -28,19 +30,13 @@ Rectangle {
         }
     }
 
-    function refreshUpdates() { checkUpdates.running = true }
-
-    function getText() {
-        if (updatesLoaded) {
-            if (updateCount == 0) {
-                return "Fully Updated"
-            } else {
-                return updateCount + " Updates"
-            }
-        } else {
-            return "Loading..."
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 250
         }
     }
+
+    function refreshUpdates() { checkUpdates.running = true }
 
     function getColor() {
         if (updatesLoaded) {
@@ -60,7 +56,7 @@ Rectangle {
         id: checkUpdates
 
         // Sleep is added to let the system settle down
-        command: ["bash", "-c", "sleep 5 && checkupdates | wc -l"]
+        command: ["bash", "-c", "checkupdates | wc -l"]
 
         stdout: StdioCollector  {
             waitForEnd: true
@@ -112,7 +108,7 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        text: getText()
+        text: updateCount + " Updates"
 
         Behavior on color {
             ColorAnimation {
