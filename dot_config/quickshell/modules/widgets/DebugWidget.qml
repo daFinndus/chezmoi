@@ -11,7 +11,7 @@ Rectangle {
 
     color: Colors.colors.background
 
-    border.color: Colors.colors.lightgray
+    border.color: Colors.colors.gray
     border.width: Globals.borderWidth
 
     radius: 6
@@ -35,5 +35,4 @@ Rectangle {
 
         text: "Debug"
     }
-
 }

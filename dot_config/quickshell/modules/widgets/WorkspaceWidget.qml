@@ -12,7 +12,7 @@ Rectangle {
 
     color: Colors.colors.background
 
-    border.color: Colors.colors.lightgray
+    border.color: Colors.colors.gray
     border.width: Globals.borderWidth
 
     radius: 6
@@ -51,7 +51,7 @@ Rectangle {
                     font.pixelSize: Globals.fontSize
 
                     color: workspace.focused
-                        ? (hover.hovered ? Colors.colors.gray : Colors.colors.lime)
+                        ? (hover.hovered ? Colors.colors.gray : Colors.colors.cyan)
                         : (hover.hovered ? Colors.colors.gray : Colors.colors.lightgray)
 
                     Behavior on color {

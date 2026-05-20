@@ -12,7 +12,7 @@ Rectangle {
 
     color: Colors.colors.background
 
-    border.color: Colors.colors.lightgray
+    border.color: Colors.colors.gray
     border.width: Globals.borderWidth
 
     radius: 6
@@ -48,6 +48,14 @@ Rectangle {
             return Colors.colors.red
         default:
             return Colors.colors.gray
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        onClicked: {
+            PowerProfiles.profile = (power + 1) % 3
         }
     }
     
