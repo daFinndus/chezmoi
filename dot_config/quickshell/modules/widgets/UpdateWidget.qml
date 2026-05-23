@@ -7,12 +7,12 @@ import qs.singletons
 Rectangle {
     id: root
 
-    property real padding: 8
+    property real padding: 16
 
     property bool updatesLoaded: false
     property int updateCount: 0
 
-    width: text.implicitWidth + 16 + padding * 4
+    width: text.width + padding * 2
     height: Globals.barHeight
 
     color: Colors.colors.background
@@ -82,14 +82,16 @@ Rectangle {
     Process {
         id: runUpdateScript
 
-        property string script: Globals.configPath + "/scripts/updater.sh"
-
-        command: [script]
+        command: `${Globals.configPath}/scripts/updater.sh`
     }
 
     MouseArea {
         anchors.fill: parent
-        onClicked:runUpdateScript.running = true
+
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+
+        onClicked: runUpdateScript.running = true
     }
 
     Component.onCompleted: refreshUpdates()

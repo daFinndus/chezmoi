@@ -1,14 +1,15 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell
-import qs.modules.widgets
+import QtQuick.Layouts
+
 import qs.singletons
+import qs.modules.widgets
 
 Scope {
     id: root
 
     PanelWindow {
-        id: toplevel
+        id: window
 
         property int margin: 8
 
@@ -32,23 +33,19 @@ Scope {
                 WorkspaceWidget {}
                 InhibitorWidget {}
                 PowerWidget {}
-                UpdateWidget {}
+                TrayWidget {}
             }
 
-            Item {
-                Layout.fillWidth: true
-            }
+            Item { Layout.fillWidth: true }
 
             Row {
                 spacing: 4
 
-                TrayWidget {}
+                UpdateWidget {}
                 NetworkWidget {}
                 VolumeWidget {}
                 SystemWidget {}
             }
         }
-
-        TrayPopupWidget {}
     }
 }

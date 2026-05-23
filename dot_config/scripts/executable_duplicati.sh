@@ -89,13 +89,7 @@ get_backup_ids() {
   mapfile -t IDS <<<"$IDS"
   mapfile -t NAMES <<<"$NAMES"
 
-  if [[ "${#IDS[@]}" -gt 0 ]]; then
-    log_success "Found the following backup id's:\n"
-
-    for ((i = 0; i < ${#IDS[@]}; i++)); do
-      echo "${IDS[i]} : ${NAMES[i]}"
-    done
-  else
+  if [[ "${#IDS[@]}" -eq 0 ]]; then
     log_warn "Didn't find any backups... aborting."
     exit 0
   fi

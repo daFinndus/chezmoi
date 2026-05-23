@@ -8,6 +8,8 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(screenshot))
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd(cleanTerminal))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(toggleStatusbar))
 
+hl.bind(mainMod .. " + O", hl.dsp.focus({ workspace = "1" }))
+
 -- OS specific binds
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))

@@ -8,86 +8,70 @@ import qs.singletons
 Rectangle {
     id: tray
 
-    property real padding: 8
+    property real padding: 16
 
-    property bool hovered: mouseArea.containsMouse
-
-    MouseArea {
-        id: mouseArea
-
-        anchors.fill: parent
-        hoverEnabled: true
-
-        onEntered: {
-            const position = tray.mapToGlobal(Qt.point(implicitWidth, tray.height))
-
-            Globals.trayHovered = true
-            Globals.trayPosition = position
-
-            console.log("Mouse entered tray, position =", position)
-        }
-
-        onExited: {
-            Globals.trayHovered = false
-            Globals.trayPosition = Qt.point(0, 0)
-
-            console.log("Mouse exited tray")
-        }
-    }
-
-    width: text.implicitWidth + padding * 4
+    width: row.width + padding * 2
     height: Globals.barHeight
 
-    color: Colors.colors.background
+    color: "transparent"
 
-    opacity : trayActive ? 1 : 0
-
-    border.color: Colors.colors.gray
-    border.width: Globals.borderWidth
-
-    radius: 6
-
-    Behavior on opacity {
-        NumberAnimation {
-            duration: 250
-        }
-    }
-
-    property int trayItems: SystemTray.items.rowCount()
-    property bool trayActive: trayItems > 0
-
-    Connections {
-        target: SystemTray.items
-
-        function onRowsInserted() {
-            trayItems = SystemTray.items.rowCount()
-            console.log("Inserted an application, count =", trayItems)
-        }
-
-        function onRowsRemoved() {
-            trayItems = SystemTray.items.rowCount()
-            console.log("Removed an application, count =", trayItems)
-        }
-    }
-
-    Text {
-        id: text
-
-        font.family: Globals.fontFamily
-        font.pixelSize: Globals.fontSize
-
-        color: hovered ? Colors.colors.lightgray : Colors.colors.gray
-
-        x: parent.padding
-        y: parent.padding
+    Row {
+        id: row
 
         anchors.centerIn: parent
 
-        text: "Tray active"
+        spacing: 12
 
-        Behavior on color {
-            ColorAnimation {
-                duration: 500
+        Repeater {
+            model: SystemTray.items
+
+            delegate: Item {
+                width: 16
+                height: Globals.barHeight
+ 
+                MouseArea {
+                    id: maus
+
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+
+                    acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
+
+                    implicitWidth: parent.width
+                    implicitHeight: parent.height
+
+                    onClicked: event => {
+                        const position = maus.mapToItem(null, event.x, event.y)
+
+                        var x = position.x
+                        var y = position.y
+
+                        switch (event.button) {
+                            case Qt.LeftButton:
+                                modelData.activate()
+                                break
+
+                            case Qt.MiddleButton:
+                                modelData.secondaryActivate()
+                                break
+
+                            case Qt.RightButton:
+                                modelData.display(QsWindow.window, x, y)
+                                break
+                        }
+                    }
+                }
+
+                IconImage {
+                    asynchronous: true
+
+                    width: parent.width
+                    height: parent.height
+
+                    source: Qt.resolvedUrl(modelData.icon)
+                }
             }
         }
     }

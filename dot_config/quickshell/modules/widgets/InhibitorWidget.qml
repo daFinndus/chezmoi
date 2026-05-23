@@ -6,9 +6,9 @@ import Quickshell.Wayland
 import qs.singletons
 
 Rectangle {
-    property int padding: 8
+    property int padding: 16
 
-    width: text.implicitWidth + padding * 4
+    width: text.width + padding * 2
     height: Globals.barHeight
 
     color: Colors.colors.background
@@ -49,6 +49,9 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
+
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
 
         onClicked: {
             if (Globals.inhibited) {

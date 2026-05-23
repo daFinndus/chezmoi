@@ -1,17 +1,18 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
 import qs.singletons
 
 Rectangle {
-    property real padding: 8
+    property real padding: 16
 
-    width: 74 + padding * 2
+    width: text.width + padding * 2
     height: Globals.barHeight
 
-    color: Colors.colors.background
+    color: Colors.colors.red
 
-    border.color: Colors.colors.gray
+    border.color: Colors.colors.red
     border.width: Globals.borderWidth
 
     radius: 6
@@ -22,11 +23,28 @@ Rectangle {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent
+
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+
+        onClicked: wlogout.running = true
+    }
+
+    Process { 
+        id: wlogout
+
+        command: "wlogout"
+    }
+
     Text {
+        id: text
+
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: Colors.colors.white
+        color: Colors.colors.winered
 
         x: parent.padding
         y: parent.padding

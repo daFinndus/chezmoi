@@ -43,7 +43,18 @@ Rectangle {
                 color: "transparent"
 
                 Text {
+                    id: text
+
                     anchors.centerIn: parent
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: workspace.activate()
+                    }
 
                     text: workspace.id
 
@@ -66,12 +77,6 @@ Rectangle {
                     id: hover
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
                 }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: workspace.activate()
-                }
-
             }
 
         }

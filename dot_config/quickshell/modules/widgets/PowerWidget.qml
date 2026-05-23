@@ -5,9 +5,9 @@ import Quickshell.Services.UPower
 import qs.singletons
 
 Rectangle {
-    property int padding: 8
+    property int padding: 16
 
-    width: text.implicitWidth + 16 + padding * 4
+    width: text.width + padding * 3
     height: Globals.barHeight
 
     color: Colors.colors.background
@@ -53,6 +53,9 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
+
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
 
         onClicked: {
             PowerProfiles.profile = (power + 1) % 3
