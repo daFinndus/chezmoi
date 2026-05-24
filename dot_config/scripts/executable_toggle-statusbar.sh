@@ -1,9 +1,8 @@
 # Check if waybar is running
-WAYBAR=$(pgrep waybar)
+QUICKSHELL=$(pgrep quickshell)
 
-if [ -z $WAYBAR ]; then
-  waybar &
-  disown
+if [ -z $QUICKSHELL ]; then
+  quickshell -d
 else
-  pkill waybar
+  quickshell kill
 fi

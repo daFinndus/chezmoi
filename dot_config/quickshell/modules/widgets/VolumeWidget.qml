@@ -47,8 +47,6 @@ Rectangle {
     Process {
         id: getVolume
 
-        property string device: Pipewire.preferredDefaultAudioSink.name
-
         command: [
             "bash", "-c", 
             `pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d "%"`
@@ -160,9 +158,9 @@ Rectangle {
         refreshVolume()
 
         if (volume === 0 || muted) {
-            return `Mute`
+            return `Volume muted`
         } else {
-            return `${volume}%`
+            return `Volume at ${volume}%`
         }
     }
 

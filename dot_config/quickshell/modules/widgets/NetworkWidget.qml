@@ -1,6 +1,5 @@
 import QtQuick
 import Quickshell
-import Quickshell.Networking
 
 import qs.singletons
 
@@ -23,20 +22,35 @@ Rectangle {
         }
     }
 
+    function getColor() {
+        if (Network.online) {
+            return Colors.colors.green
+        } else {
+            return Colors.colors.red
+        }
+    }
+
+    function getText() {
+        if (Network.type === "none") {
+            return "No network"
+        } else {
+            return `Connected via ${Network.type}`
+        }
+    }
+
     Text {
         id: text
 
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: Colors.colors.white
+        color: getColor()
 
         x: parent.padding
         y: parent.padding
 
         anchors.centerIn: parent
 
-        text: "Network"
+        text: getText()
     }
-
 }
