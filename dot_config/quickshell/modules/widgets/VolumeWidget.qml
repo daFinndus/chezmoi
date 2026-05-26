@@ -4,25 +4,11 @@ import Quickshell.Io
 import Quickshell.Services.Pipewire
 
 import qs.singletons
+import qs.modules.components
 
-Rectangle {
-    property real padding: 16
-
-    width: text.width + padding * 2
-    height: Globals.barHeight
-
-    color: Colors.colors.background
-
-    border.color: Colors.colors.gray
-    border.width: Globals.borderWidth
-
-    radius: 6
-
-    Behavior on width {
-        NumberAnimation {
-            duration: 250
-        }
-    }
+Rect {
+    farbe: getColor()
+    inhalt: getText()
 
     property int volume: 0
     property bool muted: false
@@ -162,23 +148,5 @@ Rectangle {
         } else {
             return `Volume at ${volume}%`
         }
-    }
-
-    Text {
-        id: text
-
-        Component.onCompleted: refreshVolume()
-
-        font.family: Globals.fontFamily
-        font.pixelSize: Globals.fontSize
-
-        color: getColor()
-
-        x: parent.padding
-        y: parent.padding
-
-        anchors.centerIn: parent
-
-        text: getText()
     }
 }

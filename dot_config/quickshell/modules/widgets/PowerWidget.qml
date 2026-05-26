@@ -3,27 +3,13 @@ import Quickshell
 import Quickshell.Services.UPower 
 
 import qs.singletons
+import qs.modules.components
 
-Rectangle {
-    property int padding: 16
-
-    width: text.width + padding * 3
-    height: Globals.barHeight
-
-    color: Colors.colors.background
-
-    border.color: Colors.colors.gray
-    border.width: Globals.borderWidth
-
-    radius: 6
+Rect {
+    farbe: getColor()
+    inhalt: `Profile: ${getProfile()}`
 
     property int power: PowerProfiles.profile
-
-    Behavior on width {
-        NumberAnimation {
-            duration: 250
-        }
-    }
 
     function getProfile() {
         switch (power) {
@@ -60,28 +46,5 @@ Rectangle {
         onClicked: {
             PowerProfiles.profile = (power + 1) % 3
         }
-    }
-    
-    Text {
-        id: text
-
-        font.family: Globals.fontFamily
-        font.pixelSize: Globals.fontSize
-
-        color: getColor()
-
-        x: parent.padding
-        y: parent.padding
-
-        anchors.centerIn: parent
-
-        text: "Profile: " + getProfile()
-
-        Behavior on color {
-            ColorAnimation {
-                duration: 500
-                easing.type: Easing.OutCubic
-            }
-        }        
     }
 }

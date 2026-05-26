@@ -1,18 +1,22 @@
 import QtQuick
-import Quickshell
 import Quickshell.Io
 
 import qs.singletons
 
 Rectangle {
+    id: rect
+
+    required property string farbe
+    required property string inhalt
+
     property real padding: 16
 
     width: text.width + padding * 2
     height: Globals.barHeight
 
-    color: Colors.colors.red
+    color: Colors.colors.background
 
-    border.color: Colors.colors.red
+    border.color: Colors.colors.gray
     border.width: Globals.borderWidth
 
     radius: 6
@@ -23,34 +27,26 @@ Rectangle {
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-
-        hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
-
-        onClicked: wlogout.running = true
-    }
-
-    Process { 
-        id: wlogout
-
-        command: "wlogout"
-    }
-
     Text {
         id: text
 
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: Colors.colors.winered
+        color: rect.farbe
 
         x: parent.padding
         y: parent.padding
 
         anchors.centerIn: parent
 
-        text: "System"
+        text: rect.inhalt
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 500
+                easing.type: Easing.OutCubic
+            }
+        }      
     }
 }

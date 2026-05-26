@@ -3,33 +3,17 @@ import Quickshell
 import Quickshell.Io
 
 import qs.singletons
+import qs.modules.components
 
-Rectangle {
-    id: root
-
-    property real padding: 16
+Rect {
+    farbe: getColor()
+    inhalt: `${updateCount} Updates`
 
     property bool updatesLoaded: false
     property int updateCount: 0
 
-    width: text.width + padding * 2
-    height: Globals.barHeight
-
-    color: Colors.colors.background
-
     opacity: updateCount > 0 ? 1 : 0
-    visible: updateCount > 0 ? 1 : 0
-
-    border.color: Colors.colors.gray
-    border.width: Globals.borderWidth
-
-    radius: 6
-
-    Behavior on width {
-      NumberAnimation {
-        duration: 250
-      }
-    }
+    visible: opacity > 0 ? 1 : 0
 
     Behavior on opacity {
         NumberAnimation {
@@ -95,26 +79,4 @@ Rectangle {
     }
 
     Component.onCompleted: refreshUpdates()
-
-    Text {
-        id: text
-
-        font.family: Globals.fontFamily
-        font.pixelSize: Globals.fontSize
-
-        color: getColor()
-
-        x: parent.padding
-        y: parent.padding
-
-        anchors.centerIn: parent
-
-        text: updateCount + " Updates"
-
-        Behavior on color {
-            ColorAnimation {
-                duration: 250
-            }
-        }
-    }
 }
