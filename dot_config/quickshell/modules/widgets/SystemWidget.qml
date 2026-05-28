@@ -29,13 +29,7 @@ Rectangle {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: wlogout.running = true
-    }
-
-    Process { 
-        id: wlogout
-
-        command: "wlogout"
+        onClicked: Globals.wlogout = true
     }
 
     Text {

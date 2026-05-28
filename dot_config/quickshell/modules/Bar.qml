@@ -1,6 +1,8 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import QtQuick.Layouts
+import Quickshell.Wayland
 
 import qs.singletons
 import qs.modules.widgets
@@ -10,6 +12,8 @@ Scope {
 
     PanelWindow {
         id: window
+
+        // WlrLayershell.layer: WlrLayer.Top
 
         property int margin: 8
 
@@ -41,6 +45,7 @@ Scope {
             Row {
                 spacing: 4
 
+                // DropWidget {}
                 UpdateWidget {}
                 NetworkWidget {}
                 VolumeWidget {}

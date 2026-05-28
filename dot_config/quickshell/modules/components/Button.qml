@@ -1,9 +1,49 @@
-QtObject {
+import QtQuick
+import Quickshell
+import Quickshell.Io
+
+import qs.singletons
+
+Rectangle {
     id: button
 
     required property string command
     required property string inhalt
-    required property string farbe
+
+    property real padding: 16
+
+    width: 96 + padding * 2
+    height: 46
+
+    color: mouseArea.containsMouse? Colors.colors.winered : Colors.colors.background
+
+    border.color: mouseArea.containsMouse ? Colors.colors.red : Colors.colors.gray
+    border.width: Globals.borderWidth
+
+    radius: 6
+
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+        }
+    }
+
+    Behavior on color {
+        ColorAnimation {
+            duration: 250
+        }
+    }
+
+    MouseArea {
+        id: mouseArea
+
+        anchors.fill: parent
+
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+
+        onClicked: run()
+    }
 
     Process {
         id: process
@@ -13,6 +53,32 @@ QtObject {
 
     function run() {
         process.startDetached()
-        Qt.quit()
+
+        console.log("Started", button.command)
+        
+        Globals.wlogout = false
+    }
+
+    Text {
+        id: text
+
+        font.family: Globals.fontFamily
+        font.pixelSize: Globals.fontSize
+
+        color: mouseArea.containsMouse ? Colors.colors.red : Colors.colors.white
+
+        x: parent.padding
+        y: parent.padding
+
+        anchors.centerIn: parent
+
+        text: button.inhalt
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 500
+                easing.type: Easing.OutCubic
+            }
+        }      
     }
 }

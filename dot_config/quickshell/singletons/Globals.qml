@@ -19,6 +19,7 @@ Singleton {
 
     // This is toggled when an inhibitor is active
     property bool inhibited: false
+    property bool wlogout: false
 
     // This is toggled when tray is hovered
     property bool trayHovered: false

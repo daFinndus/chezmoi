@@ -48,6 +48,7 @@ Rectangle {
                     anchors.centerIn: parent
 
                     MouseArea {
+                      id:mouseArea
                         anchors.fill: parent
 
                         hoverEnabled: true
@@ -62,8 +63,8 @@ Rectangle {
                     font.pixelSize: Globals.fontSize
 
                     color: workspace.focused
-                        ? (hover.hovered ? Colors.colors.gray : Colors.colors.cyan)
-                        : (hover.hovered ? Colors.colors.gray : Colors.colors.lightgray)
+                        ? (mouseArea.containsMouse ? Colors.colors.gray : Colors.colors.cyan)
+                        : (mouseArea.containsMouse ? Colors.colors.gray : Colors.colors.lightgray)
 
                     Behavior on color {
                         ColorAnimation {
@@ -71,11 +72,6 @@ Rectangle {
                             easing.type: Easing.OutCubic
                         }
                     }
-                }
-
-                HoverHandler {
-                    id: hover
-                    acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
                 }
             }
 

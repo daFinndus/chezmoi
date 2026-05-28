@@ -41,7 +41,7 @@ Rect {
         id: checkUpdates
 
         // Sleep is added to let the system settle down
-        command: ["bash", "-c", "checkupdates | wc -l"]
+        command: ["bash", "-c", "checkupdates; yay -Qu | wc -l"]
 
         stdout: StdioCollector  {
             waitForEnd: true
