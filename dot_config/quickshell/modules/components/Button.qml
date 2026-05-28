@@ -48,7 +48,7 @@ Rectangle {
     Process {
         id: process
 
-        command: button.command
+        command: ["sh", "-c", button.command]
     }
 
     function run() {
