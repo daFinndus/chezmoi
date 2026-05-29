@@ -1,12 +1,13 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import Quickshell.Services.Pipewire
 
 import qs.singletons
 import qs.modules.components
 
 Rect {
+    id: rect
+
     farbe: getColor()
     inhalt: getText()
 
@@ -71,6 +72,24 @@ Rect {
         ]
     }
 
+    focus: true
+
+    Keys.onPressed: event => {
+        console.log("Key pressed:", event.key)
+
+        switch (event.key) {
+            case Qt.Key_Up:
+                volumeUp.running = true
+                break
+            case Qt.Key_Down:
+                volumeDown.running = true
+                break
+            case Qt.Key_M:
+                toggleMute.running = true
+                break
+        }
+    }
+
     Process {
         id: volumeUp
         command: ["pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%"]
@@ -82,10 +101,14 @@ Rect {
     }
 
     MouseArea {
+        id: mouseArea
+
         anchors.fill: parent
 
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
+
+        onEntered: rect.forceActiveFocus()
 
         acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton | Qt.M
 
@@ -114,6 +137,7 @@ Rect {
 
     Process {
         id: events
+
         command: ["pactl", "subscribe"]
         running: true
 

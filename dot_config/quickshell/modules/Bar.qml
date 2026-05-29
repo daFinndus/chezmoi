@@ -15,6 +15,8 @@ Scope {
 
         // WlrLayershell.layer: WlrLayer.Top
 
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+
         property int margin: 8
 
         color: "transparent"
