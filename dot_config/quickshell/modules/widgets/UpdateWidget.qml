@@ -65,6 +65,15 @@ Rect {
         id: runUpdateScript
 
         command: `${Globals.configPath}/scripts/updater.sh`
+
+        stdout: StdioCollector {
+            waitForEnd: true
+            
+            onStreamFinished: {
+                console.log("Update script finished, refreshing updates")
+                updateCount = 0
+            }
+        }
     }
 
     MouseArea {
