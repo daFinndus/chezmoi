@@ -25,7 +25,7 @@ hl.window_rule({
 
 hl.window_rule({
 	name = "float-iwctl",
-	match = { class = terminal, title = "iwctl" },
+	match = { title = "iwctl" },
 	size = { 1200, 800 },
 	center = true,
 	float = true,

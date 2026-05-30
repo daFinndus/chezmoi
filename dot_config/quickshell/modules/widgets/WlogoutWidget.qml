@@ -50,8 +50,23 @@ Variants {
 			color: "transparent"
 			anchors.fill: parent
 
+			focus: mouseArea.containsMouse
+
+			Keys.onPressed: event => {
+				switch (event.key) {
+					case Qt.Key_Escape:
+						Globals.wlogout = false
+						break
+				}
+			}
+
 			MouseArea {
+				id: mouseArea
+
 				anchors.fill: parent
+				
+				hoverEnabled: true
+				onEntered: rectangle.forceActiveFocus()
 
 				onClicked: Globals.wlogout = false
 

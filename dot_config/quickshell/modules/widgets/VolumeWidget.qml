@@ -6,7 +6,7 @@ import qs.singletons
 import qs.modules.components
 
 Rect {
-    id: rect
+    id: rectangle
 
     farbe: getColor()
     inhalt: getText()
@@ -72,7 +72,7 @@ Rect {
         ]
     }
 
-    focus: true
+    focus: mouseArea.containsMouse
 
     Keys.onPressed: event => {
         console.log("Key pressed:", event.key)
@@ -108,7 +108,7 @@ Rect {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onEntered: rect.forceActiveFocus()
+        onEntered: rectangle.forceActiveFocus()
 
         acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton | Qt.M
 
