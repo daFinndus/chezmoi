@@ -31,26 +31,32 @@ Rectangle {
         onClicked: Globals.wlogout = true
 
         onEntered: {
+            Globals.dropdownVisible = true;
             Globals.dropdownOpen = true;
         }
 
         onExited: {
-            dropdownTimer.start();
+            dropdownOpenTimer.start();
         }
     }
 
-    function toggleDropdown() {
+    function toggleDropdownOpen() {
         if (!Globals.dropdownHovered) {
             Globals.dropdownOpen = false;
+            dropdownVisibleTimer.start();
         }
     }
 
     Timer {
-        id: dropdownTimer
-
+        id: dropdownOpenTimer
         interval: 150
+        onTriggered: toggleDropdownOpen()
+    }
 
-        onTriggered: toggleDropdown()
+    Timer {
+        id: dropdownVisibleTimer
+        interval: Globals.dropdownTimer
+        onTriggered: Globals.dropdownVisible = false
     }
 
     Text {

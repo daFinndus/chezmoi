@@ -1,7 +1,6 @@
+pragma Singleton
 import QtQuick
 import Quickshell
-
-pragma Singleton
 
 Singleton {
     readonly property double fontSize: 16
@@ -27,5 +26,7 @@ Singleton {
 
     // This is toggled when the dropdown menu is open
     property bool dropdownOpen: false
+    property bool dropdownVisible: false
     property bool dropdownHovered: false
+    property int dropdownTimer: 250
 }

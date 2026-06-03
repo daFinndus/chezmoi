@@ -42,7 +42,7 @@ PopupWindow {
 
     color: "transparent"
 
-    visible: Globals.dropdownOpen
+    visible: Globals.dropdownVisible
 
     implicitWidth: grid.width
     implicitHeight: grid.height
