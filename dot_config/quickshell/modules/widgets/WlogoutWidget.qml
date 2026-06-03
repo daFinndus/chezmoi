@@ -8,91 +8,86 @@ import qs.singletons
 import qs.modules.widgets
 import qs.modules.components
 
-Variants {
-	id: root
+PopupWindow {
+    id: window
 
-	default property list<var> children: [
-		{ command: "systemctl poweroff", inhalt: "Power Off" },
-        { command: "systemctl reboot", inhalt: "Reboot" },
-        { command: "systemctl suspend", inhalt: "Suspend" },
-        { command: "systemctl hibernate", inhalt: "Hibernate" },
-		{ command: "hyprctl dispatch 'hl.dsp.exit()'", inhalt: "Logout" },
-        { command: "hyprlock", inhalt: "Lock" }
-	]
+    default property list<var> children: [
+        {
+            command: "systemctl poweroff",
+            inhalt: "Power On"
+        },
+        {
+            command: "systemctl reboot",
+            inhalt: "Reboot"
+        },
+        {
+            command: "systemctl suspend",
+            inhalt: "Suspend"
+        },
+        {
+            command: "systemctl hibernate",
+            inhalt: "Hibernate"
+        },
+        {
+            command: "hyprctl dispatch 'hl.dsp.exit()'",
+            inhalt: "Logout"
+        },
+        {
+            command: "hyprlock",
+            inhalt: "Lock"
+        }
+    ]
 
-	model: Quickshell.screens
+    property bool existant: false
 
-	PanelWindow {
-		id: window
+    color: "transparent"
 
-        property var modelData
-		screen: modelData
+    visible: Globals.dropdownOpen
 
-        color: Colors.colors.blurground
+    implicitWidth: grid.width
+    implicitHeight: grid.height
 
-        visible: Globals.wlogout
+    anchor.window: bar
 
-		exclusionMode: ExclusionMode.Ignore
+    anchor.rect.x: bar.width - grid.width
+    anchor.rect.y: bar.height + 8
 
-		WlrLayershell.layer: WlrLayer.Overlay
-		WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+    MouseArea {
+        id: mouseArea
 
-		anchors {
-			top: true
-			left: true
-			bottom: true
-			right: true
-		}
+        anchors.fill: parent
 
-		Rectangle {
-            id: rectangle
+        hoverEnabled: true
 
-			color: "transparent"
-			anchors.fill: parent
+        onEntered: {
+            Globals.dropdownHovered = true;
+        }
 
-			focus: mouseArea.containsMouse
+        onExited: {
+            Globals.dropdownHovered = false;
+            Globals.dropdownOpen = false;
+        }
 
-			Keys.onPressed: event => {
-				switch (event.key) {
-					case Qt.Key_Escape:
-						Globals.wlogout = false
-						break
-				}
-			}
+        GridLayout {
+            id: grid
 
-			MouseArea {
-				id: mouseArea
+            anchors.centerIn: parent
 
-				anchors.fill: parent
-				
-				hoverEnabled: true
-				onEntered: rectangle.forceActiveFocus()
+            columns: 1
 
-				onClicked: Globals.wlogout = false
+            columnSpacing: 0
+            rowSpacing: 8
 
-				GridLayout {
-					anchors.centerIn: parent
+            Repeater {
+                model: window.children
 
-					width: 512
-                    height: 128
+                delegate: SystemButton {
+                    required property var modelData
 
-					columns: 3
-                    
-					columnSpacing: 0
-					rowSpacing: 0
-
-					Repeater {
-						model: root.children
-
-                        delegate: Button {
-                            required property var modelData
-
-                            command: modelData.command
-                            inhalt: modelData.inhalt
-                        }
-                    }
+                    command: modelData.command
+                    inhalt: modelData.inhalt
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }

@@ -5,9 +5,8 @@ import Quickshell.Io
 import qs.singletons
 
 Rectangle {
-    property real padding: 16
-
-    width: text.width + padding * 2
+    // This is set based on the dropdown menu
+    width: 126
     height: Globals.barHeight
 
     color: Colors.colors.red
@@ -30,6 +29,28 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: Globals.wlogout = true
+
+        onEntered: {
+            Globals.dropdownOpen = true;
+        }
+
+        onExited: {
+            dropdownTimer.start();
+        }
+    }
+
+    function toggleDropdown() {
+        if (!Globals.dropdownHovered) {
+            Globals.dropdownOpen = false;
+        }
+    }
+
+    Timer {
+        id: dropdownTimer
+
+        interval: 150
+
+        onTriggered: toggleDropdown()
     }
 
     Text {
@@ -39,9 +60,6 @@ Rectangle {
         font.pixelSize: Globals.fontSize
 
         color: Colors.colors.winered
-
-        x: parent.padding
-        y: parent.padding
 
         anchors.centerIn: parent
 

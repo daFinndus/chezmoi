@@ -11,11 +11,7 @@ Scope {
     id: root
 
     PanelWindow {
-        id: window
-
-        // WlrLayershell.layer: WlrLayer.Top
-
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+        id: bar
 
         property int margin: 8
 
@@ -23,14 +19,16 @@ Scope {
 
         anchors.top: true
         margins.top: margin
-        
+
         implicitHeight: Globals.barHeight
         implicitWidth: 1920 - margin * 2
 
         RowLayout {
             id: layout
 
-            anchors.fill: parent            
+            anchors.fill: parent
+
+            WlogoutWidget {}
 
             Row {
                 spacing: 4
@@ -42,7 +40,9 @@ Scope {
                 TrayWidget {}
             }
 
-            Item { Layout.fillWidth: true }
+            Item {
+                Layout.fillWidth: true
+            }
 
             Row {
                 spacing: 4

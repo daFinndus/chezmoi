@@ -7,6 +7,5 @@ import qs.modules
 import qs.modules.widgets
 
 Scope {
-    WlogoutWidget {}
     Bar {}
 }
