@@ -14,7 +14,7 @@ PopupWindow {
     default property list<var> children: [
         {
             command: "systemctl poweroff",
-            inhalt: "Power On"
+            inhalt: "Shutdown"
         },
         {
             command: "systemctl reboot",
@@ -23,10 +23,6 @@ PopupWindow {
         {
             command: "systemctl suspend",
             inhalt: "Suspend"
-        },
-        {
-            command: "systemctl hibernate",
-            inhalt: "Hibernate"
         },
         {
             command: "hyprctl dispatch 'hl.dsp.exit()'",
