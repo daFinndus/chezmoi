@@ -15,7 +15,9 @@ Rectangle {
     width: 96 + padding * 2
     height: 46
 
-    color: mouseArea.containsMouse? Colors.colors.winered : Colors.colors.background
+    visible: Globals.wlogoutOpen
+
+    color: mouseArea.containsMouse ? Colors.colors.winered : Colors.colors.background
 
     border.color: mouseArea.containsMouse ? Colors.colors.red : Colors.colors.gray
     border.width: Globals.borderWidth
@@ -52,11 +54,9 @@ Rectangle {
     }
 
     function run() {
-        process.startDetached()
+        process.startDetached();
 
-        console.log("Started", button.command)
-        
-        Globals.wlogout = false
+        console.log("Started", button.command);
     }
 
     Text {
@@ -79,6 +79,6 @@ Rectangle {
                 duration: 500
                 easing.type: Easing.OutCubic
             }
-        }      
+        }
     }
 }

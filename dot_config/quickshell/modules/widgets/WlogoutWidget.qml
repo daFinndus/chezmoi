@@ -52,17 +52,11 @@ PopupWindow {
     anchor.rect.x: bar.width - grid.width
     anchor.rect.y: bar.height + 8
 
-    function verifyWlogout() {
-        if (!Globals.wlogoutOpen) {
-            Globals.wlogoutOpen = true;
-        }
-    }
-
     Timer {
         id: closeWlogout
         interval: Globals.wlogoutFadeDelay
 
-        onTriggered: verifyWlogout()
+        onTriggered: Globals.wlogoutOpen = false
     }
 
     MouseArea {
