@@ -42,7 +42,7 @@ PopupWindow {
 
     color: "transparent"
 
-    visible: Globals.dropdownVisible
+    visible: Globals.wlogoutOpen
 
     implicitWidth: grid.width
     implicitHeight: grid.height
@@ -52,6 +52,19 @@ PopupWindow {
     anchor.rect.x: bar.width - grid.width
     anchor.rect.y: bar.height + 8
 
+    function verifyWlogout() {
+        if (!Globals.wlogoutOpen) {
+            Globals.wlogoutOpen = true;
+        }
+    }
+
+    Timer {
+        id: closeWlogout
+        interval: Globals.wlogoutFadeDelay
+
+        onTriggered: verifyWlogout()
+    }
+
     MouseArea {
         id: mouseArea
 
@@ -60,12 +73,13 @@ PopupWindow {
         hoverEnabled: true
 
         onEntered: {
-            Globals.dropdownHovered = true;
+            Globals.wlogoutHovered = true;
         }
 
         onExited: {
-            Globals.dropdownHovered = false;
-            Globals.dropdownOpen = false;
+            Globals.wlogoutClickable = false;
+            Globals.wlogoutHovered = false;
+            closeWlogout.start();
         }
 
         GridLayout {

@@ -25,8 +25,8 @@ Singleton {
     property point trayPosition: Qt.point(0, 0)
 
     // This is toggled when the dropdown menu is open
-    property bool dropdownOpen: false
-    property bool dropdownVisible: false
-    property bool dropdownHovered: false
-    property int dropdownTimer: 250
+    property bool wlogoutOpen: false
+    property bool wlogoutClickable: false
+    property bool wlogoutHovered: false
+    property int wlogoutFadeDelay: 250
 }

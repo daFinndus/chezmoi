@@ -28,35 +28,38 @@ Rectangle {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: Globals.wlogout = true
-
         onEntered: {
-            Globals.dropdownVisible = true;
-            Globals.dropdownOpen = true;
+            Globals.wlogoutOpen = true;
+            Globals.wlogoutClickable = true;
         }
 
         onExited: {
-            dropdownOpenTimer.start();
+            verifyWlogout.start();
         }
     }
 
-    function toggleDropdownOpen() {
-        if (!Globals.dropdownHovered) {
-            Globals.dropdownOpen = false;
-            dropdownVisibleTimer.start();
+    // This function will check, if the wlogout menu should be closed
+    function checkWlogout() {
+        if (!Globals.wlogoutHovered) {
+            Globals.wlogoutClickable = false;
+            closeWlogout.start();
+        } else {
+            console.log("WlogoutWidget is hovered, not closing it yet...");
         }
     }
 
     Timer {
-        id: dropdownOpenTimer
+        id: verifyWlogout
         interval: 150
-        onTriggered: toggleDropdownOpen()
+
+        onTriggered: checkWlogout()
     }
 
     Timer {
-        id: dropdownVisibleTimer
-        interval: Globals.dropdownTimer
-        onTriggered: Globals.dropdownVisible = false
+        id: closeWlogout
+        interval: Globals.wlogoutFadeDelay
+
+        onTriggered: Globals.wlogoutOpen = false
     }
 
     Text {
