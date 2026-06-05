@@ -14,7 +14,7 @@ Rect {
     property int volume: 0
     property bool muted: false
 
-    function refreshVolume() { 
+    function refreshVolume() {
         getVolume.running = true
         getMute.running = true
     }
@@ -35,7 +35,7 @@ Rect {
         id: getVolume
 
         command: [
-            "bash", "-c", 
+            "bash", "-c",
             `pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d "%"`
         ]
 
@@ -108,7 +108,10 @@ Rect {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onEntered: rectangle.forceActiveFocus()
+        onEntered: {
+            rectangle.forceActiveFocus()
+            console.log("Focus forced on VolumeWidget")
+        }
 
         acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton | Qt.M
 
@@ -145,6 +148,7 @@ Rect {
             onRead: data => {
                 if (data.includes("sink")) {
                     refreshVolume()
+                    media.runCheckPlayerctl()
                 }
             }
         }

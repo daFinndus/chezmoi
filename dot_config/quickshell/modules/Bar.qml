@@ -13,6 +13,9 @@ Scope {
     PanelWindow {
         id: bar
 
+        // This is needed so widgets can be focused for the keyboard
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+
         property int margin: 8
 
         color: "transparent"
@@ -23,12 +26,13 @@ Scope {
         implicitHeight: Globals.barHeight
         implicitWidth: 1920 - margin * 2
 
+        WlogoutWidget {}
+        MediaWidget { id: media }
+
         RowLayout {
             id: layout
 
             anchors.fill: parent
-
-            WlogoutWidget {}
 
             Row {
                 spacing: 4
@@ -47,7 +51,6 @@ Scope {
             Row {
                 spacing: 4
 
-                // DropWidget {}
                 UpdateWidget {}
                 NetworkWidget {}
                 VolumeWidget {}
