@@ -15,8 +15,8 @@ Rect {
     property bool muted: false
 
     function refreshVolume() {
-        getVolume.running = true
-        getMute.running = true
+        getVolume.running = true;
+        getMute.running = true;
     }
 
     Process {
@@ -34,15 +34,12 @@ Rect {
     Process {
         id: getVolume
 
-        command: [
-            "bash", "-c",
-            `pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d "%"`
-        ]
+        command: ["bash", "-c", `pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d "%"`]
 
         stdout: StdioCollector {
             onStreamFinished: data => {
-                volume = parseInt(this.text.trim())
-                console.log("Volume updated:", volume)
+                volume = parseInt(this.text.trim());
+                console.log("Volume updated:", volume);
             }
         }
     }
@@ -50,15 +47,12 @@ Rect {
     Process {
         id: getMute
 
-        command: [
-            "bash", "-c",
-            `pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}'`
-        ]
+        command: ["bash", "-c", `pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}'`]
 
         stdout: StdioCollector {
             onStreamFinished: data => {
-                muted = this.text.trim() === "yes"
-                console.log("Mute status updated:", muted)
+                muted = this.text.trim() === "yes";
+                console.log("Mute status updated:", muted);
             }
         }
     }
@@ -66,27 +60,24 @@ Rect {
     Process {
         id: toggleMute
 
-        command: [
-            "bash", "-c",
-            `pactl set-sink-mute @DEFAULT_SINK@ toggle`
-        ]
+        command: ["bash", "-c", `pactl set-sink-mute @DEFAULT_SINK@ toggle`]
     }
 
     focus: mouseArea.containsMouse
 
     Keys.onPressed: event => {
-        console.log("Key pressed:", event.key)
+        console.log("Key pressed:", event.key);
 
         switch (event.key) {
-            case Qt.Key_Up:
-                volumeUp.running = true
-                break
-            case Qt.Key_Down:
-                volumeDown.running = true
-                break
-            case Qt.Key_M:
-                toggleMute.running = true
-                break
+        case Qt.Key_Up:
+            volumeUp.running = true;
+            break;
+        case Qt.Key_Down:
+            volumeDown.running = true;
+            break;
+        case Qt.Key_M:
+            toggleMute.running = true;
+            break;
         }
     }
 
@@ -108,32 +99,29 @@ Rect {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onEntered: {
-            rectangle.forceActiveFocus()
-            console.log("Focus forced on VolumeWidget")
-        }
+        onEntered: rectangle.forceActiveFocus()
 
         acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton | Qt.M
 
         onClicked: event => {
             switch (event.button) {
-                case Qt.LeftButton:
-                    toggleMute.running = true
-                    break
-                case Qt.RightButton:
-                    startPavucontrol.running = true
-                    break
-                case Qt.MiddleButton:
-                    toggleDevice.running = true
-                    break
+            case Qt.LeftButton:
+                toggleMute.running = true;
+                break;
+            case Qt.RightButton:
+                startPavucontrol.running = true;
+                break;
+            case Qt.MiddleButton:
+                toggleDevice.running = true;
+                break;
             }
         }
 
         onWheel: event => {
             if (event.angleDelta.y > 0) {
-                volumeUp.running = true
+                volumeUp.running = true;
             } else {
-                volumeDown.running = true
+                volumeDown.running = true;
             }
         }
     }
@@ -147,8 +135,8 @@ Rect {
         stdout: SplitParser {
             onRead: data => {
                 if (data.includes("sink")) {
-                    refreshVolume()
-                    media.runCheckPlayerctl()
+                    refreshVolume();
+                    media.updatePlayers();
                 }
             }
         }
@@ -156,25 +144,25 @@ Rect {
 
     function getColor() {
         if (volume === 0) {
-            return Colors.colors.red
+            return Colors.colors.red;
         } else if (volume > 0 && volume <= 15) {
-            return Colors.colors.lightred
+            return Colors.colors.lightred;
         } else if (volume > 15 && volume <= 50) {
-            return Colors.colors.orange
+            return Colors.colors.orange;
         } else if (volume > 50 && volume <= 80) {
-            return Colors.colors.yellow
+            return Colors.colors.yellow;
         } else {
-            return Colors.colors.green
+            return Colors.colors.green;
         }
     }
 
     function getText() {
-        refreshVolume()
+        refreshVolume();
 
         if (volume === 0 || muted) {
-            return `Volume muted`
+            return `Volume muted`;
         } else {
-            return `Volume at ${volume}%`
+            return `Volume at ${volume}%`;
         }
     }
 }
