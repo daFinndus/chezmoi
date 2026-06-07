@@ -25,10 +25,10 @@ Rectangle {
     opacity: applications.count > 0 ? 1 : 0
     visible: opacity > 0
 
-    property string placeholder: "No players found"
+    // This will hold the media text
+    property string current: ""
 
-    // This is for skip and previous animations
-    property int direction: 1
+    onCurrentChanged: fadeAnimation.restart()
 
     Behavior on opacity {
         NumberAnimation {
@@ -42,21 +42,22 @@ Rectangle {
         }
     }
 
+    // This is only for the text widget, nice animations
     SequentialAnimation {
-        id: horizontalAnimation
+        id: fadeAnimation
 
         NumberAnimation {
             target: text
             property: "opacity"
             to: 0
-            duration: 100
+            duration: 250
         }
 
         NumberAnimation {
             target: text
             property: "opacity"
             to: 1
-            duration: 100
+            duration: 250
         }
     }
 
@@ -81,14 +82,10 @@ Rectangle {
 
         onWheel: event => {
             if (event.angleDelta.y > 0) {
-                root.direction = 1;
                 nextTrack.running = true;
             } else {
-                root.direction = -1;
                 previousTrack.running = true;
             }
-
-            horizontalAnimation.start();
         }
     }
 
@@ -116,7 +113,7 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        text: getText()
+        text: root.current.length > 0 ? root.current : "No players found"
     }
 
     Process {
@@ -136,7 +133,7 @@ Rectangle {
 
     // This function is for other widgets, which cannot access the Process directly
     function updatePlayers() {
-        getPlayers.running = true;
+        delaySync.start();
     }
 
     // This will query the media player for the current artist, title, and status
@@ -157,12 +154,15 @@ Rectangle {
         }
     }
 
-    function syncMetadatas(metadatas) {
-        if (metadatas == undefined) {
-            console.log("Metadatas is undefined for some reason. Not good.");
-            return;
-        }
+    // Otherwise the media player isn't up to date
+    Timer {
+        id: delaySync
 
+        interval: 250
+        onTriggered: getPlayers.running = true
+    }
+
+    function syncMetadatas(metadatas) {
         console.log("Length of metadatas:", metadatas.length, "and application length:", applications.count);
 
         // This will remove any applications that are no longer playing
@@ -193,7 +193,7 @@ Rectangle {
             console.log("Grabbed", parts.length, "different parts from the metadata.");
 
             if (parts.length < 5)
-                return;
+                continue;
 
             const id = parts[0].trim();
             const status = parts[1].trim();
@@ -216,7 +216,7 @@ Rectangle {
             if (applications.get(i).id === id) {
                 console.log("The id", id, "already exists in", applications.get(i).id);
 
-                console.log("Going to replace", applications.get(i).interpret, "with", interpret);
+                console.log("Going to replace", applications.get(i).title, "with", title);
 
                 applications.setProperty(i, "id", id);
                 applications.setProperty(i, "status", status);
@@ -237,36 +237,26 @@ Rectangle {
             interpret: interpret,
             title: title
         });
+
+        updateText();
     }
 
-    function removeApplication(id) {
-        for (let i = 0; i < applications.count; i++) {
-            if (applications.get(i).id === id) {
-                applications.remove(i);
-                return;
-            }
-        }
-    }
-
-    function getText() {
+    function updateText() {
         console.log("Going into text creation with a length of", applications.count);
 
         for (let i = 0; i < applications.count; i++) {
             console.log("Now checking", applications.get(i).id, "which has a status of", applications.get(i).status);
 
             if (applications.get(i).status === "Playing") {
-                const text = applications.get(i).interpret + ": " + applications.get(i).title;
+                current = applications.get(i).interpret + ": " + applications.get(i).title;
 
-                if (text == "") {
+                if (current === "") {
                     break;
                 }
 
-                placeholder = text;
+                console.log("Going to return the name", current);
 
-                console.log("Going to return the name", text);
-
-                root.opacity = 1;
-                return text;
+                return;
             }
 
             if (applications.get(i).id === "No players found" || applications.count == 0) {
@@ -274,8 +264,7 @@ Rectangle {
             }
         }
 
-        console.log("Going to return", placeholder);
-        return placeholder;
+        current = "No players found";
     }
 
     Component.onCompleted: {
