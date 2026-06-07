@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell.Io
+import QtQuick.Controls
 
 import qs.singletons
 import qs.modules.components
@@ -9,7 +10,7 @@ Rectangle {
 
     property real padding: 32
 
-    width: mouseArea.containsMouse ? controls.width + padding : text.width + padding * 4
+    width: text.width + padding * 2
     height: Globals.barHeight
 
     color: Colors.colors.background
@@ -24,7 +25,10 @@ Rectangle {
     opacity: applications.count > 0 ? 1 : 0
     visible: opacity > 0
 
-    property string placeholder: "No player"
+    property string placeholder: "No players found"
+
+    // This is for skip and previous animations
+    property int direction: 1
 
     Behavior on opacity {
         NumberAnimation {
@@ -38,6 +42,24 @@ Rectangle {
         }
     }
 
+    SequentialAnimation {
+        id: horizontalAnimation
+
+        NumberAnimation {
+            target: text
+            property: "opacity"
+            to: 0
+            duration: 100
+        }
+
+        NumberAnimation {
+            target: text
+            property: "opacity"
+            to: 1
+            duration: 100
+        }
+    }
+
     MouseArea {
         id: mouseArea
 
@@ -45,6 +67,29 @@ Rectangle {
 
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
+
+        onEntered: root.forceActiveFocus()
+
+        onClicked: event => {
+            switch (event.button) {
+            case Qt.LeftButton:
+                toggleTrack.running = true;
+                root.opacity = 1;
+                break;
+            }
+        }
+
+        onWheel: event => {
+            if (event.angleDelta.y > 0) {
+                root.direction = 1;
+                nextTrack.running = true;
+            } else {
+                root.direction = -1;
+                previousTrack.running = true;
+            }
+
+            horizontalAnimation.start();
+        }
     }
 
     // This will store all media playing applications
@@ -59,10 +104,12 @@ Rectangle {
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: Colors.colors.white
+        // This is to limit the widget width
+        width: Math.min(text.implicitWidth, 456)
+        elide: Text.ElideRight
+        wrapMode: Text.NoWrap
 
-        opacity: mouseArea.containsMouse ? 0 : 1
-        visible: opacity > 0 ? 1 : 0
+        color: Colors.colors.white
 
         x: parent.padding
         y: parent.padding
@@ -70,57 +117,21 @@ Rectangle {
         anchors.centerIn: parent
 
         text: getText()
-
-        Behavior on color {
-            ColorAnimation {
-                duration: 500
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 250
-            }
-        }
     }
 
-    // This is displayed when mouseArea.containsMouse is true
-    Row {
-        id: controls
+    Process {
+        id: nextTrack
+        command: ["playerctl", "next"]
+    }
 
-        anchors.centerIn: parent
-        spacing: 16
+    Process {
+        id: previousTrack
+        command: ["playerctl", "previous"]
+    }
 
-        opacity: mouseArea.containsMouse ? 1.0 : 0.0
-        visible: opacity > 0
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 200
-            }
-        }
-
-        Text {
-            text: "Back"
-
-            font.pixelSize: Globals.fontSize
-            color: Colors.colors.white
-        }
-
-        Text {
-            text: "Play / Pause"
-
-            font.pixelSize: Globals.fontSize
-            color: Colors.colors.white
-        }
-
-        Text {
-            text: "Next"
-
-            font.pixelSize: Globals.fontSize
-            color: Colors.colors.white
-        }
+    Process {
+        id: toggleTrack
+        command: ["playerctl", "play-pause"]
     }
 
     // This function is for other widgets, which cannot access the Process directly
@@ -148,11 +159,9 @@ Rectangle {
 
     function syncMetadatas(metadatas) {
         if (metadatas == undefined) {
-            console.log("Metadatas is undefined for some reason.");
+            console.log("Metadatas is undefined for some reason. Not good.");
             return;
         }
-
-        console.log("Going to sync apps and counting", metadatas.length, "running apps.");
 
         console.log("Length of metadatas:", metadatas.length, "and application length:", applications.count);
 
@@ -163,20 +172,17 @@ Rectangle {
             for (let j = 0; j < metadatas.length; j++) {
                 const parts = metadatas[j].split("//");
 
-                console.log("Parts id is:", parts[0].trim());
-                console.log("Applications id is:", applications.get(i).id);
-
-                if (parts[0].trim() !== applications.get(i).id) {
+                if (parts[0].trim() === applications.get(i).id) {
                     found = true;
                     break;
                 }
+            }
 
-                if (found) {
-                    console.log(applications.get(i).name, "is not active anymore!");
+            if (!found) {
+                console.log(applications.get(i).name, "is not active anymore!");
 
-                    applications.remove(i);
-                    i--;
-                }
+                applications.remove(i);
+                i--;
             }
         }
 
@@ -209,6 +215,8 @@ Rectangle {
         for (let i = 0; i < applications.count; i++) {
             if (applications.get(i).id === id) {
                 console.log("The id", id, "already exists in", applications.get(i).id);
+
+                console.log("Going to replace", applications.get(i).interpret, "with", interpret);
 
                 applications.setProperty(i, "id", id);
                 applications.setProperty(i, "status", status);
@@ -247,7 +255,12 @@ Rectangle {
             console.log("Now checking", applications.get(i).id, "which has a status of", applications.get(i).status);
 
             if (applications.get(i).status === "Playing") {
-                const text = applications.get(i).interpret;
+                const text = applications.get(i).interpret + ": " + applications.get(i).title;
+
+                if (text == "") {
+                    break;
+                }
+
                 placeholder = text;
 
                 console.log("Going to return the name", text);
@@ -255,11 +268,17 @@ Rectangle {
                 root.opacity = 1;
                 return text;
             }
+
+            if (applications.get(i).id === "No players found" || applications.count == 0) {
+                root.opacity = 0;
+            }
         }
 
-        root.opacity = 0;
+        console.log("Going to return", placeholder);
         return placeholder;
     }
 
-    Component.onCompleted: updatePlayers()
+    Component.onCompleted: {
+        updatePlayers();
+    }
 }

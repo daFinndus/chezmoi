@@ -6,7 +6,7 @@ import qs.singletons
 import qs.modules.components
 
 Rect {
-    id: rectangle
+    id: root
 
     farbe: getColor()
     inhalt: getText()
@@ -99,9 +99,9 @@ Rect {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onEntered: rectangle.forceActiveFocus()
+        onEntered: root.forceActiveFocus()
 
-        acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton | Qt.M
+        acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 
         onClicked: event => {
             switch (event.button) {
