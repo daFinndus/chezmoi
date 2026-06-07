@@ -223,6 +223,10 @@ Rectangle {
                 applications.setProperty(i, "name", name);
                 applications.setProperty(i, "interpret", interpret);
                 applications.setProperty(i, "title", title);
+
+                // This update is necessary, otherwise texts are not updated
+                // when the source is still equal, e.g. in youtube
+                updateText();
                 return;
             }
         }
