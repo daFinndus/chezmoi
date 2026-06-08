@@ -22,7 +22,7 @@ Rectangle {
 
     anchors.centerIn: parent
 
-    opacity: applications.count > 0 ? 1 : 0
+    opacity: text.text != "No players found" ? 1 : 0
     visible: opacity > 0
 
     // This will hold the media text
@@ -94,7 +94,6 @@ Rectangle {
         id: applications
     }
 
-    // This is displayed when mouseArea.containsMouse is false
     Text {
         id: text
 
@@ -106,7 +105,8 @@ Rectangle {
         elide: Text.ElideRight
         wrapMode: Text.NoWrap
 
-        color: Colors.colors.white
+        property int index: 0
+        color: "#E87676"
 
         x: parent.padding
         y: parent.padding
@@ -114,6 +114,34 @@ Rectangle {
         anchors.centerIn: parent
 
         text: root.current.length > 0 ? root.current : "No players found"
+
+        property var colors: ["#E87676", "#71D651", "#46C1DB", "#7CCC5E", "#E88B1A", "#2B9E99", "#28a69a", '#63a24c', "#CDD433", "#A33333"]
+
+        Behavior on color {
+            ColorAnimation {
+                duration: Globals.animationDuration
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        Timer {
+            id: getColor
+
+            interval: 1000
+
+            running: true
+            repeat: true
+
+            onTriggered: {
+                if ((text.index + 1) == parseInt(text.colors.length)) {
+                    text.index = 0;
+                } else {
+                    text.index = text.index + 1;
+                }
+
+                text.color = text.colors[text.index];
+            }
+        }
     }
 
     Process {
@@ -140,7 +168,7 @@ Rectangle {
     Process {
         id: getPlayers
 
-        property var metadata: "{{mpris:trackid}} // {{status}} // {{playerName}} // {{artist}} // {{title}}"
+        property var metadata: "{{mpris:trackid}} /divider/ {{status}} /divider/ {{playerName}} /divider/ {{artist}} /divider/ {{title}} /divider/ {{xesam:url}}"
 
         command: ["playerctl", "--all-players", "metadata", "--format", metadata]
 
@@ -170,7 +198,7 @@ Rectangle {
             var found = false;
 
             for (let j = 0; j < metadatas.length; j++) {
-                const parts = metadatas[j].split("//");
+                const parts = metadatas[j].split("/divider/");
 
                 if (parts[0].trim() === applications.get(i).id) {
                     found = true;
@@ -188,7 +216,7 @@ Rectangle {
 
         // This will add any new applications that are playing
         for (let i = 0; i < metadatas.length; i++) {
-            const parts = metadatas[i].split("//");
+            const parts = metadatas[i].split("/divider/");
 
             console.log("Grabbed", parts.length, "different parts from the metadata.");
 
@@ -200,29 +228,32 @@ Rectangle {
             const name = parts[2].trim();
             const interpret = parts[3].trim();
             const title = parts[4].trim();
+            const url = parts[5].trim();
 
-            addApplication(id, status, name, interpret, title);
+            addApplication(id, status, name, interpret, title, url);
         }
 
         console.log("Successfully synced", metadatas.length, "applications!");
         console.log("Applications is now at:", applications.count);
     }
 
-    function addApplication(id, status, name, interpret, title) {
+    function addApplication(id, status, name, interpret, title, url) {
         console.log("Adding", id, "to the media player.");
+
+        if (url.includes("youtube")) {
+            title = interpret;
+            interpret = "YouTube";
+        }
 
         // Check if it already exists and update if so
         for (let i = 0; i < applications.count; i++) {
             if (applications.get(i).id === id) {
-                console.log("The id", id, "already exists in", applications.get(i).id);
-
-                console.log("Going to replace", applications.get(i).title, "with", title);
-
                 applications.setProperty(i, "id", id);
                 applications.setProperty(i, "status", status);
                 applications.setProperty(i, "name", name);
                 applications.setProperty(i, "interpret", interpret);
                 applications.setProperty(i, "title", title);
+                applications.setProperty(i, "url", url);
 
                 // This update is necessary, otherwise texts are not updated
                 // when the source is still equal, e.g. in youtube
@@ -239,7 +270,8 @@ Rectangle {
             status: status,
             name: name,
             interpret: interpret,
-            title: title
+            title: title,
+            url: url
         });
 
         updateText();
