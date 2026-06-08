@@ -1,8 +1,7 @@
+pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
-
-pragma Singleton
 
 Singleton {
     id: root
@@ -12,34 +11,33 @@ Singleton {
     property bool online: false
 
     Component.onCompleted: {
-        networkCheck.running = true
+        networkCheck.running = true;
     }
 
-    function refreshNetworkState() { networkCheck.running = true }
+    function refreshNetworkState() {
+        networkCheck.running = true;
+    }
 
     Process {
         id: networkCheck
 
-        command: [
-            "bash", "-c",
-            "ip route show default | awk '{print $5}'"
-        ]
+        command: ["bash", "-c", "ip route show default | awk '{print $5}'"]
 
         stdout: StdioCollector {
             onStreamFinished: data => {
-                hardware = this.text.trim()
+                hardware = this.text.trim();
 
-                console.log("Detected network interface:", hardware)
+                console.log("Detected network interface:", hardware);
 
                 if (hardware.startsWith("wl")) {
-                    type = "wifi"
-                    online = true
+                    type = "wifi";
+                    online = true;
                 } else if (hardware.startsWith("en")) {
-                    type = "ethernet"
-                    online = true
+                    type = "ethernet";
+                    online = true;
                 } else {
-                    type = "none"
-                    online = false
+                    type = "none";
+                    online = false;
                 }
             }
         }
@@ -51,7 +49,7 @@ Singleton {
         repeat: false
 
         onTriggered: {
-            refreshNetworkState()
+            refreshNetworkState();
         }
     }
 
@@ -62,9 +60,9 @@ Singleton {
 
         stdout: SplitParser {
             onRead: data => {
-                console.log("Network event detected:", data)
+                console.log("Network event detected:", data);
 
-                debounceTimer.start()
+                debounceTimer.start();
             }
         }
     }
