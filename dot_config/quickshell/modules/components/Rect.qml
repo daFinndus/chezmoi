@@ -47,6 +47,6 @@ Rectangle {
                 duration: 500
                 easing.type: Easing.OutCubic
             }
-        }      
+        }
     }
 }

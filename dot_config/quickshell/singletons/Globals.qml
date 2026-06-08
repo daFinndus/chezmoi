@@ -8,6 +8,8 @@ Singleton {
 
     readonly property int barHeight: 36
 
+    readonly property int animationDuration: 250
+
     readonly property string configURL: Qt.resolvedUrl("../.")
     readonly property string configPath: configURL.toString().replace("file://", "")
 
@@ -26,7 +28,5 @@ Singleton {
 
     // This is toggled when the dropdown menu is open
     property bool wlogoutOpen: false
-    property bool wlogoutClickable: false
-    property bool wlogoutHovered: false
-    property int wlogoutFadeDelay: 250
+    property bool wlogoutVisible: false
 }

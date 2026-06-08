@@ -34,63 +34,39 @@ PopupWindow {
         }
     ]
 
-    property bool existant: false
-
     color: "transparent"
 
-    visible: Globals.wlogoutOpen
+    visible: implicitHeight > 1 ? true : false
 
-    implicitWidth: grid.width
-    implicitHeight: grid.height
+    implicitWidth: 128
+    implicitHeight: Globals.wlogoutOpen ? column.height : 1
 
     anchor.window: bar
 
-    anchor.rect.x: bar.width - grid.width
+    anchor.rect.x: bar.width - 128
     anchor.rect.y: bar.height + 8
 
-    Timer {
-        id: closeWlogout
-        interval: Globals.wlogoutFadeDelay
-
-        onTriggered: Globals.wlogoutOpen = false
+    Behavior on implicitHeight {
+        NumberAnimation {
+            duration: Globals.animationDuration
+        }
     }
 
-    MouseArea {
-        id: mouseArea
+    Column {
+        id: column
 
-        anchors.fill: parent
+        anchors.top: parent.top
 
-        hoverEnabled: true
+        spacing: 8
 
-        onEntered: {
-            Globals.wlogoutHovered = true;
-        }
+        Repeater {
+            model: window.children
 
-        onExited: {
-            Globals.wlogoutClickable = false;
-            Globals.wlogoutHovered = false;
-            closeWlogout.start();
-        }
+            delegate: Button {
+                required property var modelData
 
-        GridLayout {
-            id: grid
-
-            anchors.centerIn: parent
-
-            columns: 1
-
-            columnSpacing: 0
-            rowSpacing: 8
-
-            Repeater {
-                model: window.children
-
-                delegate: SystemButton {
-                    required property var modelData
-
-                    command: modelData.command
-                    inhalt: modelData.inhalt
-                }
+                command: modelData.command
+                inhalt: modelData.inhalt
             }
         }
     }

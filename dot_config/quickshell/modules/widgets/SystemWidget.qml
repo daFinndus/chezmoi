@@ -30,36 +30,10 @@ Rectangle {
 
         onEntered: {
             Globals.wlogoutOpen = true;
-            Globals.wlogoutClickable = true;
+            Globals.wlogoutVisible = true;
         }
 
-        onExited: {
-            verifyWlogout.start();
-        }
-    }
-
-    // This function will check, if the wlogout menu should be closed
-    function checkWlogout() {
-        if (!Globals.wlogoutHovered) {
-            Globals.wlogoutClickable = false;
-            closeWlogout.start();
-        } else {
-            console.log("WlogoutWidget is hovered, not closing it yet...");
-        }
-    }
-
-    Timer {
-        id: verifyWlogout
-        interval: 150
-
-        onTriggered: checkWlogout()
-    }
-
-    Timer {
-        id: closeWlogout
-        interval: Globals.wlogoutFadeDelay
-
-        onTriggered: Globals.wlogoutOpen = false
+        onClicked: Globals.wlogoutOpen = false
     }
 
     Text {
@@ -72,6 +46,6 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        text: "System"
+        text: Globals.wlogoutOpen ? "Abort" : "System"
     }
 }

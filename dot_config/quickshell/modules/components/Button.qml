@@ -13,9 +13,7 @@ Rectangle {
     property real padding: 16
 
     width: 96 + padding * 2
-    height: 46
-
-    visible: Globals.wlogoutOpen
+    height: Globals.barHeight
 
     color: mouseArea.containsMouse ? Colors.colors.winered : Colors.colors.background
 
