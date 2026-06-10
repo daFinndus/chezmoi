@@ -28,12 +28,7 @@ Rectangle {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onEntered: {
-            Globals.wlogoutOpen = true;
-            Globals.wlogoutVisible = true;
-        }
-
-        onClicked: Globals.wlogoutOpen = false
+        onClicked: Globals.wlogoutOpen = !Globals.wlogoutOpen
     }
 
     Text {

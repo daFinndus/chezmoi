@@ -240,9 +240,16 @@ Rectangle {
     function addApplication(id, status, name, interpret, title, url) {
         console.log("Adding", id, "to the media player.");
 
+        // This might be inefficient as hell, no clue
+        // It works tho!
         if (url.includes("youtube")) {
             title = interpret;
             interpret = "YouTube";
+        } else if (url.includes("x.com")) {
+            interpret = "Twitter";
+        } else if (title.includes("Prime Video")) {
+            title = title.split("|")[0];
+            interpret = "Prime Video";
         }
 
         // Check if it already exists and update if so
