@@ -291,19 +291,19 @@ Rectangle {
             console.log("Now checking", applications.get(i).id, "which has a status of", applications.get(i).status);
 
             if (applications.get(i).status === "Playing") {
-                current = applications.get(i).interpret + ": " + applications.get(i).title;
-
-                if (current === "") {
-                    break;
+                if (applications.get(i).interpret != "") {
+                    current = applications.get(i).interpret + ": " + applications.get(i).title;
+                } else {
+                    current = applications.get(i).title;
                 }
 
                 console.log("Going to return the name", current);
 
                 return;
-            }
-
-            if (applications.get(i).id === "No players found" || applications.count == 0) {
+            } else if (applications.get(i).id === "No players found" || applications.count == 0) {
                 root.opacity = 0;
+            } else {
+                return applications.get(i).status;
             }
         }
 
