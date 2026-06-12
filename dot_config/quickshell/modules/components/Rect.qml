@@ -11,7 +11,7 @@ Rectangle {
 
     property real padding: 16
 
-    width: text.width + padding * 2
+    width: text.width + padding * 3
     height: Globals.barHeight
 
     color: Colors.colors.background
@@ -23,7 +23,7 @@ Rectangle {
 
     Behavior on width {
         NumberAnimation {
-            duration: 250
+            duration: Globals.animationDuration / 2
         }
     }
 
