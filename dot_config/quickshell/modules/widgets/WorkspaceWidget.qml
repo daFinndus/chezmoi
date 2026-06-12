@@ -15,7 +15,7 @@ Rectangle {
     border.color: Colors.colors.gray
     border.width: Globals.borderWidth
 
-    radius: 6
+    radius: Globals.borderRadius
 
     Behavior on width {
         NumberAnimation {
@@ -28,7 +28,7 @@ Rectangle {
 
         leftPadding: parent.padding
         rightPadding: parent.padding
-        
+
         anchors.fill: parent
 
         Repeater {
@@ -48,7 +48,7 @@ Rectangle {
                     anchors.centerIn: parent
 
                     MouseArea {
-                      id:mouseArea
+                        id: mouseArea
                         anchors.fill: parent
 
                         hoverEnabled: true
@@ -62,9 +62,7 @@ Rectangle {
                     font.family: Globals.fontFamily
                     font.pixelSize: Globals.fontSize
 
-                    color: workspace.focused
-                        ? (mouseArea.containsMouse ? Colors.colors.gray : Colors.colors.cyan)
-                        : (mouseArea.containsMouse ? Colors.colors.gray : Colors.colors.lightgray)
+                    color: workspace.focused ? (mouseArea.containsMouse ? Colors.colors.gray : Colors.colors.cyan) : (mouseArea.containsMouse ? Colors.colors.gray : Colors.colors.lightgray)
 
                     Behavior on color {
                         ColorAnimation {
@@ -74,9 +72,6 @@ Rectangle {
                     }
                 }
             }
-
         }
-
     }
-
 }

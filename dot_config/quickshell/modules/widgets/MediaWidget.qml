@@ -18,7 +18,7 @@ Rectangle {
     border.color: Colors.colors.gray
     border.width: Globals.borderWidth
 
-    radius: 6
+    radius: Globals.borderRadius
 
     anchors.centerIn: parent
 

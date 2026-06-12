@@ -20,7 +20,7 @@ Rectangle {
     border.color: mouseArea.containsMouse ? Colors.colors.red : Colors.colors.gray
     border.width: Globals.borderWidth
 
-    radius: 6
+    radius: Globals.borderRadius
 
     Behavior on width {
         NumberAnimation {

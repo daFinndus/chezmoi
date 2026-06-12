@@ -3,10 +3,10 @@ import QtQuick
 import Quickshell
 
 Singleton {
-    readonly property double fontSize: 16
+    readonly property double fontSize: 14
     readonly property string fontFamily: "Minecraft"
 
-    readonly property int barHeight: 36
+    readonly property int barHeight: 32
 
     readonly property int animationDuration: 250
 
@@ -17,6 +17,7 @@ Singleton {
     readonly property string shortTime: "hh:mm AP"
 
     readonly property int borderWidth: 2
+    readonly property int borderRadius: 4
 
     // This is toggled when an inhibitor is active
     property bool inhibited: false

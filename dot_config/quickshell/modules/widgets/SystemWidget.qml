@@ -14,7 +14,7 @@ Rectangle {
     border.color: Colors.colors.red
     border.width: Globals.borderWidth
 
-    radius: 6
+    radius: Globals.borderRadius
 
     Behavior on width {
         NumberAnimation {
