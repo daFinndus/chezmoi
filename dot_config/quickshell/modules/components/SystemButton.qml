@@ -4,6 +4,8 @@ import Quickshell.Io
 
 import qs.singletons
 
+// This component is specifically only for the system buttons
+// e.g. shutdown, lock, restart, etc. under the SystemWidget and WlogoutWidget
 Rectangle {
     id: button
 
@@ -22,17 +24,15 @@ Rectangle {
 
     radius: Globals.borderRadius
 
-    Behavior on color {
-        ColorAnimation {
+    Behavior on width {
+        NumberAnimation {
             duration: 250
         }
     }
 
-    opacity: Globals.wlogoutClickable ? 1 : 0
-
-    Behavior on opacity {
-        NumberAnimation {
-            duration: Globals.wlogoutFadeDelay
+    Behavior on color {
+        ColorAnimation {
+            duration: 250
         }
     }
 
@@ -42,22 +42,19 @@ Rectangle {
         anchors.fill: parent
 
         hoverEnabled: true
-        cursorShape: Globals.wlogoutClickable ? Qt.PointingHandCursor : Qt.ArrowCursor
+        cursorShape: Qt.PointingHandCursor
 
         onClicked: {
-            if (Globals.wlogoutClickable) {
-                run();
-            }
+            Globals.wlogoutOpen = !Globals.wlogoutOpen;
+            runProcess.start();
         }
+    }
 
-        onEntered: {
-            Globals.wlogoutHovered = true;
+    Timer {
+        id: runProcess
 
-            console.log("Globals are:");
-            console.log("wlogoutOpen:", Globals.wlogoutOpen);
-            console.log("wlogoutHovered:", Globals.wlogoutHovered);
-            console.log("wlogoutClickable:", Globals.wlogoutClickable);
-        }
+        interval: Globals.animationDuration
+        onTriggered: process.running = true
     }
 
     Process {

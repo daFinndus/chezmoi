@@ -62,7 +62,7 @@ PopupWindow {
         Repeater {
             model: window.children
 
-            delegate: Button {
+            delegate: SystemButton {
                 required property var modelData
 
                 command: modelData.command
