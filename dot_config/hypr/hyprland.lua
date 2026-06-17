@@ -23,8 +23,8 @@ hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 -- Look and feel
 hl.config({
 	general = {
-		gaps_in = 4,
-		gaps_out = 8,
+		gaps_in = 2,
+		gaps_out = 4,
 
 		border_size = 2,
 

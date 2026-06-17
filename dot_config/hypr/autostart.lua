@@ -14,5 +14,5 @@ hl.on("hyprland.start", function()
 
 	-- This is so quickshell is always started on the main monitor
 	hl.exec_cmd("hyprctl dispatch 'hl.dsp.focus({ workspace = '1' })'")
-	hl.exec_cmd("quickshell")
+	hl.exec_cmd("quickshell -d -c ~/.config/quickshell/Bar")
 end)
