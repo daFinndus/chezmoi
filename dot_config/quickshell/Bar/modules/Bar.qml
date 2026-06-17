@@ -16,7 +16,7 @@ Scope {
         // This is needed so widgets can be focused for the keyboard
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
-        property int margin: 8
+        property int margin: 4
 
         color: "transparent"
 
@@ -27,7 +27,9 @@ Scope {
         implicitWidth: 1920 - margin * 2
 
         WlogoutWidget {}
-        MediaWidget { id: media }
+        MediaWidget {
+            id: media
+        }
 
         RowLayout {
             id: layout
@@ -52,11 +54,6 @@ Scope {
                 spacing: 4
 
                 UpdateWidget {}
-
-                {{- if eq .device "kabuki" }}
-                BatteryWidget {}
-                {{ end -}}
-
                 NetworkWidget {}
                 VolumeWidget {}
                 SystemWidget {}

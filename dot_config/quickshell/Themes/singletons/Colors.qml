@@ -1,0 +1,31 @@
+import QtQuick
+import Quickshell
+import Quickshell.Io
+
+import qs.singletons
+
+pragma Singleton
+
+Singleton {
+    id: root
+
+    readonly property var colors: {
+        "blurground": '#eb1c1c1c',
+        "background": "#1C1C1C",
+        "backerground": "#121212",
+        "white": "#EEEEEE",
+        "lightgray": "#656565",
+        "gray": "#454545",
+        "lightred": "#E87676",
+        "lightgreen": "#71D651",
+        "lightblue": "#46C1DB",
+        "lime": "#7CCC5E",
+        "orange": "#E88B1A",
+        "winered": "#400404",
+        "cyan": "#2B9E99",
+        "darkcyan": "#28a69a",
+        "green": '#63a24c',
+        "yellow": "#CDD433",
+        "red": "#A33333"
+    }
+}
