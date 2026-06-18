@@ -16,7 +16,7 @@ Rectangle {
 
     color: Colors.background
 
-    border.color: Colors.color1
+    border.color: farbe
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius
