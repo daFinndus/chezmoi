@@ -21,6 +21,10 @@ PopupWindow {
             inhalt: "Reboot"
         },
         {
+            command: "systemctl reboot --firmware",
+            inhalt: "Firmware"
+        },
+        {
             command: "systemctl suspend",
             inhalt: "Suspend"
         },
