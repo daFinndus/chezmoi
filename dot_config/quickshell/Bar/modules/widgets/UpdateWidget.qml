@@ -21,19 +21,21 @@ Rect {
         }
     }
 
-    function refreshUpdates() { checkUpdates.running = true }
+    function refreshUpdates() {
+        checkUpdates.running = true;
+    }
 
     function getColor() {
         if (updatesLoaded) {
             if (updateCount == 0) {
-                return Colors.colors.green
+                return Colors.color2;
             } else if (updateCount > 0 && updateCount < 12) {
-                return Colors.colors.yellow
+                return Colors.color6;
             } else {
-                return Colors.colors.red
+                return Colors.color12;
             }
         } else {
-            return Colors.colors.yellow
+            return Colors.color2;
         }
     }
 
@@ -41,14 +43,14 @@ Rect {
         id: checkUpdates
 
         // Sleep is added to let the system settle down
-        command: ["bash", "-c", "(checkupdates; yay -Qu) | wc -l"]
+        command: ["bash", "-c", "(checkupdates 2>/dev/null; yay -Qu 2>/dev/null) | wc -l"]
 
-        stdout: StdioCollector  {
+        stdout: StdioCollector {
             waitForEnd: true
 
             onStreamFinished: {
-                updatesLoaded = true                
-                updateCount = parseInt(this.text)
+                updatesLoaded = true;
+                updateCount = parseInt(this.text);
             }
         }
     }
@@ -68,10 +70,10 @@ Rect {
 
         stdout: StdioCollector {
             waitForEnd: true
-            
+
             onStreamFinished: {
-                console.log("Update script finished, refreshing updates")
-                updateCount = 0
+                console.log("Update script finished, refreshing updates");
+                updateCount = 0;
             }
         }
     }

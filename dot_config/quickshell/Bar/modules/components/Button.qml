@@ -15,9 +15,9 @@ Rectangle {
     width: 96 + padding * 2
     height: Globals.barHeight
 
-    color: mouseArea.containsMouse ? Colors.colors.winered : Colors.colors.background
+    color: mouseArea.containsMouse ? Colors.color2 : Colors.background
 
-    border.color: mouseArea.containsMouse ? Colors.colors.red : Colors.colors.gray
+    border.color: mouseArea.containsMouse ? Colors.color2 : Colors.color1
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius
@@ -63,7 +63,7 @@ Rectangle {
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: mouseArea.containsMouse ? Colors.colors.red : Colors.colors.white
+        color: mouseArea.containsMouse ? Colors.color0 : Colors.color3
 
         x: parent.padding
         y: parent.padding

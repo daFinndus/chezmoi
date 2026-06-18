@@ -69,15 +69,15 @@ Rect {
 
     function getColor() {
         if (percentage >= 80) {
-            return Colors.colors.green;
+            return Colors.color1;
         } else if (percentage >= 50) {
-            return Colors.colors.yellow;
+            return Colors.color2;
         } else if (percentage >= 25) {
-            return Colors.colors.orange;
+            return Colors.color3;
         } else if (percentage >= 5) {
-            return Colors.colors.red;
+            return Colors.color4;
         } else {
-            return Colors.colors.winered;
+            return Colors.color5;
         }
     }
 

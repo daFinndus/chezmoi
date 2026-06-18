@@ -21,9 +21,9 @@ Rect {
 
         onClicked: event => {
             switch (event.button) {
-                case Qt.LeftButton:
-                    startIwctl.running = true
-                    break
+            case Qt.LeftButton:
+                startIwctl.running = true;
+                break;
             }
         }
     }
@@ -36,17 +36,17 @@ Rect {
 
     function getColor() {
         if (Network.online) {
-            return Colors.colors.green
+            return Colors.color1;
         } else {
-            return Colors.colors.red
+            return Colors.color2;
         }
     }
 
     function getText() {
         if (Network.type === "none") {
-            return "No network"
+            return "No network";
         } else {
-            return `Connected via ${Network.type}`
+            return `Connected via ${Network.type}`;
         }
     }
 }

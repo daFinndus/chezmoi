@@ -1,6 +1,6 @@
 import QtQuick
 import Quickshell
-import Quickshell.Services.UPower 
+import Quickshell.Services.UPower
 
 import qs.singletons
 import qs.modules.components
@@ -14,26 +14,26 @@ Rect {
     function getProfile() {
         switch (power) {
         case 0:
-            return "Chillin'"
+            return "Chillin'";
         case 1:
-            return "Balanced"
+            return "Balanced";
         case 2:
-            return "Performance"
+            return "Performance";
         default:
-            return "Unknown"
+            return "Unknown";
         }
     }
 
     function getColor() {
         switch (power) {
         case 0:
-            return Colors.colors.green
+            return Colors.color1;
         case 1:
-            return Colors.colors.orange
+            return Colors.color4;
         case 2:
-            return Colors.colors.red
+            return Colors.color6;
         default:
-            return Colors.colors.gray
+            return Colors.color1;
         }
     }
 
@@ -44,7 +44,7 @@ Rect {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: {
-            PowerProfiles.profile = (power + 1) % 3
+            PowerProfiles.profile = (power + 1) % 3;
         }
     }
 }

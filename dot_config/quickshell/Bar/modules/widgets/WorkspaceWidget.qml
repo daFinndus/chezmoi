@@ -10,9 +10,9 @@ Rectangle {
     width: row.implicitWidth
     height: Globals.barHeight
 
-    color: Colors.colors.background
+    color: Colors.background
 
-    border.color: Colors.colors.gray
+    border.color: Colors.color1
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius
@@ -62,7 +62,7 @@ Rectangle {
                     font.family: Globals.fontFamily
                     font.pixelSize: Globals.fontSize
 
-                    color: workspace.focused ? (mouseArea.containsMouse ? Colors.colors.gray : Colors.colors.cyan) : (mouseArea.containsMouse ? Colors.colors.gray : Colors.colors.lightgray)
+                    color: workspace.focused ? (mouseArea.containsMouse ? Colors.color3 : Colors.color6) : (mouseArea.containsMouse ? Colors.color3 : Colors.color1)
 
                     Behavior on color {
                         ColorAnimation {

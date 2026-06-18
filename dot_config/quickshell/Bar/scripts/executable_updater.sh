@@ -4,7 +4,7 @@
 count=$(checkupdates | wc -l)
 
 # Proceed doing the update itself
-kitty --title updater -e bash -c '
+kitty --title updater -e zsh -c '
 echo "Updating mirrors..."
 sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 

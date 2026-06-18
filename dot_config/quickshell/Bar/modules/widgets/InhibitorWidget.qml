@@ -7,7 +7,7 @@ import qs.singletons
 import qs.modules.components
 
 Rect {
-    farbe: Globals.inhibited ? Colors.colors.green : Colors.colors.red
+    farbe: Globals.inhibited ? Colors.color6 : Colors.color1
     inhalt: Globals.inhibited ? "Inhibitor: Active" : "Inhibitor: Inactive"
 
     MouseArea {
@@ -18,10 +18,9 @@ Rect {
 
         onClicked: {
             if (Globals.inhibited) {
-                Globals.inhibited = false
-
+                Globals.inhibited = false;
             } else {
-                Globals.inhibited = true
+                Globals.inhibited = true;
             }
         }
     }
@@ -34,20 +33,21 @@ Rect {
         readonly property string why: "--why=Quickshell inhibitor"
 
         command: {
-            if (!Globals.inhibited) return ["true"]
+            if (!Globals.inhibited)
+                return ["true"];
 
-            console.log("Inhibitor: Starting inhibitor process...")
-            
-            return ["systemd-inhibit", what, who, why, "sleep", "infinity"]
+            console.log("Inhibitor: Starting inhibitor process...");
+
+            return ["systemd-inhibit", what, who, why, "sleep", "infinity"];
         }
 
         running: Globals.inhibited
 
         onExited: function (exitCode) {
             if (Globals.inhibited && exitCode !== 0) {
-                console.warn("Inhibitor: Inhibitor process crashed with exit code:", exitCode)
+                console.warn("Inhibitor: Inhibitor process crashed with exit code:", exitCode);
 
-                Globals.inhibited = false
+                Globals.inhibited = false;
             }
         }
     }

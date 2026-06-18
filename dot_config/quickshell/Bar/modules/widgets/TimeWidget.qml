@@ -5,6 +5,6 @@ import qs.singletons
 import qs.modules.components
 
 Rect {
-    farbe: Colors.colors.white
+    farbe: Colors.color1
     inhalt: Time.shortTime
 }

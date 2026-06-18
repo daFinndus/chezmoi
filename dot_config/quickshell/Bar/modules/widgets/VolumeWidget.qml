@@ -144,15 +144,15 @@ Rect {
 
     function getColor() {
         if (volume === 0) {
-            return Colors.colors.red;
+            return Colors.color1;
         } else if (volume > 0 && volume <= 15) {
-            return Colors.colors.lightred;
+            return Colors.color2;
         } else if (volume > 15 && volume <= 50) {
-            return Colors.colors.orange;
+            return Colors.color3;
         } else if (volume > 50 && volume <= 80) {
-            return Colors.colors.yellow;
+            return Colors.color4;
         } else {
-            return Colors.colors.green;
+            return Colors.color5;
         }
     }
 

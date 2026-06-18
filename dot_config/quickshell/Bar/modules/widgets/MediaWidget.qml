@@ -13,9 +13,9 @@ Rectangle {
     width: text.width + padding * 2
     height: Globals.barHeight
 
-    color: Colors.colors.background
+    color: Colors.background
 
-    border.color: Colors.colors.gray
+    border.color: Colors.color1
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius
@@ -106,7 +106,8 @@ Rectangle {
         wrapMode: Text.NoWrap
 
         property int index: 0
-        color: "#E87676"
+
+        color: Colors.color1
 
         x: parent.padding
         y: parent.padding
@@ -115,7 +116,7 @@ Rectangle {
 
         text: root.current.length > 0 ? root.current : "No players found"
 
-        property var colors: ["#E87676", "#71D651", "#46C1DB", "#7CCC5E", "#E88B1A", "#2B9E99", "#28a69a", '#63a24c', "#CDD433", "#A33333"]
+        property var colors: [Colors.color1, Colors.color2, Colors.color3, Colors.color4, Colors.color5, Colors.color6]
 
         Behavior on color {
             ColorAnimation {

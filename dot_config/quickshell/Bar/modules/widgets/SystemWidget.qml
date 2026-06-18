@@ -9,9 +9,9 @@ Rectangle {
     width: 126
     height: Globals.barHeight
 
-    color: Colors.colors.red
+    color: Colors.color1
 
-    border.color: Colors.colors.red
+    border.color: Colors.color1
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius
@@ -37,7 +37,7 @@ Rectangle {
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: Colors.colors.winered
+        color: Colors.color0
 
         anchors.centerIn: parent
 

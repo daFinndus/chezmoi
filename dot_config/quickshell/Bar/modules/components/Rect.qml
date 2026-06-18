@@ -14,9 +14,9 @@ Rectangle {
     width: text.width + padding * 3
     height: Globals.barHeight
 
-    color: Colors.colors.background
+    color: Colors.background
 
-    border.color: Colors.colors.gray
+    border.color: Colors.color1
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius
