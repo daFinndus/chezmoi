@@ -2,7 +2,7 @@
 QUICKSHELL=$(pgrep quickshell)
 
 if [ -z $QUICKSHELL ]; then
-  quickshell -d
+  quickshell -d -c "/home/finn/.config/quickshell/Bar"
 else
   quickshell kill
 fi
