@@ -141,6 +141,7 @@ Rectangle {
                 }
 
                 text.color = text.colors[text.index];
+                root.border.color = text.colors[text.index];
             }
         }
     }

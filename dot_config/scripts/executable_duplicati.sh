@@ -97,7 +97,7 @@ get_backup_ids() {
 
 # This will make sure my HDD is mounted, necessary for one backup.
 mount_hdd() {
-  if [[ "$HOSTNAME" == "krabby" ]]; then
+  if [[ "$HOSTNAME" == "bartmoss" ]]; then
     log_step "Going to make sure HDD is mounted."
 
     MOUNTED=$(df -h | grep "/mnt/hdd")
@@ -118,8 +118,8 @@ do_backups() {
   log_step "Going to do backups..."
 
   for ((i = 0; i < ${#IDS[@]}; i++)); do
-    if [[ "${NAMES[i]}" != *"Local"* && "$HOSTNAME" != "krabby" ]]; then
-      log_warn "Skipping backup ${NAMES[i]} since it is not a local backup and we are not on krabby.\n"
+    if [[ "${NAMES[i]}" != *"Local"* && "$HOSTNAME" != "bartmoss" ]]; then
+      log_warn "Skipping backup ${NAMES[i]} since it is not a local backup and we are not on bartmoss.\n"
       continue
     fi
 
