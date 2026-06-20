@@ -7,7 +7,7 @@ import qs.singletons
 Rectangle {
     id: button
 
-    required property string command
+    required property string farbe
     required property string inhalt
 
     property real padding: 16
@@ -15,9 +15,9 @@ Rectangle {
     width: 96 + padding * 2
     height: Globals.barHeight
 
-    color: mouseArea.containsMouse ? Colors.color2 : Colors.background
+    color: mouseArea.containsMouse ? farbe : Colors.background
 
-    border.color: mouseArea.containsMouse ? Colors.color2 : Colors.color1
+    border.color: farbe
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius
@@ -34,36 +34,13 @@ Rectangle {
         }
     }
 
-    MouseArea {
-        id: mouseArea
-
-        anchors.fill: parent
-
-        hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
-
-        onClicked: run()
-    }
-
-    Process {
-        id: process
-
-        command: ["sh", "-c", button.command]
-    }
-
-    function run() {
-        process.startDetached();
-
-        console.log("Started", button.command);
-    }
-
     Text {
         id: text
 
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: mouseArea.containsMouse ? Colors.color0 : Colors.color3
+        color: mouseArea.containsMouse ? Colors.color0 : button.farbe
 
         x: parent.padding
         y: parent.padding

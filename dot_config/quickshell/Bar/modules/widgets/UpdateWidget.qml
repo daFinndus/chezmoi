@@ -5,8 +5,10 @@ import Quickshell.Io
 import qs.singletons
 import qs.modules.components
 
-Rect {
-    farbe: getColor()
+Button {
+    id: root
+
+    farbe: mouseArea.containsMouse ? rect.border.color : getColor()
     inhalt: `${updateCount} Updates`
 
     property bool updatesLoaded: false
@@ -72,8 +74,8 @@ Rect {
             waitForEnd: true
 
             onStreamFinished: {
-                console.log("Update script finished, refreshing updates");
-                updateCount = 0;
+                console.log("Update script finished, setting update count...");
+                root.updateCount = 0;
             }
         }
     }
