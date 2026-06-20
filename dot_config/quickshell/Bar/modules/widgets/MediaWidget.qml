@@ -101,7 +101,7 @@ Rectangle {
         font.pixelSize: Globals.fontSize
 
         // This is to limit the widget width
-        width: Math.min(text.implicitWidth, 456)
+        width: Math.min(text.implicitWidth, 256)
         elide: Text.ElideRight
         wrapMode: Text.NoWrap
 
