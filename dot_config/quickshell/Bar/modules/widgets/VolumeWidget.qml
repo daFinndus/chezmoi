@@ -37,9 +37,9 @@ Rect {
         command: ["bash", "-c", `pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d "%"`]
 
         stdout: StdioCollector {
-            onStreamFinished: data => {
-                volume = parseInt(this.text.trim());
-                console.log("Volume updated:", volume);
+            onStreamFinished: {
+                root.volume = parseInt(this.text.trim());
+                console.log("Volume updated:", root.volume);
             }
         }
     }
@@ -50,9 +50,9 @@ Rect {
         command: ["bash", "-c", `pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}'`]
 
         stdout: StdioCollector {
-            onStreamFinished: data => {
-                muted = this.text.trim() === "yes";
-                console.log("Mute status updated:", muted);
+            onStreamFinished: {
+                root.muted = this.text.trim() === "yes";
+                console.log("Mute status updated:", root.muted);
             }
         }
     }

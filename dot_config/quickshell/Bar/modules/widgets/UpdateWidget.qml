@@ -8,7 +8,7 @@ import qs.modules.components
 Button {
     id: root
 
-    farbe: mouseArea.containsMouse ? rect.border.color : getColor()
+    farbe: getColor()
     inhalt: `${updateCount} Updates`
 
     property bool updatesLoaded: false
