@@ -29,6 +29,13 @@ Singleton {
         }
     }
 
+    Timer {
+        id: fetchDate
+
+        interval: 1000 * 60 * 60
+        onTriggered: date.running = true
+    }
+
     Component.onCompleted: {
         date.running = true;
     }
