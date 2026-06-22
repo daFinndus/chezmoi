@@ -60,3 +60,7 @@
     foreground = "#1c1c1c"
     frame_color = "#eeeeee"
 
+[play_sound]
+    summary = "*"
+    script = $HOME/.config/dunst/audio.sh
+
