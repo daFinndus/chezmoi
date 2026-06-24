@@ -51,3 +51,6 @@ My Saved Places.
 *.run.xml
 *.synctex*
 *.toc
+*.log
+*.vrb
+*.xdv
