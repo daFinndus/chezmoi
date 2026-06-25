@@ -15,7 +15,5 @@ Rect {
 
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-
-        onClicked: Themes.switchTheme()
     }
 }

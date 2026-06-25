@@ -23,19 +23,25 @@ Singleton {
     }
 
     Process {
-        id: applyRules
+        id: reloadHypr
+
+        command: ["hyprctl", "reload"]
+    }
+
+    Process {
+        id: applyHypr
     }
 
     function switchTheme() {
         Globals.statusbarVisible = !Globals.statusbarVisible;
 
         if (!Globals.statusbarVisible) {
-            applyRules.command = ["hyprctl", "reload"];
+            reloadHypr.running = true;
         } else {
-            applyRules.command = ["hyprctl", "eval", "hl.workspace_rule({ workspace = '', no_rounding = true, decorate = false, no_border = true, gaps_in = 0, gaps_out = 0})"];
+            applyHypr.command = ["hyprctl", "eval", "hl.workspace_rule({ workspace = '', no_rounding = true, decorate = false, no_border = true, gaps_in = 0, gaps_out = 0})"];
         }
 
-        applyRules.running = true;
+        applyHypr.running = true;
     }
 
     Process {
@@ -47,10 +53,13 @@ Singleton {
 
         stdout: SplitParser {
             onRead: data => {
+                console.log("Retrieved data: ", data);
+
                 const cmd = data.trim();
 
                 if (cmd === "bar") {
                     switchTheme();
+                    console.log("Changing theme...");
                 }
             }
         }
