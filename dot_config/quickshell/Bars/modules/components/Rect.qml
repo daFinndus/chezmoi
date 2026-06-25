@@ -9,14 +9,14 @@ Rectangle {
     required property string farbe
     required property string inhalt
 
-    property real padding: 16
+    property real padding: 12
 
     width: text.width + padding * 3
-    height: 512
+    height: Globals.barHeight
 
-    color: Colors.colors.background
+    color: Colors.background
 
-    border.color: Colors.colors.gray
+    border.color: farbe
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius

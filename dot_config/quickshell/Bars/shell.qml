@@ -7,5 +7,6 @@ import qs.modules
 import qs.modules.widgets
 
 Scope {
-    Bar {}
+    Taskbar {}
+    Statusbar {}
 }

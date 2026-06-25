@@ -15,5 +15,7 @@ Rect {
 
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
+
+        onClicked: Globals.statusbarVisible = !Globals.statusbarVisible
     }
 }

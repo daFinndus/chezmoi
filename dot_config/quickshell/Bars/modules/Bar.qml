@@ -53,13 +53,7 @@ Scope {
             Row {
                 spacing: 4
 
-                UpdateWidget {}
-
-		{{- if eq .device "kabuki"}}
-		BatteryWidget {}
-		{{ end -}}
-
-                NetworkWidget {}
+                UpdateWidget {}NetworkWidget {}
                 VolumeWidget {}
                 SystemWidget {}
             }

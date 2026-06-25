@@ -3,10 +3,10 @@ import QtQuick
 import Quickshell
 
 Singleton {
-    readonly property double fontSize: 14
+    readonly property double fontSize: 12
     readonly property string fontFamily: "Minecraft"
 
-    readonly property int barHeight: 32
+    readonly property int barHeight: 28
 
     readonly property int animationDuration: 250
 
@@ -16,7 +16,7 @@ Singleton {
     readonly property string fullTime: "d. MMMM 'on a' dddd - hh:mm AP"
     readonly property string shortTime: "hh:mm AP"
 
-    readonly property int borderWidth: 2
+    readonly property int borderWidth: 1
     readonly property int borderRadius: 4
 
     // This is toggled when an inhibitor is active
@@ -30,4 +30,7 @@ Singleton {
     // This is toggled when the dropdown menu is open
     property bool wlogoutOpen: false
     property bool wlogoutVisible: false
+
+    // This is for the statusbar
+    property bool statusbarVisible: true
 }

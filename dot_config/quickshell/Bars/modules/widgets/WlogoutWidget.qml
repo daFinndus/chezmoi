@@ -45,10 +45,10 @@ PopupWindow {
     implicitWidth: 128
     implicitHeight: Globals.wlogoutOpen ? column.height : 1
 
-    anchor.window: bar
+    anchor.window: taskbar
 
-    anchor.rect.x: bar.width - 128
-    anchor.rect.y: bar.height + 8
+    anchor.rect.x: taskbar.width - 128
+    anchor.rect.y: taskbar.height + 8
 
     Behavior on implicitHeight {
         NumberAnimation {

@@ -17,9 +17,9 @@ Rectangle {
     width: 96 + padding * 2
     height: Globals.barHeight
 
-    color: mouseArea.containsMouse ? Colors.color2 : Colors.background
+    color: mouseArea.containsMouse ? Colors.color1 : Colors.background
 
-    border.color: mouseArea.containsMouse ? Colors.color2 : Colors.color1
+    border.color: Colors.color1
     border.width: Globals.borderWidth
 
     radius: Globals.borderRadius
@@ -65,8 +65,6 @@ Rectangle {
 
     function run() {
         process.startDetached();
-
-        console.log("Started", button.command);
     }
 
     Text {
@@ -75,7 +73,7 @@ Rectangle {
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: mouseArea.containsMouse ? Colors.color0 : Colors.color3
+        color: mouseArea.containsMouse ? Colors.color0 : Colors.color1
 
         x: parent.padding
         y: parent.padding
