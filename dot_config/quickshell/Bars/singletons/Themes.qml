@@ -37,4 +37,25 @@ Singleton {
 
         applyRules.running = true;
     }
+
+    Process {
+        id: ipc
+
+        running: true
+
+        command: [`${Globals.configPath}/scripts/ipc.sh`]
+
+        stdout: SplitParser {
+            onRead: data => {
+                const cmd = data.trim();
+
+                if (cmd === "bar") {
+                    switchTheme();
+                }
+            }
+        }
+
+        // This shouldn't exit because of read -p
+        onExited: ipc.running = true
+    }
 }
