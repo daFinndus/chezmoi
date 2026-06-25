@@ -39,9 +39,8 @@ Singleton {
             reloadHypr.running = true;
         } else {
             applyHypr.command = ["hyprctl", "eval", "hl.workspace_rule({ workspace = '', no_rounding = true, decorate = false, no_border = true, gaps_in = 0, gaps_out = 0})"];
+            applyHypr.running = true;
         }
-
-        applyHypr.running = true;
     }
 
     Process {
@@ -59,7 +58,6 @@ Singleton {
 
                 if (cmd === "bar") {
                     switchTheme();
-                    console.log("Changing theme...");
                 }
             }
         }
