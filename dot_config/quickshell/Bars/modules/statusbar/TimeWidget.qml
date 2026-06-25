@@ -4,9 +4,15 @@ import Quickshell
 import qs.singletons
 import qs.modules.components
 
-Rect {
-    farbe: Colors.color1
-    inhalt: mouseArea.containsMouse ? Time.date : Time.shortTime
+Text {
+    font.pixelSize: Globals.fontSize / 1.25
+
+    text: mouseArea.containsMouse ? Time.date : Time.shortTime
+
+    leftPadding: 8
+    rightPadding: 8
+
+    color: "#ffffff"
 
     MouseArea {
         id: mouseArea

@@ -32,5 +32,5 @@ Singleton {
     property bool wlogoutVisible: false
 
     // This is for the statusbar
-    property bool statusbarVisible: true
+    property bool statusbarVisible: false
 }

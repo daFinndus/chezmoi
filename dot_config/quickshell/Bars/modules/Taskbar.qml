@@ -18,6 +18,8 @@ Scope {
 
         property int margin: 2
 
+        visible: !Globals.statusbarVisible
+
         color: "transparent"
 
         anchors.top: true

@@ -29,6 +29,12 @@ Scope {
 
             anchors.fill: parent
 
+            Row {
+                spacing: 8
+
+                TimeWidget {}
+            }
+
             Item {
                 Layout.fillWidth: true
             }
