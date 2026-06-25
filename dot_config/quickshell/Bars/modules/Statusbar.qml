@@ -43,8 +43,15 @@ Scope {
                 spacing: 8
 
                 NetworkWidget {}
-                HardwareWidget {}
+                ProcessorWidget {}
+                GraphicsWidget {}
+                MemoryWidget {}
+                DiskWidget {}
             }
         }
+    }
+
+    Component.onCompleted: {
+        Hardware.updateHardware();
     }
 }

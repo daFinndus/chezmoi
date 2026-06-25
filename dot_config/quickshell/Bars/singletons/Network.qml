@@ -10,6 +10,9 @@ Singleton {
     property string hardware: ""
     property bool online: false
 
+    property string download: "dl: 0 B/s"
+    property string upload: "ul: 0 B/s"
+
     Component.onCompleted: {
         networkCheck.running = true;
     }
@@ -63,6 +66,37 @@ Singleton {
                 console.log("Network event detected:", data);
 
                 debounceTimer.start();
+            }
+        }
+    }
+
+    Process {
+        id: fetchSpeed
+
+        command: [`${Globals.configPath}/scripts/hardware.sh`, "net", root.hardware]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try {
+                    const parsed = JSON.parse(this.text.trim());
+
+                    root.download = "dl: " + parsed.rx;
+                    root.upload = "ul: " + parsed.tx;
+                } catch (e) {
+                    console.error("Net speed parse failed:", this.text.trim());
+                }
+            }
+        }
+    }
+
+    Timer {
+        interval: 3000
+
+        running: true
+        repeat: true
+
+        onTriggered: {
+            if (root.online && root.hardware !== "" && !fetchSpeed.running) {
+                fetchSpeed.running = true;
             }
         }
     }
