@@ -42,7 +42,7 @@ Singleton {
         Globals.statusbarVisible = !Globals.statusbarVisible;
 
         if (!Globals.statusbarVisible) {
-            reloadHypr();
+            root.reloadHypr();
         } else {
             applyHypr.running = true;
         }
