@@ -12,6 +12,6 @@ Scope {
     Statusbar {}
 
     Component.onCompleted: {
-        Themes.reloadHypr.running = true;
+        Themes.reloadHypr();
     }
 }

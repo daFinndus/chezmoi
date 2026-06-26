@@ -34,11 +34,15 @@ Singleton {
         command: ["hyprctl", "eval", "hl.workspace_rule({ workspace = '', no_rounding = true, decorate = false, no_border = true, gaps_in = 0, gaps_out = 0})"]
     }
 
+    function reloadHypr() {
+        reloadHypr.running = true;
+    }
+
     function switchTheme() {
         Globals.statusbarVisible = !Globals.statusbarVisible;
 
         if (!Globals.statusbarVisible) {
-            reloadHypr.running = true;
+            reloadHypr();
         } else {
             applyHypr.running = true;
         }
