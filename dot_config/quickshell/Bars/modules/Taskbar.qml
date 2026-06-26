@@ -5,7 +5,7 @@ import QtQuick.Layouts
 import Quickshell.Wayland
 
 import qs.singletons
-import qs.modules.widgets
+import qs.modules.taskbar
 
 Scope {
     id: root

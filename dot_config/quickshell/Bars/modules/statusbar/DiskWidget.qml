@@ -11,15 +11,22 @@ Rectangle {
 
     color: Colors.color1
 
+    Behavior on width {
+        NumberAnimation {
+            duration: Globals.animationDuration / 2
+        }
+    }
+
     Text {
         id: text
 
         font.pixelSize: Globals.fontSize / 1.25
 
-        leftPadding: 8
-        rightPadding: 8
+        leftPadding: 4
+        rightPadding: 4
 
         anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
         text: "/: " + Hardware.rootDisk + "   " + "/home: " + Hardware.homeDisk
         color: Colors.color0

@@ -37,6 +37,7 @@ Scope {
 
                 WorkspaceWidget {}
                 TimeWidget {}
+                InhibitorWidget {}
                 UpdateWidget {}
             }
 

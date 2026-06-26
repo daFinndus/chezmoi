@@ -12,6 +12,12 @@ Rectangle {
 
     color: Colors.color1
 
+    Behavior on width {
+        NumberAnimation {
+            duration: Globals.animationDuration / 2
+        }
+    }
+
     MouseArea {
         id: mouseArea
 
@@ -28,10 +34,11 @@ Rectangle {
 
         text: mouseArea.containsMouse ? Time.date : Time.shortTime
 
-        leftPadding: 8
-        rightPadding: 8
+        leftPadding: 4
+        rightPadding: 4
 
         anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
         color: Colors.color0
     }

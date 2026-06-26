@@ -5,7 +5,6 @@ import Quickshell
 
 import qs.modules
 import qs.singletons
-import qs.modules.widgets
 
 Scope {
     Taskbar {}

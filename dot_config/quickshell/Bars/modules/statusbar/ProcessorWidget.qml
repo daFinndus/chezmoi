@@ -11,15 +11,22 @@ Rectangle {
 
     color: Colors.color0
 
+    Behavior on width {
+        NumberAnimation {
+            duration: Globals.animationDuration / 2
+        }
+    }
+
     Text {
         id: text
 
         font.pixelSize: Globals.fontSize / 1.25
 
-        leftPadding: 8
-        rightPadding: 8
+        leftPadding: 4
+        rightPadding: 4
 
         anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
         text: "C: " + Hardware.loadCPU + " " + Hardware.tempCPU
         color: Colors.color1

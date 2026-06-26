@@ -5,19 +5,11 @@ import Quickshell.Io
 import qs.singletons
 import qs.modules.components
 
-Rectangle {
+Rect {
     id: root
 
-    width: text.implicitWidth
-    height: statusbar.height
-
-    color: Colors.color1
-
-    Behavior on width {
-        NumberAnimation {
-            duration: Globals.animationDuration / 2
-        }
-    }
+    farbe: getColor()
+    inhalt: getText()
 
     property int volume: 0
     property bool muted: false
@@ -144,34 +136,33 @@ Rectangle {
             onRead: data => {
                 if (data.includes("sink")) {
                     refreshVolume();
+                    media.updatePlayers();
                 }
             }
+        }
+    }
+
+    function getColor() {
+        if (volume === 0) {
+            return Colors.color1;
+        } else if (volume > 0 && volume <= 15) {
+            return Colors.color2;
+        } else if (volume > 15 && volume <= 50) {
+            return Colors.color3;
+        } else if (volume > 50 && volume <= 80) {
+            return Colors.color4;
+        } else {
+            return Colors.color5;
         }
     }
 
     function getText() {
         refreshVolume();
 
-        if (root.volume === 0 || root.muted) {
+        if (volume === 0 || muted) {
             return `Volume muted`;
         } else {
             return `Volume at ${volume}%`;
         }
-    }
-
-    Text {
-        id: text
-
-        font.pixelSize: Globals.fontSize / 1.25
-
-        text: getText()
-
-        leftPadding: 4
-        rightPadding: 4
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        color: Colors.color0
     }
 }

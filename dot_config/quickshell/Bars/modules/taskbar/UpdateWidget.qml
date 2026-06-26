@@ -5,19 +5,11 @@ import Quickshell.Io
 import qs.singletons
 import qs.modules.components
 
-Rectangle {
+Button {
     id: root
 
-    width: text.implicitWidth
-    height: statusbar.height
-
-    color: Colors.color1
-
-    Behavior on width {
-        NumberAnimation {
-            duration: Globals.animationDuration / 2
-        }
-    }
+    farbe: getColor()
+    inhalt: `${updateCount} Updates`
 
     property bool updatesLoaded: false
     property int updateCount: 0
@@ -97,22 +89,6 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: runUpdateScript.running = true
-    }
-
-    Text {
-        id: text
-
-        font.pixelSize: Globals.fontSize / 1.25
-
-        text: `${updateCount} Updates`
-
-        leftPadding: 4
-        rightPadding: 4
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        color: Colors.color0
     }
 
     Component.onCompleted: refreshUpdates()

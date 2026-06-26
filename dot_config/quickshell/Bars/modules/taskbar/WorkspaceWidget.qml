@@ -5,25 +5,31 @@ import Quickshell.Hyprland
 import qs.singletons
 
 Rectangle {
-    id: root
+    property real padding: 8
 
     width: row.implicitWidth
-    height: statusbar.height
+    height: Globals.barHeight
 
     color: Colors.background
 
+    border.color: Colors.color1
+    border.width: Globals.borderWidth
+
+    radius: Globals.borderRadius
+
     Behavior on width {
         NumberAnimation {
-            duration: Globals.animationDuration / 2
+            duration: 250
         }
     }
 
     Row {
         id: row
 
-        anchors.fill: parent
+        leftPadding: parent.padding
+        rightPadding: parent.padding
 
-        leftPadding: 4
+        anchors.fill: parent
 
         Repeater {
             model: Hyprland.workspaces
@@ -31,10 +37,8 @@ Rectangle {
             delegate: Rectangle {
                 property var workspace: modelData
 
-                width: text.implicitWidth + 16
+                width: 32
                 height: Globals.barHeight
-
-                anchors.verticalCenter: parent.verticalCenter
 
                 color: "transparent"
 
@@ -42,9 +46,6 @@ Rectangle {
                     id: text
 
                     anchors.centerIn: parent
-
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
 
                     MouseArea {
                         id: mouseArea
@@ -59,7 +60,7 @@ Rectangle {
                     text: workspace.id
 
                     font.family: Globals.fontFamily
-                    font.pixelSize: Globals.fontSize / 1.25
+                    font.pixelSize: Globals.fontSize
 
                     color: workspace.focused ? (mouseArea.containsMouse ? Colors.color3 : Colors.color6) : (mouseArea.containsMouse ? Colors.color3 : Colors.color1)
 

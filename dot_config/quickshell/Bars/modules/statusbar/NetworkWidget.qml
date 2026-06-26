@@ -11,6 +11,12 @@ Rectangle {
 
     color: Colors.background
 
+    Behavior on width {
+        NumberAnimation {
+            duration: Globals.animationDuration / 2
+        }
+    }
+
     property string speed: Network.download + " " + Network.upload
     property bool toggler: false
 
@@ -19,10 +25,11 @@ Rectangle {
 
         font.pixelSize: Globals.fontSize / 1.25
 
-        leftPadding: 8
-        rightPadding: 8
+        leftPadding: 4
+        rightPadding: 4
 
         anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
         text: Network.online ? toggler ? speed : "up: " + Network.hardware : "down: " + Network.hardware
         color: Network.online ? Colors.color1 : Colors.color6
