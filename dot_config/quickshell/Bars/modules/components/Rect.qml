@@ -4,7 +4,7 @@ import Quickshell.Io
 import qs.singletons
 
 Rectangle {
-    id: rect
+    id: root
 
     required property string farbe
     required property string inhalt
@@ -33,14 +33,14 @@ Rectangle {
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize
 
-        color: rect.farbe
+        color: root.farbe
 
         x: parent.padding
         y: parent.padding
 
         anchors.centerIn: parent
 
-        text: rect.inhalt
+        text: root.inhalt
 
         Behavior on color {
             ColorAnimation {

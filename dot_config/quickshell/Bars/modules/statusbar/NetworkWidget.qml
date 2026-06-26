@@ -4,12 +4,12 @@ import Quickshell
 import qs.singletons
 
 Rectangle {
-    id: rect
+    id: root
 
     width: text.implicitWidth
     height: statusbar.height
 
-    color: Colors.color1
+    color: Colors.background
 
     property string speed: Network.download + " " + Network.upload
     property bool toggler: false
@@ -25,7 +25,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
 
         text: Network.online ? toggler ? speed : "up: " + Network.hardware : "down: " + Network.hardware
-        color: Network.online ? Colors.color6 : Colors.color0
+        color: Network.online ? Colors.color1 : Colors.color6
     }
 
     Timer {

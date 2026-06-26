@@ -4,7 +4,7 @@ import Quickshell
 import qs.singletons
 
 Rectangle {
-    id: rect
+    id: root
 
     width: text.implicitWidth
     height: statusbar.height

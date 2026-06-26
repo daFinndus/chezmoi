@@ -13,6 +13,9 @@ Scope {
     PanelWindow {
         id: statusbar
 
+        // This is needed so widgets can be focused for the keyboard
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+
         property int margin: 4
 
         color: Colors.background
@@ -32,7 +35,9 @@ Scope {
             Row {
                 spacing: 8
 
+                WorkspaceWidget {}
                 TimeWidget {}
+                UpdateWidget {}
             }
 
             Item {
@@ -43,6 +48,7 @@ Scope {
                 spacing: 8
 
                 NetworkWidget {}
+                VolumeWidget {}
                 ProcessorWidget {}
                 GraphicsWidget {}
                 MemoryWidget {}

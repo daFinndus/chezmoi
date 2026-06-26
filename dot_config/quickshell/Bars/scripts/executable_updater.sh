@@ -4,9 +4,9 @@
 count=$(checkupdates | wc -l)
 
 # Proceed doing the update itself
-kitty --title updater -e zsh -c '
+kitty -o window_margin_width=8 --title updater -e zsh -c '
 echo "Updating mirrors..."
-sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist 2>/dev/null
 
 if ! yay -Syu; then
     echo
@@ -20,9 +20,9 @@ fi
 current=$(checkupdates | wc -l)
 
 if [[ "$current" -eq 0 ]]; then
-  notify-send "Updater" "All packages are updated"
+    notify-send "Updater" "All packages are updated"
 elif [[ "$current" -lt "$count" ]]; then
-  notify-send "Updater" "Seems some packages were updated"
+    notify-send "Updater" "Seems some packages were updated"
 else
-  notify-send "Updater" "Something went wrong"
+    notify-send "Updater" "Something went wrong"
 fi

@@ -5,12 +5,21 @@ import qs.singletons
 import qs.modules.components
 
 Rectangle {
-    id: rect
+    id: root
 
     width: text.implicitWidth
     height: statusbar.height
 
     color: Colors.color1
+
+    MouseArea {
+        id: mouseArea
+
+        anchors.fill: parent
+
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+    }
 
     Text {
         id: text
@@ -25,14 +34,5 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
 
         color: Colors.color0
-
-        MouseArea {
-            id: mouseArea
-
-            anchors.fill: parent
-
-            hoverEnabled: true
-            cursorShape: Qt.PointingHandCursor
-        }
     }
 }

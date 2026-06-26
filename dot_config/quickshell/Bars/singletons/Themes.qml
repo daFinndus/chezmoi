@@ -30,6 +30,8 @@ Singleton {
 
     Process {
         id: applyHypr
+
+        command: ["hyprctl", "eval", "hl.workspace_rule({ workspace = '', no_rounding = true, decorate = false, no_border = true, gaps_in = 0, gaps_out = 0})"]
     }
 
     function switchTheme() {
@@ -38,7 +40,6 @@ Singleton {
         if (!Globals.statusbarVisible) {
             reloadHypr.running = true;
         } else {
-            applyHypr.command = ["hyprctl", "eval", "hl.workspace_rule({ workspace = '', no_rounding = true, decorate = false, no_border = true, gaps_in = 0, gaps_out = 0})"];
             applyHypr.running = true;
         }
     }
@@ -57,7 +58,7 @@ Singleton {
                 const cmd = data.trim();
 
                 if (cmd === "bar") {
-                    switchTheme();
+                    root.switchTheme();
                 }
             }
         }
