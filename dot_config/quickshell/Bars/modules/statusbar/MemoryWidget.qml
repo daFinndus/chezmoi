@@ -2,33 +2,12 @@ import QtQuick
 import Quickshell
 
 import qs.singletons
+import qs.modules.components
 
-Rectangle {
+Entry {
     id: root
 
-    width: text.implicitWidth
-    height: statusbar.height
-
-    color: Colors.color0
-
-    Behavior on width {
-        NumberAnimation {
-            duration: Globals.animationDuration / 2
-        }
-    }
-
-    Text {
-        id: text
-
-        font.pixelSize: Globals.fontSize / 1.25
-
-        leftPadding: 4
-        rightPadding: 4
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        text: "R: " + Hardware.loadRAM
-        color: Colors.color1
-    }
+    hintergrund: Colors.color0
+    farbe: Colors.color1
+    inhalt: "R: " + Hardware.loadRAM
 }

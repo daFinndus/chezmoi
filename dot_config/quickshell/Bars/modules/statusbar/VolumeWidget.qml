@@ -5,19 +5,12 @@ import Quickshell.Io
 import qs.singletons
 import qs.modules.components
 
-Rectangle {
+Entry {
     id: root
 
-    width: text.implicitWidth
-    height: statusbar.height
-
-    color: Colors.color1
-
-    Behavior on width {
-        NumberAnimation {
-            duration: Globals.animationDuration / 2
-        }
-    }
+    hintergrund: Colors.color1
+    farbe: Colors.color0
+    inhalt: getText()
 
     property int volume: 0
     property bool muted: false
@@ -157,21 +150,5 @@ Rectangle {
         } else {
             return `Volume at ${volume}%`;
         }
-    }
-
-    Text {
-        id: text
-
-        font.pixelSize: Globals.fontSize / 1.25
-
-        text: getText()
-
-        leftPadding: 4
-        rightPadding: 4
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        color: Colors.color0
     }
 }

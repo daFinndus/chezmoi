@@ -2,33 +2,12 @@ import QtQuick
 import Quickshell
 
 import qs.singletons
+import qs.modules.components
 
-Rectangle {
+Entry {
     id: root
 
-    width: text.implicitWidth
-    height: statusbar.height
-
-    color: Colors.color1
-
-    Behavior on width {
-        NumberAnimation {
-            duration: Globals.animationDuration / 2
-        }
-    }
-
-    Text {
-        id: text
-
-        font.pixelSize: Globals.fontSize / 1.25
-
-        leftPadding: 4
-        rightPadding: 4
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        text: "G: " + Hardware.loadGPU + " " + Hardware.tempGPU
-        color: Colors.color0
-    }
+    hintergrund: Colors.color1
+    farbe: Colors.color0
+    inhalt: "G: " + Hardware.loadGPU + " " + Hardware.tempGPU
 }

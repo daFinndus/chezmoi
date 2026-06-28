@@ -33,4 +33,8 @@ Singleton {
 
     // This is for the statusbar
     property bool statusbarVisible: false
+
+    // This is for the update stuff
+    property bool updatesLoaded: false
+    property int updateCount: 0
 }

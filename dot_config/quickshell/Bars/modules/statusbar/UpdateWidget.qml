@@ -5,41 +5,25 @@ import Quickshell.Io
 import qs.singletons
 import qs.modules.components
 
-Rectangle {
+Entry {
     id: root
 
-    width: text.implicitWidth
-    height: statusbar.height
+    hintergrund: Colors.color1
+    farbe: Colors.color0
+    inhalt: `${Globals.updateCount} Updates`
 
-    color: Colors.color1
-
-    Behavior on width {
-        NumberAnimation {
-            duration: Globals.animationDuration / 2
-        }
-    }
-
-    property bool updatesLoaded: false
-    property int updateCount: 0
-
-    opacity: updateCount > 0 ? 1 : 0
+    opacity: Globals.updateCount > 0 ? 1 : 0
     visible: opacity > 0 ? 1 : 0
-
-    Behavior on opacity {
-        NumberAnimation {
-            duration: 250
-        }
-    }
 
     function refreshUpdates() {
         checkUpdates.running = true;
     }
 
     function getColor() {
-        if (updatesLoaded) {
-            if (updateCount == 0) {
+        if (Globals.updatesLoaded) {
+            if (Globals.updateCount == 0) {
                 return Colors.color2;
-            } else if (updateCount > 0 && updateCount < 12) {
+            } else if (Globals.updateCount > 0 && Globals.updateCount < 12) {
                 return Colors.color6;
             } else {
                 return Colors.color12;
@@ -59,8 +43,8 @@ Rectangle {
             waitForEnd: true
 
             onStreamFinished: {
-                updatesLoaded = true;
-                updateCount = parseInt(this.text);
+                Globals.updatesLoaded = true;
+                Globals.updateCount = parseInt(this.text);
             }
         }
     }
@@ -83,7 +67,7 @@ Rectangle {
 
             onStreamFinished: {
                 console.log("Update script finished, setting update count...");
-                root.updateCount = 0;
+                Globals.updateCount = 0;
             }
         }
     }
@@ -97,22 +81,6 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: runUpdateScript.running = true
-    }
-
-    Text {
-        id: text
-
-        font.pixelSize: Globals.fontSize / 1.25
-
-        text: `${updateCount} Updates`
-
-        leftPadding: 4
-        rightPadding: 4
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        color: Colors.color0
     }
 
     Component.onCompleted: refreshUpdates()

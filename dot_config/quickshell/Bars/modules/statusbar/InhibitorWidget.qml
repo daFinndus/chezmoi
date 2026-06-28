@@ -6,19 +6,12 @@ import Quickshell.Wayland
 import qs.singletons
 import qs.modules.components
 
-Rectangle {
+Entry {
     id: root
 
-    width: text.implicitWidth
-    height: statusbar.height
-
-    color: Colors.background
-
-    Behavior on width {
-        NumberAnimation {
-            duration: Globals.animationDuration / 2
-        }
-    }
+    hintergrund: Colors.background
+    farbe: Globals.inhibited ? Colors.color6 : Colors.color1
+    inhalt: Globals.inhibited ? "Inhibitor: Active" : "Inhibitor: Inactive"
 
     MouseArea {
         anchors.fill: parent
@@ -43,10 +36,9 @@ Rectangle {
         readonly property string why: "--why=Quickshell inhibitor"
 
         command: {
-            if (!Globals.inhibited)
+            if (!Globals.inhibited) {
                 return ["true"];
-
-            console.log("Inhibitor: Starting inhibitor process...");
+            }
 
             return ["systemd-inhibit", what, who, why, "sleep", "infinity"];
         }
@@ -60,21 +52,5 @@ Rectangle {
                 Globals.inhibited = false;
             }
         }
-    }
-
-    Text {
-        id: text
-
-        font.pixelSize: Globals.fontSize / 1.25
-
-        text: Globals.inhibited ? "Inhibitor: Active" : "Inhibitor: Inactive"
-
-        leftPadding: 4
-        rightPadding: 4
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        color: Globals.inhibited ? Colors.color6 : Colors.color1
     }
 }

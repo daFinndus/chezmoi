@@ -9,6 +9,11 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(screenshot))
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd(cleanTerminal))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(toggleStatusbar))
 
+-- Media binds
+hl.bind(mainMod .. " + F6", hl.dsp.exec_cmd("playerctl previous"))
+hl.bind(mainMod .. " + F7", hl.dsp.exec_cmd("playerctl play-pause"))
+hl.bind(mainMod .. " + F8", hl.dsp.exec_cmd("playerctl skip"))
+
 -- OS specific binds
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
@@ -36,9 +41,9 @@ end
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
+{{ if eq .device "kabuki" }}
 -- Laptop binds
 
-{{ if eq .device "kabuki" }}
 -- Execute hyprlock on laptop close
 -- hl.bind()
 -- bind = , switch:on:Lid Switch, exec, hyprlock
@@ -56,7 +61,4 @@ hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"))
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"))
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"))
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"))
-
--- This doesn't work for some reason
--- hl.bind(mainMod .. " + T", hl.dsp.workspace.swap_monitors({ eDP-1, DP-1 }))
 {{ end }}
