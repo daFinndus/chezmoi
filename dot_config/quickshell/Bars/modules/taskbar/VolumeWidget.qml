@@ -9,86 +9,20 @@ Rect {
     id: root
 
     farbe: getColor()
-    inhalt: getText()
-
-    property int volume: 0
-    property bool muted: false
-
-    function refreshVolume() {
-        getVolume.running = true;
-        getMute.running = true;
-    }
-
-    Process {
-        id: startPavucontrol
-
-        command: "pavucontrol"
-    }
-
-    Process {
-        id: toggleDevice
-
-        command: `${Globals.configPath}/scripts/toggle-audio.sh`
-    }
-
-    Process {
-        id: getVolume
-
-        command: ["bash", "-c", `pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d "%"`]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.volume = parseInt(this.text.trim());
-                console.log("Volume updated:", root.volume);
-            }
-        }
-    }
-
-    Process {
-        id: getMute
-
-        command: ["bash", "-c", `pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}'`]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.muted = this.text.trim() === "yes";
-                console.log("Mute status updated:", root.muted);
-            }
-        }
-    }
-
-    Process {
-        id: toggleMute
-
-        command: ["bash", "-c", `pactl set-sink-mute @DEFAULT_SINK@ toggle`]
-    }
-
-    focus: mouseArea.containsMouse
+    inhalt: Volume.getText()
 
     Keys.onPressed: event => {
-        console.log("Key pressed:", event.key);
-
         switch (event.key) {
         case Qt.Key_Up:
-            volumeUp.running = true;
+            Volume.increaseVolume();
             break;
         case Qt.Key_Down:
-            volumeDown.running = true;
+            Volume.decreaseVolume();
             break;
         case Qt.Key_M:
-            toggleMute.running = true;
+            Volume.toggleVolume();
             break;
         }
-    }
-
-    Process {
-        id: volumeUp
-        command: ["pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%"]
-    }
-
-    Process {
-        id: volumeDown
-        command: ["pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%"]
     }
 
     MouseArea {
@@ -106,44 +40,28 @@ Rect {
         onClicked: event => {
             switch (event.button) {
             case Qt.LeftButton:
-                toggleMute.running = true;
+                Volume.toggleVolume();
                 break;
             case Qt.RightButton:
-                startPavucontrol.running = true;
+                Volume.startPavucontrol();
                 break;
             case Qt.MiddleButton:
-                toggleDevice.running = true;
+                Volume.toggleDevice();
                 break;
             }
         }
 
         onWheel: event => {
             if (event.angleDelta.y > 0) {
-                volumeUp.running = true;
+                Volume.increaseVolume();
             } else {
-                volumeDown.running = true;
-            }
-        }
-    }
-
-    Process {
-        id: events
-
-        command: ["pactl", "subscribe"]
-        running: true
-
-        stdout: SplitParser {
-            onRead: data => {
-                if (data.includes("sink")) {
-                    refreshVolume();
-                    media.updatePlayers();
-                }
+                Volume.decreaseVolume();
             }
         }
     }
 
     function getColor() {
-        if (volume === 0) {
+        if (Volume.volume === 0) {
             return Colors.color1;
         } else if (volume > 0 && volume <= 15) {
             return Colors.color2;
@@ -153,16 +71,6 @@ Rect {
             return Colors.color4;
         } else {
             return Colors.color5;
-        }
-    }
-
-    function getText() {
-        refreshVolume();
-
-        if (volume === 0 || muted) {
-            return `Volume muted`;
-        } else {
-            return `Volume at ${volume}%`;
         }
     }
 }

@@ -1,4 +1,5 @@
 pragma Singleton
+
 import QtQuick
 import Quickshell
 
@@ -19,10 +20,6 @@ Singleton {
     readonly property int borderWidth: 1
     readonly property int borderRadius: 4
 
-    // This is toggled when an inhibitor is active
-    property bool inhibited: false
-    property bool wlogout: false
-
     // This is toggled when tray is hovered
     property bool trayHovered: false
     property point trayPosition: Qt.point(0, 0)
@@ -32,9 +29,11 @@ Singleton {
     property bool wlogoutVisible: false
 
     // This is for the statusbar
-    property bool statusbarVisible: false
+    property bool statusbarVisible: true
 
-    // This is for the update stuff
-    property bool updatesLoaded: false
-    property int updateCount: 0
+    function reloadComponents() {
+        Updates.refreshUpdates();
+    }
+
+    Component.onCompleted: reloadComponents()
 }
