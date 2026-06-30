@@ -21,7 +21,7 @@ PopupWindow {
 
     anchor.window: haftung
 
-    anchor.rect.x: 318 // (1920 / 2) - (root.implicitWidth / 2)
+    anchor.rect.x: (1920 / 2) - (root.implicitWidth / 2)
     anchor.rect.y: -158
 
     Behavior on implicitHeight {

@@ -35,7 +35,11 @@ Singleton {
     }
 
     function reloadHypr() {
-        reloadHypr.running = true;
+        if (Globals.statusbarVisible) {
+            applyHypr.running = true;
+        } else {
+            reloadHypr.running = true;
+        }
     }
 
     function switchTheme() {
