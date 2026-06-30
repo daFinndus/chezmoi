@@ -10,7 +10,7 @@ Entry {
     id: root
 
     hintergrund: Colors.background
-    farbe: Inhibitor.inhibited ? Colors.color6 : Colors.color1
+    farbe: Colors.color1
     inhalt: Inhibitor.inhibited ? "Inhibitor: Active" : "Inhibitor: Inactive"
 
     MouseArea {
