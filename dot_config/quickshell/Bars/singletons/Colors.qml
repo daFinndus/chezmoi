@@ -56,6 +56,7 @@ Singleton {
             watchChanges: true
 
             onFileChanged: {
+                Themes.reloadHypr();
                 colorManager.reloadColors();
             }
 
