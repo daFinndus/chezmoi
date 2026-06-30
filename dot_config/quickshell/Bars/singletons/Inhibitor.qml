@@ -30,8 +30,6 @@ Singleton {
             console.log("Inhibitor process exited!");
 
             if (Globals.inhibited && exitCode !== 0) {
-                console.warn("Inhibitor: Inhibitor process crashed with exit code:", exitCode);
-
                 Globals.inhibited = false;
             }
         }

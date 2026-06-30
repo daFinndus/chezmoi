@@ -21,8 +21,11 @@ current=$(checkupdates | wc -l)
 
 if [[ "$current" -eq 0 ]]; then
     notify-send "Updater" "All packages are updated"
+    exit 0
 elif [[ "$current" -lt "$count" ]]; then
     notify-send "Updater" "Seems some packages were updated"
+    exit 1
 else
     notify-send "Updater" "Something went wrong"
+    exit 1
 fi

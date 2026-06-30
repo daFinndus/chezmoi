@@ -38,11 +38,11 @@ Singleton {
 
         command: `${Globals.configPath}/scripts/updater.sh`
 
-        stdout: StdioCollector {
-            waitForEnd: true
-
-            onStreamFinished: {
+        onExited: exitCode => {
+            if (exitCode === 0) {
                 root.updateCount = 0;
+            } else {
+                root.refreshUpdates();
             }
         }
     }
