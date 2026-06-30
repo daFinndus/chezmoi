@@ -149,6 +149,9 @@ alias reboot='sudo reboot'
 
 alias vim='nvim'
 
+# This is for environment variables
+[[ -f ~/.config/shell/environment.sh ]] && source ~/.config/shell/environment.sh
+
 # This is for p10k
 source ~/.powerlevel10k/powerlevel10k.zsh-theme
 

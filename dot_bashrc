@@ -41,3 +41,6 @@ alias reboot='sudo reboot'
 alias ssh='kitten ssh'
 
 alias vim='nvim'
+
+# This is for environment variables
+[[ -f ~/.config/shell/environment.sh ]] && source ~/.config/shell/environment.sh
