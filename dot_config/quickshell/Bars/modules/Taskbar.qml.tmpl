@@ -57,6 +57,9 @@ Scope {
                 spacing: 4
 
                 UpdateWidget {}
+                {{- if eq .device "kabuki" }}
+                BatteryWidget {}
+                {{ end -}}
                 NetworkWidget {}
                 VolumeWidget {}
                 SystemWidget {}

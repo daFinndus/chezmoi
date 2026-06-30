@@ -13,11 +13,11 @@
     separator_height = 2
 
     frame_width = 2
-    frame_color = "#454545"
+    frame_color = "{color1}"
     corner_radius = 8
 
-    background = "#1c1c1c"
-    foreground = "#eeeeee"
+    background = "{background}"
+    foreground = "{color1}"
     separator_color = frame
     transparency = 10
 
@@ -44,23 +44,22 @@
 
 [urgency_low]
     timeout = 3
-    background = "#1c1c1c"
-    foreground = "#9d8888"
-    frame_color = "#454545"
+    background = "{background}"
+    foreground = "{color3}"
+    frame_color = "{color3}"
 
 [urgency_normal]
     timeout = 6
-    background = "#1c1c1c"
-    foreground = "#eeeeee"
-    frame_color = "#5f7a8c"
+    background = "{background}"
+    foreground = "{color6}"
+    frame_color = "{color6}"
 
 [urgency_critical]
     timeout = 0
-    background = "#865054"
-    foreground = "#1c1c1c"
-    frame_color = "#eeeeee"
+    background = "{background}"
+    foreground = "{color9}"
+    frame_color = "{color9}"
 
 [play_sound]
     summary = "*"
     script = $HOME/.config/dunst/audio.sh
-

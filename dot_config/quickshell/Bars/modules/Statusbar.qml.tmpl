@@ -40,6 +40,9 @@ Scope {
                 InhibitorWidget {}
                 PowerWidget {}
                 SystemWidget {}
+                {{- if eq .device "kabuki" }}
+                BatteryWidget {}
+                {{ end -}}
                 UpdateWidget {}
             }
 
