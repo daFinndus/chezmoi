@@ -7,9 +7,7 @@ import qs.modules.components
 Entry {
     id: root
 
-    width: 86
-
     hintergrund: Colors.color1
     farbe: Colors.color0
-    inhalt: "G: " + Hardware.loadGPU + " " + Hardware.tempGPU
+    inhalt: "/: " + Hardware.rootDisk
 }

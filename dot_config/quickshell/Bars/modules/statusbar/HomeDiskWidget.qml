@@ -7,9 +7,7 @@ import qs.modules.components
 Entry {
     id: root
 
-    width: 86
-
     hintergrund: Colors.background
     farbe: Colors.color1
-    inhalt: "C: " + Hardware.loadCPU + " " + Hardware.tempCPU
+    inhalt: "/home: " + Hardware.homeDisk
 }

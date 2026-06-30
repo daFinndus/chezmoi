@@ -14,12 +14,23 @@ Singleton {
     property string download: "dl: 0 B/s"
     property string upload: "ul: 0 B/s"
 
-    Component.onCompleted: {
-        networkCheck.running = true;
+    property string speed: Network.download + " " + Network.upload
+    property bool toggler: false
+
+    function getText() {
+        if (root.type === "none") {
+            return "No network";
+        } else {
+            return `Connected via ${root.type}`;
+        }
     }
 
     function refreshNetworkState() {
         networkCheck.running = true;
+    }
+
+    function startIwctl() {
+        startIwctl.running = true;
     }
 
     Process {
@@ -44,16 +55,6 @@ Singleton {
                     online = false;
                 }
             }
-        }
-    }
-
-    Timer {
-        id: debounceTimer
-        interval: 800
-        repeat: false
-
-        onTriggered: {
-            refreshNetworkState();
         }
     }
 
@@ -89,6 +90,22 @@ Singleton {
         }
     }
 
+    Process {
+        id: startIwctl
+
+        command: ["kitty", "--title", "iwctl", "-e", "iwctl"]
+    }
+
+    Timer {
+        id: debounceTimer
+        interval: 800
+        repeat: false
+
+        onTriggered: {
+            refreshNetworkState();
+        }
+    }
+
     Timer {
         interval: 3000
 
@@ -100,5 +117,14 @@ Singleton {
                 fetchSpeed.running = true;
             }
         }
+    }
+
+    Timer {
+        interval: 6000
+
+        running: true
+        repeat: true
+
+        onTriggered: toggler = !toggler
     }
 }

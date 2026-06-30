@@ -5,7 +5,8 @@ import Quickshell.Io
 import qs.singletons
 
 Rectangle {
-    // This is set based on the dropdown menu
+    id: root
+
     width: 126
     height: Globals.barHeight
 
@@ -28,7 +29,7 @@ Rectangle {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: Globals.wlogoutOpen = !Globals.wlogoutOpen
+        onClicked: System.wlogoutOpen = !System.wlogoutOpen
     }
 
     Text {
@@ -41,6 +42,6 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        text: Globals.wlogoutOpen ? "Abort" : "System"
+        text: System.wlogoutOpen ? "Abort" : "System"
     }
 }

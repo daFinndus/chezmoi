@@ -63,11 +63,11 @@ Rect {
     function getColor() {
         if (Volume.volume === 0) {
             return Colors.color1;
-        } else if (volume > 0 && volume <= 15) {
+        } else if (Volume.volume > 0 && Volume.volume <= 15) {
             return Colors.color2;
-        } else if (volume > 15 && volume <= 50) {
+        } else if (Volume.volume > 15 && Volume.volume <= 50) {
             return Colors.color3;
-        } else if (volume > 50 && volume <= 80) {
+        } else if (Volume.volume > 50 && Volume.volume <= 80) {
             return Colors.color4;
         } else {
             return Colors.color5;

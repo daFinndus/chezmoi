@@ -9,17 +9,18 @@ Entry {
 
     hintergrund: Colors.background
     farbe: Network.online ? Colors.color1 : Colors.color6
-    inhalt: Network.online ? toggler ? speed : "up: " + Network.hardware : "down: " + Network.hardware
+    inhalt: Network.online ? Network.toggler ? Network.speed : "up: " + Network.hardware : "down: " + Network.hardware
 
-    property string speed: Network.download + " " + Network.upload
-    property bool toggler: false
+    MouseArea {
+        id: mouseArea
 
-    Timer {
-        interval: 6000
+        anchors.fill: parent
 
-        running: true
-        repeat: true
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
 
-        onTriggered: toggler = !toggler
+        acceptedButtons: Qt.LeftButton
+
+        onClicked: Network.startIwctl()
     }
 }

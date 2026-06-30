@@ -16,13 +16,13 @@ PopupWindow {
 
     visible: implicitHeight > 1 ? true : false
 
-    implicitWidth: 128
+    implicitWidth: column.width
     implicitHeight: System.wlogoutOpen ? column.height : 1
 
     anchor.window: haftung
 
-    anchor.rect.x: haftung.implicitWidth - root.implicitWidth
-    anchor.rect.y: haftung.implicitHeight + 8
+    anchor.rect.x: 318 // (1920 / 2) - (root.implicitWidth / 2)
+    anchor.rect.y: -158
 
     Behavior on implicitHeight {
         NumberAnimation {
@@ -32,13 +32,15 @@ PopupWindow {
 
     Column {
         id: column
-        spacing: 8
+        spacing: 4
 
         Repeater {
             model: System.systemFunctions
 
-            delegate: SystemButton {
+            delegate: SystemEntry {
                 required property var modelData
+
+                width: 60
 
                 command: modelData.command
                 inhalt: modelData.inhalt

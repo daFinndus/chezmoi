@@ -1,6 +1,5 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
 import QtQuick.Layouts
 import Quickshell.Wayland
 
@@ -23,12 +22,14 @@ Scope {
         color: "transparent"
 
         anchors.top: true
-        margins.top: margin
 
-        implicitHeight: Globals.barHeight
         implicitWidth: 1920 - margin * 2
+        implicitHeight: Globals.barHeight
 
-        WlogoutWidget {}
+        WlogoutWidget {
+            haftung: taskbar
+        }
+
         MediaWidget {
             id: media
         }

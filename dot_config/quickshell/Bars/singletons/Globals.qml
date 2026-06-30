@@ -20,19 +20,16 @@ Singleton {
     readonly property int borderWidth: 1
     readonly property int borderRadius: 4
 
-    // This is toggled when tray is hovered
-    property bool trayHovered: false
-    property point trayPosition: Qt.point(0, 0)
-
-    // This is toggled when the dropdown menu is open
-    property bool wlogoutOpen: false
-    property bool wlogoutVisible: false
-
     // This is for the statusbar
     property bool statusbarVisible: true
 
     function reloadComponents() {
+        Themes.reloadHypr();
         Updates.refreshUpdates();
+        Network.refreshNetworkState();
+        Battery.refreshBattery();
+        Media.updatePlayers();
+        Hardware.updateHardware();
     }
 
     Component.onCompleted: reloadComponents()

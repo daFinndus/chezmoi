@@ -9,8 +9,4 @@ import qs.singletons
 Scope {
     Taskbar {}
     Statusbar {}
-
-    Component.onCompleted: {
-        Themes.reloadHypr();
-    }
 }

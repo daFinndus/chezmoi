@@ -1,6 +1,5 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
 import QtQuick.Layouts
 import Quickshell.Wayland
 
@@ -16,16 +15,18 @@ Scope {
         // This is needed so widgets can be focused for the keyboard
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
-        property int margin: 4
-
         color: Colors.background
 
         anchors.bottom: true
 
         visible: Globals.statusbarVisible
 
-        implicitHeight: Globals.barHeight / 1.25
         implicitWidth: 1920
+        implicitHeight: Globals.barHeight / 1.25
+
+        WlogoutWidget {
+            haftung: statusbar
+        }
 
         RowLayout {
             id: layout
@@ -33,11 +34,12 @@ Scope {
             anchors.fill: parent
 
             Row {
-                spacing: 8
 
                 WorkspaceWidget {}
                 TimeWidget {}
                 InhibitorWidget {}
+                PowerWidget {}
+                SystemWidget {}
                 UpdateWidget {}
             }
 
@@ -46,19 +48,15 @@ Scope {
             }
 
             Row {
-                spacing: 8
 
                 NetworkWidget {}
                 VolumeWidget {}
                 ProcessorWidget {}
                 GraphicsWidget {}
                 MemoryWidget {}
-                DiskWidget {}
+                RootDiskWidget {}
+                HomeDiskWidget {}
             }
         }
-    }
-
-    Component.onCompleted: {
-        Hardware.updateHardware();
     }
 }

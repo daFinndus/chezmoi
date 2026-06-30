@@ -7,7 +7,7 @@ import qs.modules.components
 
 Rect {
     farbe: getColor()
-    inhalt: getText()
+    inhalt: Network.getText()
 
     MouseArea {
         id: mouseArea
@@ -19,19 +19,7 @@ Rect {
 
         acceptedButtons: Qt.LeftButton
 
-        onClicked: event => {
-            switch (event.button) {
-            case Qt.LeftButton:
-                startIwctl.running = true;
-                break;
-            }
-        }
-    }
-
-    Process {
-        id: startIwctl
-
-        command: ["kitty", "--title", "iwctl", "-e", "iwctl"]
+        onClicked: Network.startIwctl()
     }
 
     function getColor() {
@@ -39,14 +27,6 @@ Rect {
             return Colors.color1;
         } else {
             return Colors.color2;
-        }
-    }
-
-    function getText() {
-        if (Network.type === "none") {
-            return "No network";
-        } else {
-            return `Connected via ${Network.type}`;
         }
     }
 }
