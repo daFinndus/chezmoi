@@ -143,7 +143,12 @@ do_backups() {
   log_success "Successfully did all backups!"
 }
 
-prompt_password
+if [[ -z "$DUPLICATI_PASSWORD" ]]; then
+  prompt_password
+else
+  PASSWORD="$DUPLICATI_PASSWORD"
+fi
+
 test_target_reachability
 curl_auth_token
 get_backup_ids

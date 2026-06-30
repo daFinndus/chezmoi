@@ -141,7 +141,12 @@ delete_sid() {
   log_success "SID is now invalid."
 }
 
-prompt_password
+if [[ -z "$PIHOLE_PASSWORD" ]]; then
+  prompt_password
+else
+  PASSWORD="$PIHOLE_PASSWORD"
+fi
+
 get_time
 curl_auth_token
 check_status
