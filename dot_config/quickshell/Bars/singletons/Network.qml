@@ -120,11 +120,11 @@ Singleton {
     }
 
     Timer {
-        interval: 6000
+        interval: root.toggler ? 10000 : 5000
 
         running: true
         repeat: true
 
-        onTriggered: toggler = !toggler
+        onTriggered: root.toggler = !root.toggler
     }
 }
