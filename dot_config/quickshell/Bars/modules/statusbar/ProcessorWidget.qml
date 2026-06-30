@@ -7,7 +7,7 @@ import qs.modules.components
 Entry {
     id: root
 
-    width: 86
+    width: 80
 
     hintergrund: Colors.background
     farbe: Colors.color1
