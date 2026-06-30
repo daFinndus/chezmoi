@@ -4,14 +4,13 @@ import Quickshell.Widgets
 import Quickshell.Services.SystemTray
 
 import qs.singletons
+import qs.modules.components
 
 Rectangle {
-    id: tray
+    id: root
 
-    property real padding: 16
-
-    width: row.width + padding * 2
-    height: Globals.barHeight
+    width: row.width
+    height: Globals.barHeight / 1.25
 
     color: "transparent"
 
@@ -19,14 +18,15 @@ Rectangle {
         id: row
 
         anchors.centerIn: parent
+        rightPadding: 8
 
-        spacing: 12
+        spacing: 6
 
         Repeater {
             model: SystemTray.items
 
             delegate: Item {
-                width: 16
+                width: 12
                 height: Globals.barHeight
 
                 MouseArea {
