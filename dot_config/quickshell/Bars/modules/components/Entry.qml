@@ -11,7 +11,7 @@ Rectangle {
     required property string inhalt
 
     width: text.implicitWidth + 8
-    height: statusbar.height
+    height: Globals.barHeight / 1.25
 
     color: root.hintergrund
 
