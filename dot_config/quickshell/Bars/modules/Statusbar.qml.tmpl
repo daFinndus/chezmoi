@@ -42,7 +42,7 @@ Scope {
                 SystemWidget {}
                 {{- if eq .device "kabuki" }}
                 BatteryWidget {}
-                {{ end -}}
+                {{ end }}
                 UpdateWidget {}
             }
 
@@ -51,7 +51,7 @@ Scope {
             }
 
             Row {
-
+                TrayWidget {}
                 NetworkWidget {}
                 VolumeWidget {}
                 ProcessorWidget {}
