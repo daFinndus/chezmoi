@@ -9,5 +9,5 @@ Entry {
 
     hintergrund: Colors.color1
     farbe: Colors.color0
-    inhalt: "/: " + Hardware.rootDisk
+    inhalt: "/: " + Hardware.rootDisk + "%"
 }

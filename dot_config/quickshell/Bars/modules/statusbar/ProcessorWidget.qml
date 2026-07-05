@@ -11,5 +11,5 @@ Entry {
 
     hintergrund: Colors.background
     farbe: Colors.color1
-    inhalt: "C: " + Hardware.loadCPU + " " + Hardware.tempCPU
+    inhalt: "C: " + Hardware.loadCPU + "%" + " " + Hardware.tempCPU + "°C"
 }

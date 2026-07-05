@@ -1,10 +1,16 @@
 #!/bin/bash
 
+HOSTNAME=$(hostname)
+
 # This will fetch CPU load and temperature
 fetch_cpu() {
+    local delay=0.2
+
     # Two /proc/stat reads for accurate delta-based load
     local s1=$(awk '/^cpu / {print $2,$3,$4,$5,$6,$7,$8}' /proc/stat)
-    sleep 0.2
+
+    sleep $delay
+
     local s2=$(awk '/^cpu / {print $2,$3,$4,$5,$6,$7,$8}' /proc/stat)
 
     local load=$(awk -v a="$s1" -v b="$s2" 'BEGIN {
@@ -14,8 +20,7 @@ fetch_cpu() {
         print int((1 - idle/total) * 100)
     }')
 
-    local temp=$(sensors 2>/dev/null |
-        awk '/Package id 0:|Tctl:|CPU Temp:/ {gsub(/[+°C]/,"",$2); print int($2); exit}')
+    local temp=$(sensors 2>/dev/null | grep "Package id 0\|Tctl" | awk '{gsub(/[+°C]/,"",$4); print int($4); exit}')
 
     printf '{"load":%s,"temp":%s}\n' "${load:-0}" "${temp:-0}"
 }
@@ -26,18 +31,24 @@ fetch_ram() {
     local total=$(echo $stats | cut -d' ' -f1)
     local used=$(echo $stats | cut -d' ' -f2)
     local load=$(awk "BEGIN {printf \"%.0f\", ($used/$total)*100}")
+
     printf '{"load":%s}\n' "${load:-0}"
 }
 
 # This will display AMD GPU load and temperature
 fetch_gpu() {
-    if [[ -f /sys/class/drm/card0/device/gpu_busy_percent ]]; then
-        local load=$(cat /sys/class/drm/card1/device/gpu_busy_percent)
-        local temp=$(cat /sys/class/hwmon/hwmon2/temp1_input 2>/dev/null |
-            head -1 | awk '{print int($1/1000)}')
-        printf '{"load":%s,"temp":%s}\n' "${load:-0}" "${temp:-0}"
-    else
-        printf '{"load":0,"temp":0}\n'
+    if [[ "$HOSTNAME" == "bartmoss" ]]; then
+        if [[ -f /sys/class/drm/card0/device/gpu_busy_percent ]]; then
+            local load=$(cat /sys/class/drm/card1/device/gpu_busy_percent)
+            local temp=$(cat /sys/class/hwmon/hwmon2/temp1_input 2>/dev/null | head -1 | awk '{print int($1/1000)}')
+            printf '{"load":%s,"temp":%s}\n' "${load:-0}" "${temp:-0}"
+        else
+            printf '{"load":0,"temp":0}\n'
+        fi
+    elif [[ "$HOSTNAME" == "kabuki" ]]; then
+        local load=$(sudo intel_gpu_top -J -s 100 -n 2 -o - | grep busy | head -n 1 | awk '{print int($2)}')
+
+        printf '{"load":%s}\n' "${load:-0}"
     fi
 }
 

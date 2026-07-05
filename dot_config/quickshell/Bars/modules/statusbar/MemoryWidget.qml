@@ -11,5 +11,5 @@ Entry {
 
     hintergrund: Colors.color0
     farbe: Colors.color1
-    inhalt: "R: " + Hardware.loadRAM
+    inhalt: "R: " + Hardware.loadRAM + "%"
 }

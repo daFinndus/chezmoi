@@ -1,0 +1,20 @@
+import QtQuick
+import Quickshell
+
+import qs.singletons
+import qs.modules.components
+
+Entry {
+    id: root
+
+    width: 80
+
+    hintergrund: Colors.color1
+    farbe: Colors.color0
+{{- if eq .device "bartmoss" }}
+    inhalt: "G: " + Hardware.loadGPU + "%" + " " + Hardware.tempGPU + "°C"
+{{ end }}
+{{- if eq .device "kabuki" }}
+    inhalt: "G: " + Hardware.loadGPU + "%"
+{{ end -}}
+}
