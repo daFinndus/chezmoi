@@ -21,18 +21,15 @@ Scope {
 
         color: "transparent"
 
-        anchors.top: true
+        anchors {
+          top: true
+        }
 
         implicitWidth: 1920 - margin * 2
         implicitHeight: Globals.barHeight
 
-        WlogoutWidget {
-            haftung: taskbar
-        }
-
-        MediaWidget {
-            id: media
-        }
+        WlogoutWidget { systemWidget: systemWidget }
+        MediaWidget { id: media }
 
         RowLayout {
             id: layout
@@ -62,7 +59,7 @@ Scope {
                 {{ end -}}
                 NetworkWidget {}
                 VolumeWidget {}
-                SystemWidget {}
+                SystemWidget { id: systemWidget }
             }
         }
     }

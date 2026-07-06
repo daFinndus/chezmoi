@@ -17,16 +17,18 @@ Scope {
 
         color: Colors.background
 
-        anchors.bottom: true
+        anchors {
+          bottom: true
+          left: true
+          right: true
+        }
 
         visible: Globals.statusbarVisible
 
         implicitWidth: 1920
         implicitHeight: Globals.barHeight / 1.25
 
-        WlogoutWidget {
-            haftung: statusbar
-        }
+        WlogoutWidget { systemWidget: systemWidget }
 
         RowLayout {
             id: layout
@@ -34,12 +36,13 @@ Scope {
             anchors.fill: parent
 
             Row {
+                leftPadding: 4
+                rightPadding: 4
 
                 WorkspaceWidget {}
                 TimeWidget {}
                 InhibitorWidget {}
                 PowerWidget {}
-                SystemWidget {}
                 {{- if eq .device "kabuki" }}
                 BatteryWidget {}
                 {{ end }}
@@ -51,7 +54,11 @@ Scope {
             }
 
             Row {
+                leftPadding: 4
+                rightPadding: 4
+
                 TrayWidget {}
+                VirtualWidget {}
                 NetworkWidget {}
                 VolumeWidget {}
                 ProcessorWidget {}
@@ -59,6 +66,7 @@ Scope {
                 MemoryWidget {}
                 RootDiskWidget {}
                 HomeDiskWidget {}
+                SystemWidget { id: systemWidget }
             }
         }
     }
