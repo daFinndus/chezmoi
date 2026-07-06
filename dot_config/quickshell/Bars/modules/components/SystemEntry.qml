@@ -10,10 +10,10 @@ Rectangle {
     required property string command
     required property string inhalt
 
-    width: text.implicitWidth + 8
+    width: 60
     height: Globals.barHeight / 1.25
 
-    color: mouseArea.containsMouse ? Colors.color1 : Colors.background
+    color: mouseArea.containsMouse ? Colors.background : Colors.color1
 
     Behavior on width {
         NumberAnimation {
@@ -64,7 +64,7 @@ Rectangle {
         font.family: Globals.fontFamily
         font.pixelSize: Globals.fontSize / 1.25
 
-        color: mouseArea.containsMouse ? Colors.color0 : Colors.color1
+        color: mouseArea.containsMouse ? Colors.color1 : Colors.color0
 
         anchors.centerIn: parent
 

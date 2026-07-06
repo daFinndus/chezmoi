@@ -10,29 +10,33 @@ import qs.modules.components
 PopupWindow {
     id: root
 
-    required property PanelWindow haftung
+    required property Item systemWidget
 
     color: "transparent"
 
-    visible: implicitHeight > 1 ? true : false
+    visible: implicitHeight > 1
 
     implicitWidth: column.width
     implicitHeight: System.wlogoutOpen ? column.height : 1
 
-    anchor.window: haftung
+    anchor.margins {
+        right: 0
+        top: 0
+        left: 0
+        bottom: 0
+    }
 
-    anchor.rect.x: (1920 / 2) - (root.implicitWidth / 2)
-    anchor.rect.y: -158
+    anchor.item: systemWidget
+    anchor.gravity: Edges.Top | Edges.Right
 
     Behavior on implicitHeight {
         NumberAnimation {
-            duration: Globals.animationDuration
+            duration: Globals.animationDuration / 2
         }
     }
 
     Column {
         id: column
-        spacing: 4
 
         Repeater {
             model: System.systemFunctions

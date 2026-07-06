@@ -1,55 +1,47 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-RED="\033[38;2;220;50;50m"
-GREEN="\033[38;2;50;200;50m"
-CYAN="\033[38;2;0;180;180m"
-YELLOW="\033[38;2;220;180;0m"
-BLUE="\033[38;2;50;120;220m"
-RESET="\033[0m"
+fetch_vpn() {
+    local -a connections=()
+    declare -A seen
 
-# Check if wireguard is active
-is_wireguard_active() {
-    ip link show kabuki 2>/dev/null | grep -q "UP"
-}
+    add_connection() {
+        local key=$1
+        local json=$2
+        [[ -z "${seen[$key]}" ]] || return
+        seen[$key]=1
+        connections+=("$json")
+    }
 
-# Check if openvpn is active
-is_openvpn_active() {
-    pgrep -x openvpn >/dev/null
-}
+    # WireGuard — interface-centric
+    while read -r iface; do
+        add_connection "wg:$iface" \
+            "{\"type\":\"WireGuard: $profile\"}"
+    done < <(ip link show type wireguard 2>/dev/null |
+        awk '/^[0-9]+:/ && /UP/ {gsub(/:/,"",$2); print $2}')
 
-# If active, check which VPN is used
-get_openvpn_vpn() {
-    local cmdline
-    cmdline=$(ps -eo args | grep openvpn | grep -v grep)
+    # OpenVPN — process-centric
+    while read -r cfg; do
+        local profile
+        profile=$(basename "$cfg" .ovpn)
+        add_connection "ovpn:$profile" \
+            "{\"type\":\"OpenVPN: $profile\"}"
+    done < <(ps -eo args | awk '/openvpn/ && !/awk/ {print $NF}' | sort -u)
 
-    if echo "$cmdline" | grep -q "academy"; then
-        echo "Connected to HTB Academy"
-    elif echo "$cmdline" | grep -q "labs"; then
-        echo "Connected to HTB Labs"
+    # Tailscale
+    while read -r iface; do
+        add_connection "ts:$iface" \
+            "{\"type\":\"Tailscale: $profile\"}"
+    done < <(ip link show type tun 2>/dev/null |
+        awk '/^[0-9]+:/ && /UP/ {gsub(/:/,"",$2); print $2}' |
+        grep '^tailscale')
+
+    if [[ ${#connections[@]} -gt 0 ]]; then
+        local arr
+        arr=$(printf '%s,' "${connections[@]}")
+        printf '{"active":true,"connections":[%s]}\n' "${arr%,}"
     else
-        echo "Connected via OpenVPN"
+        printf '{"active":false,"connections":[]}\n'
     fi
 }
 
-# This will be used by waybar
-status() {
-    local active_vpns=()
-    if is_wireguard_active; then
-        active_vpns+=("Connected to Wireguard")
-    fi
-
-    if is_openvpn_active; then
-        active_vpns+=("$(get_openvpn_vpn)")
-    fi
-
-    if [[ "${#active_vpns[@]}" -gt 0 ]]; then
-        local tooltip
-        tooltip=$(printf "%s\n" "${active_vpns[@]}")
-
-        echo "{\"text\": \"VPN on\", \"tooltip\": \"$tooltip\", \"class\": \"active\"}"
-    else
-        echo "{\"text\": \"VPN off\", \"tooltip\": \"No VPN active\", \"class\": \"inactive\"}"
-    fi
-}
-
-status
+fetch_vpn

@@ -23,9 +23,9 @@ fetch_cpu() {
     local temp=0
 
     if [[ "$HOSTNAME" == "bartmoss" ]]; then
-      local temp=$(sensors 2>/dev/null | grep "Tctl" | awk '{gsub(/[+°C]/,"",$2); print int($2); exit}')
+        local temp=$(sensors 2>/dev/null | grep "Tctl" | awk '{gsub(/[+°C]/,"",$2); print int($2); exit}')
     elif [[ "$HOSTNAME" == "kabuki" ]]; then
-      local temp=$(sensors 2>/dev/null | grep "Package id 0" | awk '{gsub(/[+°C]/,"",$4); print int($4); exit}')
+        local temp=$(sensors 2>/dev/null | grep "Package id 0" | awk '{gsub(/[+°C]/,"",$4); print int($4); exit}')
     fi
 
     printf '{"load":%s,"temp":%s}\n' "${load:-0}" "${temp:-0}"

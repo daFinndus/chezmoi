@@ -68,6 +68,7 @@ Singleton {
                 console.log("Network event detected:", data);
 
                 debounceTimer.start();
+                VPN.fetchVPN()
             }
         }
     }
@@ -102,7 +103,7 @@ Singleton {
         repeat: false
 
         onTriggered: {
-            refreshNetworkState();
+            root.refreshNetworkState();
         }
     }
 

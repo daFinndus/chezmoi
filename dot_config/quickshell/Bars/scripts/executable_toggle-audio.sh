@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 DEVICES=($(pactl list sinks | grep -i "node.name" | grep -v "HDMI" | awk '{print $3}' | tr -d '"'))
 CURRENT=$(pactl get-default-sink)

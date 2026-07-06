@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Save old package amount
 count=$(checkupdates | wc -l)

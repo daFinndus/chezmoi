@@ -1,8 +1,5 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
-import QtQuick.Layouts
-import Quickshell.Wayland
 
 import qs.singletons
 import qs.modules.components
@@ -10,23 +7,36 @@ import qs.modules.components
 PopupWindow {
     id: root
 
-    required property PanelWindow haftung
+    required property Item systemWidget
 
     color: "transparent"
 
-    visible: implicitHeight > 1 ? true : false
+    visible: implicitHeight > 1
+
+    onVisibleChanged: {
+        console.log("root.implicitWidth:", root.implicitWidth)
+        console.log("column.width:", column.width)
+        console.log("anchor.rect.x", anchor.rect.x)
+        console.log("anchor.rect.y", anchor.rect.y)
+        console.log("systemWidget.width:", systemWidget.width)
+    }
 
     implicitWidth: 128
     implicitHeight: System.wlogoutOpen ? column.height : 1
 
-    anchor.window: haftung
+    anchor.margins {
+        right: 0
+        top: Globals.barHeight + 8
+        left: 0
+        bottom: 0
+    }
 
-    anchor.rect.x: haftung.implicitWidth - root.implicitWidth
-    anchor.rect.y: haftung.implicitHeight + 8
+    anchor.item: systemWidget
+    anchor.gravity: Edges.Bottom | Edges.Right
 
     Behavior on implicitHeight {
         NumberAnimation {
-            duration: Globals.animationDuration
+            duration: Globals.animationDuration / 2
         }
     }
 

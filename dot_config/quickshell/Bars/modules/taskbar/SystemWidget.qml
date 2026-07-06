@@ -7,7 +7,7 @@ import qs.singletons
 Rectangle {
     id: root
 
-    width: 126
+    width: 128
     height: Globals.barHeight
 
     color: Colors.color1

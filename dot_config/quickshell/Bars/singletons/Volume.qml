@@ -55,7 +55,7 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.volume = parseInt(this.text.trim());
-                console.log("Volume updated:", root.volume);
+                Globals.logDebug("Volume updated: " + root.volume);
             }
         }
     }
@@ -68,7 +68,7 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.muted = this.text.trim() === "yes";
-                console.log("Mute status updated:", root.muted);
+                Globals.logDebug("Mute status updated: " + root.muted);
             }
         }
     }

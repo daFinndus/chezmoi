@@ -4,6 +4,8 @@ import QtQuick
 import Quickshell
 
 Singleton {
+    id: root
+
     readonly property double fontSize: 12
     readonly property string fontFamily: "Minecraft"
 
@@ -30,7 +32,28 @@ Singleton {
         Battery.refreshBattery();
         Media.updatePlayers();
         Hardware.updateHardware();
+        VPN.fetchVPN();
     }
 
     Component.onCompleted: reloadComponents()
+
+    property int verbosity: 3
+
+    function logError(message) {
+        if (root.verbosity >= 1) {
+            console.error(message);
+        }
+    }
+
+    function logInfo(message) {
+        if (root.verbosity >= 2) {
+            console.warn(message);
+        }
+    }
+
+    function logDebug(message) {
+        if (root.verbosity >= 3) {
+            console.log(message);
+        }
+    }
 }

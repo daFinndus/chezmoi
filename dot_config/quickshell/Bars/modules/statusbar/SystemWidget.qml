@@ -10,8 +10,8 @@ Entry {
 
     width: 60
 
-    hintergrund: Colors.background
-    farbe: Colors.color1
+    hintergrund: Colors.color1
+    farbe: Colors.color0
     inhalt: System.wlogoutOpen ? "Abort" : "System"
 
     MouseArea {
