@@ -5,9 +5,6 @@ count=$(checkupdates | wc -l)
 
 # Proceed doing the update itself
 kitty -o window_margin_width=8 --title updater -e zsh -c '
-echo "Updating mirrors..."
-sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist 2>/dev/null
-
 if ! yay -Syu; then
     echo
     echo "Update failed."
