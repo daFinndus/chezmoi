@@ -7,8 +7,8 @@ import qs.modules.components
 Entry {
     id: root
 
-    hintergrund: Colors.color1
-    farbe: Colors.color0
+    hintergrund: Colors.background
+    farbe: Colors.color1
     inhalt: mouseArea.containsMouse ? Time.date : Time.shortTime
 
     MouseArea {

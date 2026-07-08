@@ -5,8 +5,8 @@ import qs.singletons
 import qs.modules.components
 
 Entry {
-    hintergrund: Colors.color1
-    farbe: Colors.color0
+    hintergrund: Colors.background
+    farbe: Colors.color1
     inhalt: Power.getText()
 
     MouseArea {

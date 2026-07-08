@@ -9,12 +9,12 @@ Entry {
     id: root
 
 {{- if eq .device "bartmoss" }}
-    hintergrund: Colors.background
-    farbe: Colors.color1
-{{- end }}
-{{- if eq .device "kabuki" }}
     hintergrund: Colors.color1
     farbe: Colors.color0
+{{- end }}
+{{- if eq .device "kabuki" }}
+    hintergrund: Colors.background
+    farbe: Colors.color1
 {{- end }}
     inhalt: `${Updates.updateCount} Updates`
 

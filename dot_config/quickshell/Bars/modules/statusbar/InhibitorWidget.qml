@@ -9,8 +9,8 @@ import qs.modules.components
 Entry {
     id: root
 
-    hintergrund: Colors.background
-    farbe: Colors.color1
+    hintergrund: Colors.color1
+    farbe: Colors.color0
     inhalt: Inhibitor.inhibited ? "Inhibitor: Active" : "Inhibitor: Inactive"
 
     MouseArea {

@@ -28,7 +28,9 @@ Scope {
         implicitWidth: 1920
         implicitHeight: Globals.barHeight / 1.25
 
-        WlogoutWidget { systemWidget: systemWidget }
+        WlogoutWidget { 
+            systemWidget: systemWidget 
+        }
 
         RowLayout {
             id: layout
@@ -36,8 +38,7 @@ Scope {
             anchors.fill: parent
 
             Row {
-                leftPadding: 4
-                rightPadding: 4
+                leftPadding: 12
 
                 WorkspaceWidget {}
                 TimeWidget {}
@@ -54,8 +55,7 @@ Scope {
             }
 
             Row {
-                leftPadding: 4
-                rightPadding: 4
+                rightPadding: 12
 
                 TrayWidget {}
                 VirtualWidget {}
@@ -66,7 +66,9 @@ Scope {
                 MemoryWidget {}
                 RootDiskWidget {}
                 HomeDiskWidget {}
-                SystemWidget { id: systemWidget }
+                SystemWidget { 
+                    id: systemWidget 
+                }
             }
         }
     }

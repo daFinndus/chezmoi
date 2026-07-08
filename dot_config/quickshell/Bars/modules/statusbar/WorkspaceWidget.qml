@@ -10,7 +10,7 @@ Rectangle {
     width: row.implicitWidth
     height: statusbar.height
 
-    color: Colors.background
+    color: Colors.color1
 
     Behavior on width {
         NumberAnimation {
@@ -61,7 +61,7 @@ Rectangle {
                     font.family: Globals.fontFamily
                     font.pixelSize: Globals.fontSize / 1.25
 
-                    color: workspace.focused ? (mouseArea.containsMouse ? Colors.color3 : Colors.color6) : (mouseArea.containsMouse ? Colors.color3 : Colors.color1)
+                    color: workspace.focused ? (mouseArea.containsMouse ? Colors.color3 : Colors.color6) : (mouseArea.containsMouse ? Colors.color3 : Colors.color0)
 
                     Behavior on color {
                         ColorAnimation {
