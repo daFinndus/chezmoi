@@ -71,5 +71,16 @@ Singleton {
         stdout: SplitParser {
             onRead: root.refreshBattery()
         }
+      }
+
+      Timer {
+        id: refreshBattery
+
+        running: true
+        repeat: true
+
+        interval: 1000 * 60
+
+        onTriggered: root.refreshBattery()
     }
 }

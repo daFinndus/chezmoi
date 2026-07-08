@@ -17,19 +17,31 @@ log_warn() { echo -e "${YELLOW}[!]${RESET} $1"; }
 log_error() { echo -e "${RED}[-]${RESET} $1"; }
 
 mount() {
-  if [[ -n $(ls "$1" 2>/dev/null) ]]; then
-    log_success "Detected $1 as the file path!"
+  if [[ $# -eq 2 ]]; then
+    if [[ -n $(ls "$1" 2>/dev/null) ]]; then
+      log_success "Detected $1 as the file path!"
+
+      FILE=$1
+      PASSWORD=$2
+    elif [[ -n $(ls "$2" 2>/dev/null) ]]; then
+      log_success "Detected $2 as the file path!"
+
+      FILE=$2
+      PASSWORD=$1
+    else
+      log_error "Couldn't identify the file path. Please use ABSOLUTE file path. Aborting..."
+      exit 1
+    fi
+  else 
+    log_success "Using $1 as file path and env variable for password."
 
     FILE=$1
-    PASSWORD=$2
-  elif [[ -n $(ls "$2" 2>/dev/null) ]]; then
-    log_success "Detected $2 as the file path!"
 
-    FILE=$2
-    PASSWORD=$1
-  else
-    log_error "Couldn't identify the file path. Please use ABSOLUTE file path. Aborting..."
-    exit 1
+    if [[ -n "$VERA_PASSWORD" ]]; then
+      PASSWORD="$VERA_PASSWORD"
+    else
+      log_error "Couldn't find password, aborting..."
+    fi
   fi
 
   log_step "Going to mount provided veracrypt file."
@@ -55,13 +67,7 @@ main() {
     demount
   else
     log_success "Doesn't seem to be mounted, going to mount now..."
-
-    if [[ $# -eq 2 ]]; then
-      log_success "Provided two params, nice."
-      mount $@
-    else
-      log_error "Please provide the veracrypt file and the password!"
-    fi
+    mount $@
   fi
 }
 
