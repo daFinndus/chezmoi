@@ -9,7 +9,7 @@ Entry {
 
     hintergrund: Colors.color1
     farbe: Colors.color0
-    inhalt: getText()
+    inhalt: Battery.getText()
 
     property int percentage: 0
     property string battery: ""
@@ -26,89 +26,23 @@ Entry {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: {
-            if (root.loading) {
-                if (root.inhalt == root.getEstimate()) {
-                    root.inhalt = root.battery + " at: " + root.percentage + "%";
+            if (Battery.loading) {
+                if (root.inhalt == Battery.getEstimate()) {
+                    root.inhalt = Battery.battery + " at: " + Battery.percentage + "%";
                 } else {
-                    root.inhalt = root.getEstimate();
+                    root.inhalt = Battery.getEstimate();
                 }
             }
         }
 
         onEntered: {
-            if (root.loading) {
-                root.inhalt = root.battery + " at: " + root.percentage + "%";
+            if (Battery.loading) {
+                root.inhalt = Battery.battery + " at: " + Battery.percentage + "%";
             } else {
-                root.inhalt = root.getEstimate();
+                root.inhalt = Battery.getEstimate();
             }
         }
 
-        onExited: root.inhalt = root.getText()
-    }
-
-    function getEstimate() {
-        console.log("Estimate is:", estimate);
-
-        if (estimate !== "") {
-            return estimate;
-        } else {
-            return getText();
-        }
-    }
-
-    function getText() {
-        if (loading) {
-            if (status === "Charging") {
-                return "Charging...";
-            } else if (status === "Full") {
-                return "Fully loaded";
-            }
-        } else {
-            return battery + " at: " + percentage + "%";
-        }
-    }
-
-    Process {
-        id: getData
-
-        command: ["acpi"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const parts = this.text.split(",");
-                const teile = parts[0].split(":");
-
-                root.battery = teile[0].trim();
-                root.status = teile[1].trim();
-                root.percentage = parts[1].replace("%", "").trim();
-                root.estimate = parts[2]?.trim() || "";
-
-                if (status == "Charging" || status == "Full") {
-                    root.loading = true;
-                } else {
-                    root.loading = false;
-                }
-            }
-        }
-    }
-
-    Process {
-        id: batteryEvents
-
-        running: true
-
-        command: ["inotifywait", "-m", "/sys/class/power_supply/BAT0/capacity"]
-
-        stdout: SplitParser {
-            onRead: data => {
-                console.log("Battery event detected:", data);
-
-                getData.running = true;
-            }
-        }
-    }
-
-    Component.onCompleted: {
-        getData.running = true;
+        onExited: root.inhalt = Battery.getText()
     }
 }

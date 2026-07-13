@@ -10,7 +10,7 @@ Rectangle {
     required property string farbe
     required property string inhalt
 
-    width: text.implicitWidth + 8
+    width: text.implicitWidth + 16
     height: Globals.barHeight / 1.25
 
     color: root.hintergrund
