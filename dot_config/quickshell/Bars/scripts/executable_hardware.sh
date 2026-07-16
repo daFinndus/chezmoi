@@ -46,7 +46,7 @@ fetch_gpu() {
     if [[ "$HOSTNAME" == "bartmoss" ]]; then
         if [[ -f /sys/class/drm/card0/device/gpu_busy_percent ]]; then
             local load=$(cat /sys/class/drm/card1/device/gpu_busy_percent)
-            local temp=$(cat /sys/class/hwmon/hwmon2/temp1_input 2>/dev/null | head -1 | awk '{print int($1/1000)}')
+            local temp=$(cat /sys/class/hwmon/hwmon1/temp1_input 2>/dev/null | head -1 | awk '{print int($1/1000)}')
             printf '{"load":%s,"temp":%s}\n' "${load:-0}" "${temp:-0}"
         else
             printf '{"load":0,"temp":0}\n'

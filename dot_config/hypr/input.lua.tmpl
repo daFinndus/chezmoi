@@ -2,7 +2,12 @@
 -- Keyboard and touchpad settings
 hl.config({
     input = {
+        {{- if eq .device "kabuki" }}
         kb_layout = "de",
+        {{- end }}
+        {{- if eq .device "bartmoss" }}
+        kb_layout = "us",
+        {{- end }}
         kb_variant = "",
         kb_model = "",
         kb_options = "",

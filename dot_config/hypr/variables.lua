@@ -5,11 +5,12 @@ cleanTerminal = "kitty --config ~/.config/kitty/clean.conf bash"
 
 filemanager = "kitty --class kitty --title yazi -e yazi"
 menu = "rofi -show drun -show-icons"
-browser = "firefox"
+browser = "helium-browser"
 
 screenshot = 'hyprshot -m region -o "$HOME/Downloads"'
 
 toggleStatusbar = "/home/finn/.config/scripts/toggle-statusbar.sh"
+toggleVariant = "/home/finn/.config/scripts/toggle-variant.sh"
 execWallpaper = "/home/finn/.config/scripts/wallpaper.sh"
 
 dark = 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
