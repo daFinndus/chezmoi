@@ -100,9 +100,3 @@ hl.window_rule({
 	center = true,
 	float = true,
 })
-
-hl.window_rule({
-	name = "gnome-everything",
-	match = { class = ".*" },
-	animation = "gnome",
-})

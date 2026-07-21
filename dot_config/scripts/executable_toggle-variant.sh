@@ -1,15 +1,23 @@
 #!/bin/bash
 
-VARIANT=$(hyprctl getoption input:kb_variant | grep intl | awk '{print $2}')
+STATE_FILE="/tmp/kb_variant"
+STATE=$(cat "/tmp/kb_variant" 2>/dev/null)
 
-if [[ -Z "$VARIANT" ]]; then
+if [[ "$STATE" = "intl" ]]; then
   echo "Variant is currently toggled to 'intl'."
   echo "Removing variant..."
 
-  hyprctl eval "hl.config({ input = { kb_variant = '' }})"
+  notify-send "kb_variant" "Changing to default variant."
+  
+  VALUE=""
 else
   echo "Variant seems to be empty."
   echo "Going to add 'intl' for the umlauts..."
 
-  hyprctl eval "hl.config({ input = { kb_variant = 'intl' }})"
+  notify-send "kb_variant" "Changing to 'altgr-intl' variant!"
+
+  VALUE="altgr-intl"
 fi
+
+hyprctl eval "hl.config({ input = { kb_variant = '$VALUE' }})"
+echo "$VALUE" > "$STATE_FILE"
