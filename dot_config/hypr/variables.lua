@@ -10,7 +10,7 @@ browser = "helium-browser"
 screenshot = 'hyprshot -m region -o "$HOME/Downloads"'
 
 toggleStatusbar = "/home/finn/.config/scripts/toggle-statusbar.sh"
-toggleVariant = "/home/finn/.config/scripts/toggle-variant.sh"
+toggleKeyboard = "/home/finn/.config/scripts/toggle-keyboard.sh"
 execWallpaper = "/home/finn/.config/scripts/wallpaper.sh"
 
 dark = 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'

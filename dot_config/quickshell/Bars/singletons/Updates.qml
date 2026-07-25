@@ -21,7 +21,7 @@ Singleton {
     Process {
         id: checkUpdates
 
-        command: ["bash", "-c", "(checkupdates 2>/dev/null; yay -Qu 2>/dev/null) | wc -l"]
+        command: [`${Globals.configPath}/scripts/updater.sh`, "get_updates"]
 
         stdout: StdioCollector {
             waitForEnd: true
@@ -36,7 +36,7 @@ Singleton {
     Process {
         id: runUpdateScript
 
-        command: `${Globals.configPath}/scripts/updater.sh`
+        command: [`${Globals.configPath}/scripts/updater.sh`, "do_updates"]
 
         onExited: exitCode => {
             if (exitCode === 0) {
