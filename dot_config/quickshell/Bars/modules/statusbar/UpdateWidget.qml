@@ -7,15 +7,8 @@ import qs.modules.components
 
 Entry {
     id: root
-
-{{- if eq .device "bartmoss" }}
     hintergrund: Colors.color1
     farbe: Colors.color0
-{{- end }}
-{{- if eq .device "kabuki" }}
-    hintergrund: Colors.background
-    farbe: Colors.color1
-{{- end }}
     inhalt: `${Updates.updateCount} Updates`
 
     opacity: Updates.updateCount > 0 ? 1 : 0
