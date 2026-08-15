@@ -9,7 +9,7 @@ Singleton {
     id: root
 
     property var adapter: Bluetooth.defaultAdapter
-    property bool enabled: root.adapter.enabled
+    property bool enabled: root.adapter != null ? root.adapter.enabled : null
 
     property var deviceSelected: root.deviceCount > 0 ? Bluetooth.devices.values[root.deviceIndex] : null
     property int deviceCount: root.devices.values.length

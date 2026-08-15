@@ -13,7 +13,7 @@ Singleton {
     property int wlogoutIndex: 0
 
     function startSystemFunction() {
-        runCommand.command = [`${root.wlogoutSelected.command}`];
+        runCommand.command = ["sh", "-c", `${root.wlogoutSelected.command}`];
         runCommand.running = true;
     }
 
