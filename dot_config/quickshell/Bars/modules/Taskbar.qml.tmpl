@@ -27,7 +27,6 @@ Scope {
         implicitWidth: 1920 - margin * 2
         implicitHeight: Globals.barHeight
 
-        WlogoutWidget { systemWidget: systemWidget }
         MediaWidget { id: media }
 
         RowLayout {
@@ -55,10 +54,10 @@ Scope {
                 UpdateWidget {}
                 {{- if eq .device "kabuki" }}
                 BatteryWidget {}
-                {{ end -}}
+                {{ end }}
                 NetworkWidget {}
                 VolumeWidget {}
-                SystemWidget { id: systemWidget }
+                WlogoutWidget {}
             }
         }
     }

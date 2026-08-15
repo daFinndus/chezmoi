@@ -1,58 +1,66 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
 import qs.singletons
-import qs.modules.components
 
-PopupWindow {
+Rectangle {
     id: root
 
-    required property Item systemWidget
+    width: 128
+    height: Globals.barHeight
 
-    color: "transparent"
+    color: Colors.color1
 
-    visible: implicitHeight > 1
+    border.color: Colors.color1
+    border.width: Globals.borderWidth
 
-    onVisibleChanged: {
-        console.log("root.implicitWidth:", root.implicitWidth)
-        console.log("column.width:", column.width)
-        console.log("anchor.rect.x", anchor.rect.x)
-        console.log("anchor.rect.y", anchor.rect.y)
-        console.log("systemWidget.width:", systemWidget.width)
-    }
+    radius: Globals.borderRadius
 
-    implicitWidth: 128
-    implicitHeight: System.wlogoutOpen ? column.height : 1
-
-    anchor.margins {
-        right: 0
-        top: Globals.barHeight + 8
-        left: 0
-        bottom: 0
-    }
-
-    anchor.item: systemWidget
-    anchor.gravity: Edges.Bottom | Edges.Right
-
-    Behavior on implicitHeight {
+    Behavior on width {
         NumberAnimation {
-            duration: Globals.animationDuration / 2
+            duration: 250
         }
     }
 
-    Column {
-        id: column
-        spacing: 8
+    MouseArea {
+        id: mouseArea
 
-        Repeater {
-            model: System.systemFunctions
+        anchors.fill: parent
 
-            delegate: SystemButton {
-                required property var modelData
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
 
-                command: modelData.command
-                inhalt: modelData.inhalt
+        onClicked: Wlogout.startSystemFunction()
+
+        onWheel: event => {
+            if (event.angleDelta.y > 0) {
+                Wlogout.wlogoutIndex = (Wlogout.wlogoutIndex - 1 + Wlogout.systemFunctions.length) % Wlogout.systemFunctions.length;
+            } else {
+                Wlogout.wlogoutIndex = (Wlogout.wlogoutIndex + 1) % Wlogout.systemFunctions.length;
             }
+
+            text.text = Wlogout.getText(true);
         }
+
+        onHoveredChanged: {
+            if (!mouseArea.containsMouse)
+                Wlogout.wlogoutIndex = 0;
+
+            text.text = Wlogout.getText(mouseArea.containsMouse);
+        }
+    }
+
+    Text {
+        id: text
+
+        font.family: Globals.fontFamily
+        font.pixelSize: Globals.fontSize
+
+        color: Colors.color0
+
+        anchors.centerIn: parent
+
+        text: Wlogout.getText()
     }
 }

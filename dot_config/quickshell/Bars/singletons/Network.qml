@@ -68,7 +68,7 @@ Singleton {
                 console.log("Network event detected:", data);
 
                 debounceTimer.start();
-                VPN.fetchVPN()
+                VPN.fetchVPN();
             }
         }
     }

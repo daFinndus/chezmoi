@@ -28,10 +28,8 @@ Singleton {
                     root.vpnConnections = parsed.connections;
                     root.vpnActive = parsed.active;
 
-                    Globals.logDebug("Found active VPN? " + parsed.active);
-
                     if (root.vpnActive) {
-                        Globals.logDebug("Got " + root.vpnConnections.length + " VPNs!")
+                        Globals.logDebug("Got " + root.vpnConnections.length + " VPNs!");
 
                         for (var connection in root.vpnConnections) {
                             Globals.logDebug("Connection: " + root.vpnConnections[connection].type);
@@ -41,7 +39,7 @@ Singleton {
                     if (this.text.trim() != "") {
                         Globals.logError("VPN parse failed: " + e);
                     } else {
-                        Globals.logDebug("No VPN active, so parser failed.")
+                        Globals.logDebug("No VPN active, so parser failed.");
                     }
                 }
             }

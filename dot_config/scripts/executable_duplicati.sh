@@ -16,6 +16,8 @@ log_error() { echo -e "${RED}[-]${RESET} $1"; }
 PASSWORD=""
 TOKEN=""
 
+URL="http://192.168.178.74:8200/api/v1"
+
 prompt_password() {
   log_step "Please enter your password."
   read -s -r -p "[:] > " PASSWORD
@@ -39,8 +41,8 @@ prompt_password() {
 test_target_reachability() {
   log_step "Going to test reachability of necessary machines."
 
-  WORKSTATION=$(ping 192.168.0.80 -w 3 | grep "time")
-  DUPLICATI=$(ping 192.168.0.64 -w 3 | grep "time")
+  WORKSTATION=$(ping 192.168.172.80 -w 3 | grep "time")
+  DUPLICATI=$(ping 192.168.172.74 -w 3 | grep "time")
 
   if [[ -n "$DUPLICATI" ]]; then
     log_success "Duplicati seems reachable."
@@ -58,7 +60,7 @@ curl_auth_token() {
     log_error "Provided no password, aborting!"
     exit 1
   else
-    RESPONSE=$(curl -s -X POST http://192.168.0.64:8200/api/v1/auth/login \
+    RESPONSE=$(curl -s -X POST ${URL}/auth/login \
       -H "Content-Type: application/json" \
       -d "{\"Password\": \"$PASSWORD\"}")
 
@@ -80,7 +82,7 @@ NAMES=()
 get_backup_ids() {
   log_step "Going to retrieve backups."
 
-  RESPONSE=$(curl -s http://192.168.0.64:8200/api/v1/backups \
+  RESPONSE=$(curl -s ${URL}/backups \
     -H "Authorization: Bearer $TOKEN")
 
   IDS=$(echo "$RESPONSE" | jq -r '.[].Backup.ID')
@@ -127,7 +129,7 @@ do_backups() {
 
     log_success "Going to run update for backup: ${NAMES[i]}"
 
-    RESPONSE=$(curl -s -X POST http://192.168.0.64:8200/api/v1/backup/${IDS[i]}/run \
+    RESPONSE=$(curl -s -X POST ${URL}/backup/${IDS[i]}/run \
       -H "Authorization: Bearer $TOKEN")
 
     if [[ "$RESPONSE" == *"OK"* ]]; then
@@ -140,7 +142,7 @@ do_backups() {
   done
 
   echo ""
-  log_success "Successfully did all backups!"
+  log_success "Successfully initiated all backups!"
 }
 
 if [[ -z "$DUPLICATI_PASSWORD" ]]; then

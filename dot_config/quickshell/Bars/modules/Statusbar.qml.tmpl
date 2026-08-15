@@ -18,19 +18,15 @@ Scope {
         color: Colors.background
 
         anchors {
-          bottom: true
-          left: true
-          right: true
+            bottom: true
+            left: true
+            right: true
         }
 
         visible: Globals.statusbarVisible
 
         implicitWidth: 1920
         implicitHeight: Globals.barHeight / 1.25
-
-        WlogoutWidget { 
-            systemWidget: systemWidget 
-        }
 
         RowLayout {
             id: layout
@@ -44,9 +40,7 @@ Scope {
                 TimeWidget {}
                 InhibitorWidget {}
                 PowerWidget {}
-                {{- if eq .device "kabuki" }}
-                BatteryWidget {}
-                {{ end }}
+                BluetoothWidget {}
                 UpdateWidget {}
             }
 
@@ -66,10 +60,9 @@ Scope {
                 MemoryWidget {}
                 RootDiskWidget {}
                 HomeDiskWidget {}
-                SystemWidget { 
-                    id: systemWidget 
-                }
+                WlogoutWidget {}
             }
         }
     }
 }
+

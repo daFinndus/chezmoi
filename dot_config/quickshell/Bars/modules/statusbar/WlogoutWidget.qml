@@ -1,54 +1,44 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import QtQuick.Layouts
-import Quickshell.Wayland
 
 import qs.singletons
 import qs.modules.components
 
-PopupWindow {
+Entry {
     id: root
 
-    required property Item systemWidget
+    width: 82
 
-    color: "transparent"
+    hintergrund: Colors.color1
+    farbe: Colors.color0
+    inhalt: Wlogout.getText()
 
-    visible: implicitHeight > 1
+    MouseArea {
+        id: mouseArea
 
-    implicitWidth: column.width
-    implicitHeight: System.wlogoutOpen ? column.height : 1
+        anchors.fill: parent
 
-    anchor.margins {
-        right: 0
-        top: 0
-        left: 0
-        bottom: 0
-    }
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
 
-    anchor.item: systemWidget
-    anchor.gravity: Edges.Top | Edges.Right
+        onClicked: Wlogout.startSystemFunction()
 
-    Behavior on implicitHeight {
-        NumberAnimation {
-            duration: Globals.animationDuration / 2
-        }
-    }
-
-    Column {
-        id: column
-
-        Repeater {
-            model: System.systemFunctions
-
-            delegate: SystemEntry {
-                required property var modelData
-
-                width: 60
-
-                command: modelData.command
-                inhalt: modelData.inhalt
+        onWheel: event => {
+            if (event.angleDelta.y > 0) {
+                Wlogout.wlogoutIndex = (Wlogout.wlogoutIndex - 1 + Wlogout.systemFunctions.length) % Wlogout.systemFunctions.length;
+            } else {
+                Wlogout.wlogoutIndex = (Wlogout.wlogoutIndex + 1) % Wlogout.systemFunctions.length;
             }
+
+            root.inhalt = Wlogout.getText(true);
+        }
+
+        onHoveredChanged: {
+            if (!mouseArea.containsMouse)
+                Wlogout.wlogoutIndex = 0;
+
+            root.inhalt = Wlogout.getText(mouseArea.containsMouse);
         }
     }
 }
