@@ -21,10 +21,7 @@ Entry {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: {
-            Bluetooth.toggleDevice();
-            waitForState.start();
-        }
+        onClicked: Bluetooth.toggleDevice()
 
         onWheel: event => {
             if (event.angleDelta.y > 0) {
@@ -44,11 +41,11 @@ Entry {
         }
     }
 
-    Timer {
-        id: waitForState
+    Connections {
+        target: Bluetooth.deviceSelected
 
-        interval: 3000
-
-        onTriggered: root.inhalt = Bluetooth.getText(mouseArea.containsMouse)
+        function onConnectedChanged() {
+            root.inhalt = Bluetooth.getText(mouseArea.containsMouse);
+        }
     }
 }

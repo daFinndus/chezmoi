@@ -9,14 +9,7 @@ Singleton {
     id: root
 
     property var adapter: Bluetooth.defaultAdapter
-
     property bool enabled: root.adapter.enabled
-
-    property string name: root.adapter.name
-    property string state: root.adapter.state
-
-    property bool discovering: root.adapter.discovering
-    property bool pairable: root.adapter.pairable
 
     property var deviceSelected: root.deviceCount > 0 ? Bluetooth.devices.values[root.deviceIndex] : null
     property int deviceCount: root.devices.values.length
@@ -36,6 +29,7 @@ Singleton {
     }
 
     function toggleDevice() {
+        var address = root.deviceSelected.address;
         var action = root.deviceSelected.connected ? "disconnect" : "connect";
 
         bluetoothAction.command = [`${Globals.configPath}/scripts/bluetooth.sh`, `${address}`, `${action}`];
