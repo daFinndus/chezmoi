@@ -45,8 +45,15 @@ fetch_ram() {
 fetch_gpu() {
     if [[ "$HOSTNAME" == "bartmoss" ]]; then
         if [[ -f /sys/class/drm/card0/device/gpu_busy_percent ]]; then
+            for hwmon in /sys/class/hwmon/hwmon*; do
+                if [[ $(cat "$hwmon/name") == "amdgpu" ]]; then
+                    local temp=$(cat "$hwmon/temp1_input" 2>/dev/null | head -1 | awk '{print int($1/1000)}')
+                else
+                    continue
+                fi
+            done
+
             local load=$(cat /sys/class/drm/card1/device/gpu_busy_percent)
-            local temp=$(cat /sys/class/hwmon/hwmon1/temp1_input 2>/dev/null | head -1 | awk '{print int($1/1000)}')
             printf '{"load":%s,"temp":%s}\n' "${load:-0}" "${temp:-0}"
         else
             printf '{"load":0,"temp":0}\n'
@@ -81,6 +88,7 @@ fetch_net() {
 
     format_speed() {
         local b=$1
+
         if ((b >= 1048576)); then
             awk "BEGIN {printf \"%.1f MB/s\", $b/1048576}"
         elif ((b >= 1024)); then

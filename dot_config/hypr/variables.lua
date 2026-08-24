@@ -7,7 +7,7 @@ filemanager = "kitty --class kitty --title yazi -e yazi"
 menu = "rofi -show drun -show-icons"
 browser = "helium-browser"
 
-screenshot = 'hyprshot -m region -o "$HOME/Downloads"'
+screenshot = 'hyprshot -m region -o "$HOME/Pictures/Screenshots"'
 
 toggleStatusbar = "/home/finn/.config/scripts/toggle-statusbar.sh"
 toggleKeyboard = "/home/finn/.config/scripts/toggle-keyboard.sh"
