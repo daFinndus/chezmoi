@@ -177,11 +177,12 @@ PanelWindow {
                     }
                 }
 
-                Image {
+                AnimatedImage {
                     anchors.fill: parent
                     fillMode: Image.PreserveAspectCrop
 
-                    source: modelData.thumb
+                    source: modelData.path
+                    cache: false
                 }
 
                 // Cover right triangle
