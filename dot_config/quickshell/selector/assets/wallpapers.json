@@ -1,11 +1,5 @@
 [
   {
-    "name": "ash_and_gengar",
-    "path": "/home/finn/Pictures/Wallpaper/ash_and_gengar.gif",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/ash_and_gengar.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/ash_and_gengar.gif"
-  },
-  {
     "name": "campus",
     "path": "/home/finn/Pictures/Wallpaper/campus.jpg",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/campus.jpg",
@@ -16,6 +10,18 @@
     "path": "/home/finn/Pictures/Wallpaper/cherryblossom.jpeg",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/cherryblossom.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/cherryblossom.jpeg"
+  },
+  {
+    "name": "cybergirl",
+    "path": "/home/finn/Pictures/Wallpaper/cybergirl.jpg",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/cybergirl.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/cybergirl.jpg"
+  },
+  {
+    "name": "cyberpunk_aesthetic",
+    "path": "/home/finn/Pictures/Wallpaper/cyberpunk_aesthetic.gif",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/cyberpunk_aesthetic.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/cyberpunk_aesthetic.gif"
   },
   {
     "name": "dandadan",
@@ -36,12 +42,6 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/door.jpeg"
   },
   {
-    "name": "emerald",
-    "path": "/home/finn/Pictures/Wallpaper/emerald.gif",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/emerald.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/emerald.gif"
-  },
-  {
     "name": "future",
     "path": "/home/finn/Pictures/Wallpaper/future.jpg",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/future.jpg",
@@ -54,40 +54,22 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/futuristic_city.gif"
   },
   {
-    "name": "gengar",
-    "path": "/home/finn/Pictures/Wallpaper/gengar.jpg",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/gengar.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/gengar.jpg"
-  },
-  {
-    "name": "ghost",
-    "path": "/home/finn/Pictures/Wallpaper/ghost.gif",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/ghost.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/ghost.gif"
-  },
-  {
     "name": "girl",
     "path": "/home/finn/Pictures/Wallpaper/girl.png",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/girl.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/girl.png"
   },
   {
-    "name": "greek",
-    "path": "/home/finn/Pictures/Wallpaper/greek.jpg",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/greek.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/greek.jpg"
+    "name": "greek-gods",
+    "path": "/home/finn/Pictures/Wallpaper/greek-gods.jpg",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/greek-gods.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/greek-gods.jpg"
   },
   {
     "name": "hack_the_box",
     "path": "/home/finn/Pictures/Wallpaper/hack_the_box.png",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/hack_the_box.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/hack_the_box.png"
-  },
-  {
-    "name": "hamato",
-    "path": "/home/finn/Pictures/Wallpaper/hamato.gif",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/hamato.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/hamato.gif"
   },
   {
     "name": "hyprpaper",
@@ -108,12 +90,6 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/kiel.jpg"
   },
   {
-    "name": "kitty",
-    "path": "/home/finn/Pictures/Wallpaper/kitty.gif",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/kitty.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/kitty.gif"
-  },
-  {
     "name": "late_drink",
     "path": "/home/finn/Pictures/Wallpaper/late_drink.gif",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/late_drink.jpg",
@@ -132,16 +108,22 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/lucy.png"
   },
   {
-    "name": "lunar_year",
-    "path": "/home/finn/Pictures/Wallpaper/lunar_year.jpg",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/lunar_year.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/lunar_year.jpg"
+    "name": "lunar-year",
+    "path": "/home/finn/Pictures/Wallpaper/lunar-year.jpg",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/lunar-year.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/lunar-year.jpg"
   },
   {
-    "name": "mid_autumn_festival",
-    "path": "/home/finn/Pictures/Wallpaper/mid_autumn_festival.jpg",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/mid_autumn_festival.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/mid_autumn_festival.jpg"
+    "name": "mid-autumn-festival",
+    "path": "/home/finn/Pictures/Wallpaper/mid-autumn-festival.jpg",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/mid-autumn-festival.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/mid-autumn-festival.jpg"
+  },
+  {
+    "name": "nightcity",
+    "path": "/home/finn/Pictures/Wallpaper/nightcity.jpg",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/nightcity.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/nightcity.jpg"
   },
   {
     "name": "nightcity",
@@ -156,22 +138,64 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/panam.jpg"
   },
   {
-    "name": "pinkpunk",
-    "path": "/home/finn/Pictures/Wallpaper/pinkpunk.jpg",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/pinkpunk.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/pinkpunk.jpg"
+    "name": "pokemon_ash-gengar",
+    "path": "/home/finn/Pictures/Wallpaper/pokemon_ash-gengar.gif",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/pokemon_ash-gengar.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/pokemon_ash-gengar.gif"
   },
   {
-    "name": "relaxo",
-    "path": "/home/finn/Pictures/Wallpaper/relaxo.gif",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/relaxo.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/relaxo.gif"
+    "name": "pokemon_emerald",
+    "path": "/home/finn/Pictures/Wallpaper/pokemon_emerald.gif",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/pokemon_emerald.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/pokemon_emerald.gif"
+  },
+  {
+    "name": "pokemon_gengar",
+    "path": "/home/finn/Pictures/Wallpaper/pokemon_gengar.jpg",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/pokemon_gengar.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/pokemon_gengar.jpg"
+  },
+  {
+    "name": "pokemon_ghost",
+    "path": "/home/finn/Pictures/Wallpaper/pokemon_ghost.gif",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/pokemon_ghost.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/pokemon_ghost.gif"
+  },
+  {
+    "name": "pokemon_giratina",
+    "path": "/home/finn/Pictures/Wallpaper/pokemon_giratina.gif",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/pokemon_giratina.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/pokemon_giratina.gif"
+  },
+  {
+    "name": "pokemon_relaxo",
+    "path": "/home/finn/Pictures/Wallpaper/pokemon_relaxo.gif",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/pokemon_relaxo.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/pokemon_relaxo.gif"
+  },
+  {
+    "name": "purple_kitty",
+    "path": "/home/finn/Pictures/Wallpaper/purple_kitty.gif",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/purple_kitty.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/purple_kitty.gif"
+  },
+  {
+    "name": "star",
+    "path": "/home/finn/Pictures/Wallpaper/star.jpg",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/star.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/star.jpg"
   },
   {
     "name": "tight_room",
     "path": "/home/finn/Pictures/Wallpaper/tight_room.gif",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/tight_room.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/tight_room.gif"
+  },
+  {
+    "name": "tjelle",
+    "path": "/home/finn/Pictures/Wallpaper/tjelle.jpg",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/tjelle.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/tjelle.jpg"
   },
   {
     "name": "unplugged",

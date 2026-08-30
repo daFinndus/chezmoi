@@ -1,6 +1,4 @@
 import QtQuick
-import Quickshell
-import Quickshell.Io
 
 import qs.singletons
 import qs.bars.modules.components
@@ -10,6 +8,22 @@ Widget {
 
     text: Wlogout.getText()
 
+    Keys.onPressed: event => {
+        switch (event.key) {
+        case Qt.Key_Up:
+            Wlogout.wlogoutIndex = (Wlogout.wlogoutIndex - 1 + Wlogout.systemFunctions.length) % Wlogout.systemFunctions.length;
+            break;
+        case Qt.Key_Down:
+            Wlogout.wlogoutIndex = (Wlogout.wlogoutIndex + 1) % Wlogout.systemFunctions.length;
+            break;
+        case Qt.Key_Return:
+            Wlogout.startSystemFunction();
+            break;
+        }
+
+        root.text = Wlogout.getText(true);
+    }
+
     MouseArea {
         id: mouseArea
 
@@ -18,6 +32,7 @@ Widget {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
+        onEntered: root.forceActiveFocus()
         onClicked: Wlogout.startSystemFunction()
 
         onWheel: event => {
