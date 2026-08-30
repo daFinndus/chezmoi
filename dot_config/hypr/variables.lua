@@ -9,7 +9,6 @@ browser = "helium-browser"
 
 screenshot = 'hyprshot -m region -o "$HOME/Pictures/Screenshots"'
 
-toggleStatusbar = "/home/finn/.config/scripts/toggle-statusbar.sh"
 toggleKeyboard = "/home/finn/.config/scripts/toggle-keyboard.sh"
 execWallpaper = "/home/finn/.config/scripts/wallpaper.sh"
 

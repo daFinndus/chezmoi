@@ -142,6 +142,8 @@ alias binds='bat -p ~/.config/hypr/binds.conf'
 
 alias poke-calc='cd ~/Coding/poke-calc && uv run python main.py'
 
+alias qs-ipc='/home/finn/.config/scripts/qs-ipc.sh'
+
 alias suspend='sudo systemctl suspend'
 alias shutdown='sudo shutdown now'
 alias reboot='sudo reboot'
