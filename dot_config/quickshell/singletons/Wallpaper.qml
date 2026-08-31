@@ -34,7 +34,9 @@ Singleton {
     }
 
     function fetchWallpapers() {
+        Globals.logDebug("Re-fetching wallpapers from directory.");
         getWallpapers.running = true;
+
         syncWallpapers.start();
     }
 

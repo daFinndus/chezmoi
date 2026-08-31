@@ -20,7 +20,6 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 var text = this.text.trim();
-                Globals.logDebug(text);
 
                 if (isNaN(Number(text))) {
                     root.available = false;
@@ -40,7 +39,6 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 var text = this.text.trim();
-                Globals.logDebug(text);
 
                 if (isNaN(Number(text))) {
                     root.available = false;

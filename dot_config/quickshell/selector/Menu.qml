@@ -113,7 +113,7 @@ PanelWindow {
                 width: root.cardWidth * scaleFactor
                 height: root.cardHeight * scaleFactor
 
-                x: parent.width / 2 - cardWidth / 2 + distance * (root.cardWidth * 0.5)
+                x: parent.width / 2 - cardWidth / 2 + (distance) * (root.cardWidth * 0.5)
                 y: parent.height / 2 - cardHeight / 2
 
                 // Active card on top
@@ -210,10 +210,8 @@ PanelWindow {
                     }
                 }
 
-                // Overlay stuff
+                // This is the background of the object titles
                 Shape {
-
-                    visible: card.isActive
                     opacity: 0.85
 
                     ShapePath {
@@ -240,11 +238,10 @@ PanelWindow {
                     }
                 }
 
+                // This is the object title
                 Text {
                     x: 36
                     y: card.height - card.height / 10
-
-                    visible: card.isActive
 
                     text: Selector.convertText(card.modelData.name.toString())
                     color: "#ffffff"
@@ -258,11 +255,12 @@ PanelWindow {
                     }
                 }
 
+                // This is the card overlay for non-active tiles
                 Shape {
                     anchors.fill: parent
 
                     visible: !card.isActive
-                    opacity: 0.5
+                    opacity: 0.85
 
                     Behavior on opacity {
                         NumberAnimation {

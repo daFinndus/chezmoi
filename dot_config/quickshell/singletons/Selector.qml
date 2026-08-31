@@ -22,7 +22,7 @@ Singleton {
         target: "menu"
 
         function toggleMenu(type: string): void {
-            if (Selector.widgetVisible) {
+            if (Selector.widgetVisible || Selector.object.length == 0) {
                 Selector.widgetVisible = false;
                 return;
             }
