@@ -86,7 +86,7 @@ Singleton {
         id: syncWallpapers
 
         repeat: false
-        interval: 3000
+        interval: 5000
 
         onTriggered: root.reloadWallpapers()
     }

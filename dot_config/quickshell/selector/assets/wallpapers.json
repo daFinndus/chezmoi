@@ -322,17 +322,5 @@
     "path": "/home/finn/Pictures/Wallpaper/tranquility.jpg",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/tranquility.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/tranquility.jpg"
-  },
-  {
-    "name": "unplugged",
-    "path": "/home/finn/Pictures/Wallpaper/unplugged.jpg",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/unplugged.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/unplugged.jpg"
-  },
-  {
-    "name": "wolf",
-    "path": "/home/finn/Pictures/Wallpaper/wolf.jpg",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/wolf.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/wolf.jpg"
   }
 ]
