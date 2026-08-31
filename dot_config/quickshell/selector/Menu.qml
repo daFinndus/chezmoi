@@ -184,6 +184,8 @@ PanelWindow {
                     source: modelData.path
                     cache: false
 
+                    visible: Selector.widgetVisible
+
                     playing: card.isActive
                 }
 

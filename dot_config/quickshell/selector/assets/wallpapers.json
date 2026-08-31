@@ -204,16 +204,16 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/liberty.png"
   },
   {
+    "name": "lucy_but_drawn",
+    "path": "/home/finn/Pictures/Wallpaper/lucy_but_drawn.png",
+    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/lucy_but_drawn.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/lucy_but_drawn.png"
+  },
+  {
     "name": "lucy_from_edgerunners",
     "path": "/home/finn/Pictures/Wallpaper/lucy_from_edgerunners.jpg",
     "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/lucy_from_edgerunners.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/lucy_from_edgerunners.jpg"
-  },
-  {
-    "name": "lucy",
-    "path": "/home/finn/Pictures/Wallpaper/lucy.png",
-    "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/lucy.jpg",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/lucy.png"
   },
   {
     "name": "lunar_year",
