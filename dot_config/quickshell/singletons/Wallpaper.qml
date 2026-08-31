@@ -14,6 +14,10 @@ Singleton {
     property var wallpapers: []
     property string activeWallpaper: ""
 
+    function fetchActive() {
+        activeWallpaper.running = true;
+    }
+
     Process {
         id: activeWallpaper
         running: true

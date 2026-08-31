@@ -8,6 +8,8 @@ Widget {
 
     text: Battery.getText()
 
+    visible: Battery.available
+
     MouseArea {
         id: mouseArea
 

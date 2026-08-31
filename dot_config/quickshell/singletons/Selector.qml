@@ -50,9 +50,13 @@ Singleton {
         }
     }
 
-    function runCommand(command: string) {
+    function runCommand(name: string, command: string) {
         executeCommand.command = ["bash", "-c", command];
         executeCommand.running = true;
+
+        if (root.type === "wallpaper") {
+            Wallpaper.activeWallpaper = name;
+        }
     }
 
     Process {

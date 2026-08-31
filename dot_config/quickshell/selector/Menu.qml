@@ -84,7 +84,7 @@ PanelWindow {
                 root.currentIndex = (root.currentIndex + 1) % Selector.object.length;
                 break;
             case Qt.Key_Return:
-                Selector.runCommand(Selector.object[root.currentIndex].command);
+                Selector.runCommand(Selector.object[root.currentIndex].name, Selector.object[root.currentIndex].command);
                 Selector.widgetVisible = false;
                 break;
             case Qt.Key_Escape:
@@ -183,6 +183,8 @@ PanelWindow {
 
                     source: modelData.path
                     cache: false
+
+                    playing: card.isActive
                 }
 
                 // Cover right triangle

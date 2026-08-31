@@ -7,6 +7,8 @@ import Quickshell.Io
 Singleton {
     id: root
 
+    property bool available: false
+
     property int percentage: 0
     property string battery: ""
     property string status: ""

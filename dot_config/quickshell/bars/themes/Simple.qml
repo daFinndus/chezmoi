@@ -56,6 +56,8 @@ Scope {
                     shade: Colors.color0
                 }
 
+                BatteryWidget {}
+
                 UpdateWidget {}
             }
 
@@ -71,11 +73,13 @@ Scope {
                 VirtualWidget {}
 
                 NetworkWidget {
-                    background: Colors.background
-                    shade: Network.online ? Colors.color1 : Colors.color6
+                    background: Colors.color1
+                    shade: Network.online ? Colors.color7 : Colors.color0
                 }
 
-                VolumeWidget {
+                VolumeWidget {}
+
+                HomeWidget {
                     background: Colors.color1
                     shade: Colors.color0
                 }

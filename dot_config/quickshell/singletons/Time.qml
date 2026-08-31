@@ -4,7 +4,7 @@ import QtQuick
 import Quickshell
 
 Singleton {
-    id: time
+    id: root
 
     readonly property string date: Qt.formatDateTime(clock.date, "yyyy-MM-dd")
 

@@ -34,6 +34,16 @@ Widget {
 
                 color: "transparent"
 
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: workspace.activate()
+                }
+
                 Text {
                     id: text
 
@@ -42,22 +52,12 @@ Widget {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    MouseArea {
-                        id: mouseArea
-                        anchors.fill: parent
-
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-
-                        onClicked: workspace.activate()
-                    }
-
                     text: workspace.id
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize
 
-                    color: workspace.focused ? (mouseArea.containsMouse ? root.accent : Colors.color3) : (mouseArea.containsMouse ? Colors.color2 : root.shade)
+                    color: workspace.focused ? (mouseArea.containsMouse ? root.accent : Colors.color6) : (mouseArea.containsMouse ? Colors.color4 : root.shade)
 
                     Behavior on color {
                         ColorAnimation {
