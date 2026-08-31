@@ -54,6 +54,10 @@ Singleton {
                 root.percentage = parts[1].replace("%", "").trim();
                 root.estimate = parts[2]?.trim() || "";
 
+                if (root.percentage != 0) {
+                    root.available = true;
+                }
+
                 if (root.status == "Charging" || root.status == "Full") {
                     root.loading = true;
                 } else {
