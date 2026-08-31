@@ -100,3 +100,11 @@ hl.window_rule({
 	center = true,
 	float = true,
 })
+
+hl.window_rule({
+  name = "float-btop",
+  match = { class = "kitty", title = "btop" },
+  size = { 1200, 800 },
+  center = true,
+  float = true,
+})

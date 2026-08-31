@@ -3,6 +3,7 @@
 terminal = "kitty"
 cleanTerminal = "kitty --config ~/.config/kitty/clean.conf bash"
 
+btop = "kitty --class kitty --title btop -e btop"
 filemanager = "kitty --class kitty --title yazi -e yazi"
 menu = "rofi -show drun -show-icons"
 browser = "helium-browser"

@@ -2,12 +2,8 @@
 -- Keyboard and touchpad settings
 hl.config({
     input = {
-        {{- if eq .device "kabuki" }}
         kb_layout = "de",
-        {{- end }}
-        {{- if eq .device "bartmoss" }}
-        kb_layout = "us",
-        {{- end }}
+        resolve_binds_by_sym = true,
         kb_variant = "",
         kb_model = "",
         kb_options = "",
@@ -26,6 +22,11 @@ hl.config({
         }
         {{- end }}
     }
+})
+
+hl.device({
+  name = "keychron-k3-pro-keyboard",
+  kb_layout = "us",
 })
 
 {{- if eq .device "kabuki" }}
