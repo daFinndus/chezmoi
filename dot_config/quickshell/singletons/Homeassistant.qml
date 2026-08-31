@@ -9,8 +9,8 @@ Singleton {
 
     property bool available: true
 
-    property string humidity: "25.5"
-    property string temperature: "61.2"
+    property string temperature: "25.5"
+    property string humidity: "62.3"
 
     Process {
         id: fetchTemperature
