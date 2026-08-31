@@ -55,8 +55,11 @@ Singleton {
                 root.estimate = parts[2]?.trim() || "";
 
                 if (root.percentage != 0) {
+                    Globals.logDebug("Battery detected!");
                     root.available = true;
                 }
+
+                Globals.logDebug("No battery detected.");
 
                 if (root.status == "Charging" || root.status == "Full") {
                     root.loading = true;
@@ -89,4 +92,6 @@ Singleton {
 
         onTriggered: root.refreshBattery()
     }
+
+    Component.onCompleted: root.refreshBattery()
 }

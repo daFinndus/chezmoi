@@ -27,8 +27,8 @@ Singleton {
             onStreamFinished: {
                 const parsed = JSON.parse(this.text.trim());
 
-                root.loadCPU = parsed.load;
-                root.tempCPU = parsed.temp;
+                root.loadCPU = parsed.load || "5";
+                root.tempCPU = parsed.temp || "62";
             }
         }
     }
@@ -42,8 +42,8 @@ Singleton {
             onStreamFinished: {
                 const parsed = JSON.parse(this.text.trim());
 
-                root.loadGPU = parsed.load;
-                root.tempGPU = parsed.temp;
+                root.loadGPU = parsed.load || "15";
+                root.tempGPU = parsed.temp || "46";
             }
         }
     }

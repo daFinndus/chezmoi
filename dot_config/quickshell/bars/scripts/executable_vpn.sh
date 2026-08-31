@@ -30,7 +30,7 @@ fetch_vpn() {
     # Tailscale
     while read -r iface; do
         add_connection "ts:$iface" \
-            "{\"type\":\"Tailscale: $profile\"}"
+            "{\"type\":\"Tailscale: up\"}"
     done < <(ip link show type tun 2>/dev/null |
         awk '/^[0-9]+:/ && /UP/ {gsub(/:/,"",$2); print $2}' |
         grep '^tailscale')
