@@ -17,10 +17,27 @@ fi
 TOKEN_HEADER="Authorization: Bearer $HOMEASSISTANT_PASSWORD"
 CONTENT_HEADER="Content-Type: application/json"
 
-TEMP=$(curl -s -H "$TOKEN_HEADER" -H "$CONTENT_HEADER" $TEMP_URL | jq -r '.state')
-HUMI=$(curl -s -H "$TOKEN_HEADER" -H "$CONTENT_HEADER" $HUMI_URL | jq -r '.state')
+function get_temp() {
+  TEMP=$(curl -s -H "$TOKEN_HEADER" -H "$CONTENT_HEADER" $TEMP_URL | jq -r '.state')
+  
+  if [[ "$TEMP" =~ ^[0-9]+$ ]]; then
+    printf "%.1f" "$TEMP"
+  else 
+    log "TEMP variable is not a number."
+  fi
+}
+
+function get_humi() {
+  HUMI=$(curl -s -H "$TOKEN_HEADER" -H "$CONTENT_HEADER" $HUMI_URL | jq -r '.state')
+  
+  if [[ "$HUMI" =~ ^[0-9]+$ ]]; then
+    printf "%.1f" "$HUMI"
+  else
+    log "HUMI variable is not a number."
+  fi
+}
 
 case "$1" in
-temp) printf "%.1f" "$TEMP" ;;
-humi) printf "%.1f" "$HUMI" ;;
+temp) get_temp ;;
+humi) get_humi ;;
 esac
