@@ -20,6 +20,12 @@ Singleton {
             "path": "/home/finn/.config/quickshell/selector/assets/thumbs/cherryblossom.jpg",
             "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/cherryblossom.jpg",
             "command": "qs ipc call theme applyTheme blown"
+        },
+        {
+            "name": "quattro",
+            "path": "/home/finn/.config/quickshell/selector/assets/thumbs/ayanami_rei.jpg",
+            "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/ayanami_rei.jpg",
+            "command": "qs ipc call theme applyTheme quattro"
         }
     ]
 
@@ -46,6 +52,9 @@ Singleton {
                 break;
             case "blown":
                 Themes.applyTheme("blown");
+                break;
+            case "quattro":
+                Themes.applyTheme("quattro");
                 break;
             }
         }
@@ -91,6 +100,16 @@ Singleton {
             root.animationDuration = 250;
             root.applyHyprlandRules(false, true, false, 4, 2);
             break;
+        case "quattro":
+            root.fontFamily = "JetBrains Mono NF";
+            root.fontSize = 14;
+            root.barHeight = 32;
+            root.borderWidth = 0;
+            root.borderRadius = 0;
+            root.paddingSize = 16;
+            root.animationDuration = 250;
+            root.applyHyprlandRules(false, true, false, 2, 6);
+            break;
         }
 
         root.activeTheme = name;
@@ -100,12 +119,14 @@ Singleton {
     Process {
         id: readTheme
         running: true
-        command: ["cat", `${Globals.barsPath}/states/theme`]
+        command: ["cat", `${Globals.basePath}/states/theme`]
         stdout: StdioCollector {
 
             onStreamFinished: {
                 const theme = this.text.trim();
+
                 if (theme !== "") {
+                    root.activeTheme = theme;
                     root.applyTheme(theme);
                 }
             }
@@ -117,7 +138,7 @@ Singleton {
     }
 
     function writeDisk(name) {
-        writeTheme.command = ["bash", "-c", `echo "${name}" > ${Globals.barsPath}/states/theme`];
+        writeTheme.command = ["bash", "-c", `echo "${name}" > ${Globals.basePath}/states/theme`];
         writeTheme.running = true;
     }
 

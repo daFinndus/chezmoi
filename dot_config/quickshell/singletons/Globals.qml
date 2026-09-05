@@ -6,6 +6,7 @@ import Quickshell
 Singleton {
     id: root
 
+    readonly property string basePath: Qt.resolvedUrl("../.").toString().replace("file://", "")
     readonly property string barsPath: Qt.resolvedUrl("../bars").toString().replace("file://", "")
     readonly property string selectorPath: Qt.resolvedUrl("../selector").toString().replace("file://", "")
 

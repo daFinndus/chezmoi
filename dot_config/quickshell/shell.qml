@@ -2,7 +2,6 @@
 
 import QtQuick
 import Quickshell
-import Quickshell.Io
 
 import qs.selector
 import qs.singletons
@@ -14,7 +13,8 @@ ShellRoot {
 
     property var themes: {
         "simple": Qt.resolvedUrl("bars/themes/Simple.qml"),
-        "blown": Qt.resolvedUrl("bars/themes/Blown.qml")
+        "blown": Qt.resolvedUrl("bars/themes/Blown.qml"),
+        "quattro": Qt.resolvedUrl("bars/themes/Quattro.qml")
     }
 
     Loader {
