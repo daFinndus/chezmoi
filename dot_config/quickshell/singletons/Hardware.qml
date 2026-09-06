@@ -21,7 +21,7 @@ Singleton {
     Process {
         id: fetchCPU
 
-        command: [`${Globals.barsPath}/scripts/hardware.sh`, "cpu"]
+        command: [`${Globals.basePath}/scripts/hardware.sh`, "cpu"]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -36,7 +36,7 @@ Singleton {
     Process {
         id: fetchGPU
 
-        command: [`${Globals.barsPath}/scripts/hardware.sh`, "gpu"]
+        command: [`${Globals.basePath}/scripts/hardware.sh`, "gpu"]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -51,7 +51,7 @@ Singleton {
     Process {
         id: fetchRAM
 
-        command: [`${Globals.barsPath}/scripts/hardware.sh`, "ram"]
+        command: [`${Globals.basePath}/scripts/hardware.sh`, "ram"]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -65,7 +65,7 @@ Singleton {
     Process {
         id: fetchDisk
 
-        command: [`${Globals.barsPath}/scripts/hardware.sh`, "disk"]
+        command: [`${Globals.basePath}/scripts/hardware.sh`, "disk"]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -77,7 +77,7 @@ Singleton {
         }
     }
 
-    function updateHardware() {
+    function updateHardware(): void {
         fetchCPU.running = true;
         fetchGPU.running = true;
         fetchRAM.running = true;
@@ -90,6 +90,8 @@ Singleton {
         running: true
         repeat: true
 
-        onTriggered: updateHardware()
+        onTriggered: root.updateHardware()
     }
+
+    Component.onCompleted: root.updateHardware()
 }

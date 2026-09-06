@@ -13,29 +13,44 @@ Singleton {
     readonly property string fullTime: "d. MMMM 'on a' dddd - hh:mm AP"
     readonly property string shortTime: "hh:mm AP"
 
-    property int verbosity: 3
+    // This function iterates through an object
+    // Will return the index of the matching parameter name
+    function findIndex(object: var, name: string): int {
+        Globals.logEverything("Object length: " + object.length);
 
-    function logError(message) {
+        const index = object.findIndex(item => item.name === name);
+        Globals.logEverything("Found index of " + name + " in object: " + index);
+        return index === -1 ? 0 : index;
+    }
+
+    property int verbosity: 4
+
+    function logError(message): void {
         if (root.verbosity >= 1) {
-            console.error(message);
+            const date = new Date();
+            console.error(`${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}: ${message}`);
         }
     }
 
-    function logInfo(message) {
+    function logInfo(message): void {
         if (root.verbosity >= 2) {
-            console.warn(message);
+            const date = new Date();
+
+            console.warn(`${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}: ${message}`);
         }
     }
 
-    function logDebug(message) {
+    function logDebug(message): void {
         if (root.verbosity >= 3) {
-            console.log(message);
+            const date = new Date();
+            console.log(`${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}: ${message}`);
         }
     }
 
-    function logEverything(message) {
+    function logEverything(message): void {
         if (root.verbosity >= 4) {
-            console.log(message);
+            const date = new Date();
+            console.log(`${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}: ${message}`);
         }
     }
 }

@@ -7,6 +7,8 @@ import Quickshell.Io
 Singleton {
     id: root
 
+    property bool loaded: false
+
     property string wallpaper: "/home/finn/Pictures/Wallpaper/japan.gif"
     property string background: "#1C1C1C"
     property string foreground: "#EEEEEE"
@@ -30,7 +32,7 @@ Singleton {
 
     signal colorReloadRequested
 
-    function reloadColors() {
+    function reloadColors(): void {
         colorManager.reloadColors();
     }
 
@@ -47,7 +49,7 @@ Singleton {
 
         property var parsed: ({})
         property FileView file: FileView {
-            path: Qt.resolvedUrl(Globals.barsPath + "/files/colors.json")
+            path: Qt.resolvedUrl(`${Globals.basePath}/assets/files/colors.json`)
             preload: true
 
             // The next 3 options are necessary to make it interactive
@@ -57,7 +59,11 @@ Singleton {
             onLoaded: colorManager.reloadColors()
         }
 
-        function reloadColors() {
+        function reloadColors(): void {
+            // Programmatically unload the colors
+            // Only relevant currently for the Simple.qml theme
+            root.loaded = false;
+
             file.reload();
 
             try {
@@ -91,6 +97,9 @@ Singleton {
                 root.color13 = parsed.colors.color13;
                 root.color14 = parsed.colors.color14;
                 root.color15 = parsed.colors.color15;
+
+                // Make loaders active in Simple.qml theme
+                root.loaded = true;
 
                 Globals.logDebug("Reloaded colors.");
                 Themes.applyTheme(Themes.activeTheme);

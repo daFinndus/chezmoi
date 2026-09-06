@@ -15,7 +15,8 @@ Singleton {
     property string estimate: ""
     property bool loading: false
 
-    function getEstimate() {
+    // Will return rougly amount of remaining battery life
+    function getEstimate(): string {
         if (root.estimate !== "") {
             return root.estimate;
         } else {
@@ -23,7 +24,7 @@ Singleton {
         }
     }
 
-    function getText() {
+    function getText(): string {
         if (root.loading) {
             if (root.status === "Charging") {
                 return "Charging...";
@@ -35,7 +36,7 @@ Singleton {
         }
     }
 
-    function refreshBattery() {
+    function refreshBattery(): void {
         getData.running = true;
     }
 

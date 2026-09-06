@@ -9,7 +9,7 @@ Singleton {
 
     property int power: PowerProfiles.profile
 
-    function getText() {
+    function getText(): string {
         switch (power) {
         case 0:
             return "Profile: Chillin'";

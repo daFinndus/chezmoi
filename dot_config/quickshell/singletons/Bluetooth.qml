@@ -28,11 +28,11 @@ Singleton {
         }
     }
 
-    function toggleDevice() {
+    function toggleDevice(): void {
         var address = root.deviceSelected.address;
         var action = root.deviceSelected.connected ? "disconnect" : "connect";
 
-        bluetoothAction.command = [`${Globals.barsPath}/scripts/bluetooth.sh`, `${address}`, `${action}`];
+        bluetoothAction.command = [`${Globals.basePath}/scripts/bluetooth.sh`, `${address}`, `${action}`];
         bluetoothAction.running = true;
     }
 
@@ -40,7 +40,7 @@ Singleton {
         id: bluetoothAction
     }
 
-    function toggleBluetooth() {
+    function toggleBluetooth(): void {
         changeBluetooth.command = ["bluetoothctl", "power", root.enabled ? "off" : "on"];
         changeBluetooth.running = true;
     }

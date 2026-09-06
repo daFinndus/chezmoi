@@ -17,7 +17,7 @@ Singleton {
     property string speed: Network.download + " " + Network.upload
     property bool toggler: false
 
-    function getText() {
+    function getText(): string {
         if (root.type === "none") {
             return "No network";
         } else {
@@ -25,12 +25,12 @@ Singleton {
         }
     }
 
-    function refreshNetworkState() {
+    function refreshNetworkState(): void {
         Globals.logDebug("Refreshing network.");
         networkCheck.running = true;
     }
 
-    function startIwctl() {
+    function startIwctl(): void {
         startIwctl.running = true;
     }
 
@@ -43,7 +43,7 @@ Singleton {
             onStreamFinished: data => {
                 hardware = this.text.trim();
 
-                console.log("Detected network interface:", hardware);
+                Globals.logDebug("Detected network interface: " + hardware);
 
                 if (hardware.startsWith("wl")) {
                     type = "wifi";
@@ -66,7 +66,7 @@ Singleton {
 
         stdout: SplitParser {
             onRead: data => {
-                console.log("Network event detected:", data);
+                Globals.logEverything("Network event detected: " + data);
 
                 refreshNetworkState();
                 VPN.fetchVPN();
@@ -77,7 +77,7 @@ Singleton {
     Process {
         id: fetchSpeed
 
-        command: [`${Globals.barsPath}/scripts/hardware.sh`, "net", root.hardware]
+        command: [`${Globals.basePath}/scripts/hardware.sh`, "net", root.hardware]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -87,7 +87,7 @@ Singleton {
                     root.download = "dl: " + parsed.rx;
                     root.upload = "ul: " + parsed.tx;
                 } catch (e) {
-                    console.error("Net speed parse failed:", this.text.trim());
+                    Globals.logError("Net speed parse failed: " + this.text.trim());
                 }
             }
         }
@@ -132,4 +132,6 @@ Singleton {
 
         onTriggered: root.toggler = !root.toggler
     }
+
+    Component.onCompleted: root.refreshNetworkState()
 }

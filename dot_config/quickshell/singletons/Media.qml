@@ -16,11 +16,11 @@ Singleton {
     }
 
     // This function is for other widgets, which cannot access the Process directly
-    function updatePlayers() {
+    function updatePlayers(): void {
         delaySync.start();
     }
 
-    function syncMetadatas(metadatas) {
+    function syncMetadatas(metadatas): void {
         // This will remove any applications that are no longer playing
         for (let i = applications.count - 1; i >= 0; i--) {
             var found = false;
@@ -58,9 +58,9 @@ Singleton {
         }
     }
 
-    function addApplication(id, status, name, interpret, title, url) {
+    function addApplication(id, status, name, interpret, title, url): void {
         // This might be inefficient as hell, no clue
-        // It works tho!
+        // It works tho
         if (url.includes("youtube")) {
             title = interpret;
             interpret = "YouTube";
@@ -101,7 +101,8 @@ Singleton {
         updateText();
     }
 
-    function updateText() {
+    // This will change the current playing interpret based on status
+    function updateText(): void {
         for (let i = 0; i < applications.count; i++) {
             if (applications.get(i).status === "Playing") {
                 if (applications.get(i).interpret != "") {
@@ -110,26 +111,24 @@ Singleton {
                     root.current = root.applications.get(i).title;
                 }
 
-                return;
+                break;
             } else if (applications.get(i).id === "No players found" || applications.count == 0) {
                 root.opacity = 0;
-            } else {
-                return applications.get(i).status;
             }
         }
 
         root.current = "No players found";
     }
 
-    function nextTrack() {
+    function nextTrack(): void {
         nextTrack.running = true;
     }
 
-    function previousTrack() {
+    function previousTrack(): void {
         previousTrack.running = true;
     }
 
-    function toggleTrack() {
+    function toggleTrack(): void {
         toggleTrack.running = true;
     }
 

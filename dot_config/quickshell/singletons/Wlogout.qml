@@ -13,7 +13,7 @@ Singleton {
     property var wlogoutSelected: root.systemFunctions[root.wlogoutIndex]
     property int wlogoutIndex: 0
 
-    function startSystemFunction() {
+    function startSystemFunction(): void {
         runCommand.command = ["sh", "-c", `${root.wlogoutSelected.command}`];
         runCommand.running = true;
     }
@@ -22,7 +22,7 @@ Singleton {
         id: runCommand
     }
 
-    function getText(containsMouse = false) {
+    function getText(containsMouse = false): string {
         if (containsMouse) {
             return root.systemFunctions[root.wlogoutIndex].inhalt;
         } else {

@@ -4,59 +4,65 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-import qs.selector
-
 Singleton {
     id: root
 
     property string type: "wallpaper"
 
-    property string active: Wallpaper.activeWallpaper
+    property int activeWallpaperIndex: Globals.findIndex(root.object, Wallpaper.activeWallpaper)
+    property int activeThemeIndex: Globals.findIndex(root.object, Themes.activeTheme)
+
     property var object: Wallpaper.wallpapers
+    property string active: root.activeWallpaperIndex
 
     property bool widgetVisible: false
 
-    onObjectChanged: Globals.logDebug("Menu showing object with: " + root.object.length)
+    onObjectChanged: Globals.logDebug("Menu has new object with: " + root.object.length + " items.")
 
     IpcHandler {
         target: "menu"
 
         function toggleMenu(type: string): void {
-            if (Selector.widgetVisible || Selector.object.length == 0) {
-                Selector.widgetVisible = false;
-                return;
-            }
+            if (Wallpaper.loaded) {
+                switch (type) {
+                case "wallpaper":
+                    root.type = "wallpaper";
+                    root.object = Wallpaper.wallpapers;
+                    root.active = root.activeWallpaperIndex;
 
-            switch (type) {
-            case "wallpaper":
-                Globals.logDebug("Opening Wallpaper menu!");
+                    Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and active index of ${root.activeWallpaperIndex}.`);
 
-                root.type = "wallpaper";
-                root.object = Wallpaper.wallpapers;
-                root.active = Wallpaper.activeWallpaper;
+                    root.widgetVisible = !root.widgetVisible;
+                    break;
+                case "theme":
+                    root.type = "theme";
+                    root.object = Themes.themes;
+                    root.active = root.activeThemeIndex;
 
-                Selector.widgetVisible = !Selector.widgetVisible;
-                break;
-            case "theme":
-                Globals.logDebug("Opening Theme menu!");
+                    Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and active index of ${root.activeThemeIndex}.`);
 
-                root.type = "theme";
-                root.object = Themes.themes;
-                root.active = Themes.activeTheme;
-
-                Selector.widgetVisible = !Selector.widgetVisible;
-                break;
+                    root.widgetVisible = !root.widgetVisible;
+                    break;
+                }
             }
         }
     }
 
-    function runCommand(name: string, command: string) {
+    function runCommand(name: string, command: string): void {
         executeCommand.command = ["bash", "-c", command];
         executeCommand.running = true;
 
-        if (root.type === "wallpaper") {
-            Wallpaper.activeWallpaper = name;
-        }
+        fetchActive.running = true;
+    }
+
+    // This will fetch the active wallpaper
+    // Debounce time is needed, so the wallpaper can be set, than fetched
+    Timer {
+        id: fetchActive
+
+        interval: 300
+
+        onTriggered: Wallpaper.fetchActive()
     }
 
     Process {
@@ -65,10 +71,6 @@ Singleton {
 
     function convertText(text: string): string {
         // Replace all underscores
-        while (text.includes("_")) {
-            text = text.replace("_", " ");
-        }
-
-        return text;
+        return text.replace(/_/g, " ");
     }
 }

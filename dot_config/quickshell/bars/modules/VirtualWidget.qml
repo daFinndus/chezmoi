@@ -6,7 +6,7 @@ import qs.bars.modules.components
 Widget {
     id: root
 
-    text: VPN.vpnActive ? VPN.vpnConnections[index].type : VPN.lastConnection
+    text: VPN.getText(index)
 
     opacity: VPN.vpnActive ? 1 : 0
     visible: root.opacity > 0

@@ -11,20 +11,20 @@ Singleton {
     property var themes: [
         {
             "name": "simple",
-            "path": "/home/finn/.config/quickshell/selector/assets/thumbs/japan.jpg",
-            "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/japan.jpg",
+            "path": "/home/finn/.config/quickshell/assets/thumbs/japan.jpg",
+            "thumb": "/home/finn/.config/quickshell/assets/thumbs/japan.jpg",
             "command": "qs ipc call theme applyTheme simple"
         },
         {
             "name": "blown",
-            "path": "/home/finn/.config/quickshell/selector/assets/thumbs/cherryblossom.jpg",
-            "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/cherryblossom.jpg",
+            "path": "/home/finn/.config/quickshell/assets/thumbs/cherryblossom.jpg",
+            "thumb": "/home/finn/.config/quickshell/assets/thumbs/cherryblossom.jpg",
             "command": "qs ipc call theme applyTheme blown"
         },
         {
             "name": "quattro",
-            "path": "/home/finn/.config/quickshell/selector/assets/thumbs/ayanami_rei.jpg",
-            "thumb": "/home/finn/.config/quickshell/selector/assets/thumbs/ayanami_rei.jpg",
+            "path": "/home/finn/.config/quickshell/assets/thumbs/ayanami_rei.jpg",
+            "thumb": "/home/finn/.config/quickshell/assets/thumbs/ayanami_rei.jpg",
             "command": "qs ipc call theme applyTheme quattro"
         }
     ]
@@ -69,16 +69,16 @@ Singleton {
         id: applyHypr
     }
 
-    function reloadHypr() {
+    function reloadHypr(): void {
         reloadHypr.running = true;
     }
 
-    function applyHyprlandRules(no_rounding, decorate, no_border, gaps_in, gaps_out) {
+    function applyHyprlandRules(no_rounding, decorate, no_border, gaps_in, gaps_out): void {
         applyHypr.command = ["hyprctl", "eval", `hl.workspace_rule({ workspace = '', no_rounding = ${no_rounding}, decorate = ${decorate}, no_border = ${no_border}, gaps_in = ${gaps_in}, gaps_out = ${gaps_out}})`];
         applyHypr.running = true;
     }
 
-    function applyTheme(name) {
+    function applyTheme(name): void {
         switch (name) {
         case "simple":
             root.fontFamily = "Minecraft";
@@ -119,7 +119,7 @@ Singleton {
     Process {
         id: readTheme
         running: true
-        command: ["cat", `${Globals.basePath}/states/theme`]
+        command: ["cat", `${Globals.basePath}/assets/states/theme`]
         stdout: StdioCollector {
 
             onStreamFinished: {
@@ -137,8 +137,8 @@ Singleton {
         id: writeTheme
     }
 
-    function writeDisk(name) {
-        writeTheme.command = ["bash", "-c", `echo "${name}" > ${Globals.basePath}/states/theme`];
+    function writeDisk(name): void {
+        writeTheme.command = ["bash", "-c", `echo "${name}" > ${Globals.basePath}/assets/states/theme`];
         writeTheme.running = true;
     }
 

@@ -1,0 +1,2 @@
+- Infinitely scrolling wallpaper
+- Setup quattro theme with Nerdfont icons

@@ -9,8 +9,99 @@ import qs.bars.modules
 Scope {
     id: root
 
+    // This is basically a boolean to wait for color fetching
+    // Color fetching is done in the Colors singleton
+    property bool loadColors: false
+
+    property var leftWidgets: [
+        {
+            source: "WorkspaceWidget.qml",
+            visible: true
+        },
+        {
+            source: "TimeWidget.qml",
+            visible: true
+        },
+        {
+            source: "InhibitorWidget.qml",
+            visible: true
+        },
+        {
+            source: "PowerWidget.qml",
+            visible: true
+        },
+        {
+            source: "BluetoothWidget.qml",
+            visible: true
+        },
+        {
+            source: "BatteryWidget.qml",
+            visible: Battery.available
+        },
+        {
+            source: "UpdateWidget.qml",
+            visible: Updates.updateCount > 0
+        }
+    ]
+
+    property var rightWidgets: [
+        {
+            source: "TrayWidget.qml",
+            visible: true
+        },
+        {
+            source: "VirtualWidget.qml",
+            visible: VPN.vpnActive
+        },
+        {
+            source: "NetworkWidget.qml",
+            visible: true
+        },
+        {
+            source: "VolumeWidget.qml",
+            visible: true
+        },
+        {
+            source: "HomeWidget.qml",
+            visible: Homeassistant.available
+        },
+        {
+            source: "ProcessorWidget.qml",
+            visible: true
+        },
+        {
+            source: "GraphicsWidget.qml",
+            visible: true
+        },
+        {
+            source: "MemoryWidget.qml",
+            visible: true
+        },
+        {
+            source: "RootDiskWidget.qml",
+            visible: true
+        },
+        {
+            source: "HomeDiskWidget.qml",
+            visible: true
+        },
+        {
+            source: "WlogoutWidget.qml",
+            visible: true
+        }
+    ]
+
+    // If total is specified, reverse operations can be made
+    function getBackground(total: int, item: QtObject, index: int): string {
+        return Math.abs(total - index) % 2 === 0 ? Colors.color1 : Colors.background;
+    }
+
+    function getShade(total: int, item: QtObject, index: int): string {
+        return Math.abs(total - index) % 2 === 0 ? Colors.color0 : Colors.color1;
+    }
+
     PanelWindow {
-        id: simple
+        id: panel
 
         aboveWindows: false
 
@@ -34,31 +125,31 @@ Scope {
             anchors.fill: parent
 
             Row {
+                id: leftRow
+
                 leftPadding: 12
 
-                WorkspaceWidget {
-                    background: Colors.color1
-                    shade: Colors.color0
-                    accent: Colors.color2
+                Repeater {
+                    model: root.leftWidgets.filter(widget => widget.visible)
+
+                    delegate: Loader {
+                        id: leftLoader
+
+                        active: Colors.loaded
+
+                        required property var modelData
+                        required property var index
+
+                        property var total: root.leftWidgets.filter(widget => widget.visible).length - 1
+
+                        source: Qt.resolvedUrl("../modules/" + modelData.source)
+
+                        onLoaded: {
+                            item.background = root.getBackground(0, item, index);
+                            item.shade = root.getShade(0, item, index);
+                        }
+                    }
                 }
-
-                TimeWidget {}
-
-                InhibitorWidget {
-                    background: Colors.color1
-                    shade: Colors.color0
-                }
-
-                PowerWidget {}
-
-                BluetoothWidget {
-                    background: Colors.color1
-                    shade: Colors.color0
-                }
-
-                BatteryWidget {}
-
-                UpdateWidget {}
             }
 
             Item {
@@ -66,43 +157,31 @@ Scope {
             }
 
             Row {
+                id: rightRow
+
                 rightPadding: 12
 
-                TrayWidget {}
+                Repeater {
+                    model: root.rightWidgets.filter(widget => widget.visible)
 
-                VirtualWidget {}
+                    delegate: Loader {
+                        id: rightLoader
 
-                NetworkWidget {
-                    background: Colors.color1
-                    shade: Network.online ? Colors.color7 : Colors.color0
-                }
+                        active: Colors.loaded
 
-                VolumeWidget {}
+                        required property var modelData
+                        required property var index
 
-                HomeWidget {
-                    background: Colors.color1
-                    shade: Colors.color0
-                }
+                        // Gotta flip the index here, so the right-side item is backgrounded
+                        property var total: root.rightWidgets.filter(widget => widget.visible).length - 1
 
-                ProcessorWidget {}
+                        source: Qt.resolvedUrl("../modules/" + modelData.source)
 
-                GraphicsWidget {
-                    background: Colors.color1
-                    shade: Colors.color0
-                }
-
-                MemoryWidget {}
-
-                RootDiskWidget {
-                    background: Colors.color1
-                    shade: Colors.color0
-                }
-
-                HomeDiskWidget {}
-
-                WlogoutWidget {
-                    background: Colors.color1
-                    shade: Colors.color0
+                        onLoaded: {
+                            item.background = root.getBackground(total, item, index);
+                            item.shade = root.getShade(total, item, index);
+                        }
+                    }
                 }
             }
         }

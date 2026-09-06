@@ -10,28 +10,38 @@ Singleton {
     property int volume: 0
     property bool muted: false
 
-    function refreshVolume() {
+    function getText(): string {
+        refreshVolume();
+
+        if (root.volume === 0 || root.muted) {
+            return `Volume muted`;
+        } else {
+            return `Volume at ${volume}%`;
+        }
+    }
+
+    function refreshVolume(): void {
         getVolume.running = true;
         getMute.running = true;
     }
 
-    function increaseVolume() {
+    function increaseVolume(): void {
         volumeUp.running = true;
     }
 
-    function decreaseVolume() {
+    function decreaseVolume(): void {
         volumeDown.running = true;
     }
 
-    function toggleVolume() {
+    function toggleVolume(): void {
         toggleMute.running = true;
     }
 
-    function startPavucontrol() {
+    function startPavucontrol(): void {
         startPavucontrol.running = true;
     }
 
-    function toggleDevice() {
+    function toggleDevice(): void {
         toggleDevice.running = true;
     }
 
@@ -44,7 +54,7 @@ Singleton {
     Process {
         id: toggleDevice
 
-        command: `${Globals.barsPath}/scripts/toggle-audio.sh`
+        command: `${Globals.basePath}/scripts/toggle-audio.sh`
     }
 
     Process {
@@ -101,16 +111,6 @@ Singleton {
                     refreshVolume();
                 }
             }
-        }
-    }
-
-    function getText() {
-        refreshVolume();
-
-        if (root.volume === 0 || root.muted) {
-            return `Volume muted`;
-        } else {
-            return `Volume at ${volume}%`;
         }
     }
 }

@@ -11,15 +11,24 @@ Singleton {
 
     property bool widgetVisible: false
 
+    property bool loaded: false
+
+    onLoadedChanged: {
+        Globals.logDebug("Loaded is now: " + root.loaded);
+    }
+
     property var wallpapers: []
     property string activeWallpaper: ""
 
-    function fetchActive() {
+    // Returns the active wallpaper
+    // Out of /tmp/wallpaper
+    function fetchActive(): void {
         activeWallpaper.running = true;
     }
 
     Process {
         id: activeWallpaper
+
         running: true
 
         command: ["bash", "-c", "basename $(cat /tmp/wallpaper) | sed 's/\\.[^.]*$//'"]
@@ -28,12 +37,15 @@ Singleton {
             onStreamFinished: {
                 root.activeWallpaper = this.text.trim();
 
+                Selector.activeWallpaperIndex = Globals.findIndex(root.wallpapers, root.activeWallpaper);
+
                 Globals.logDebug("Active wallpaper is: " + root.activeWallpaper);
             }
         }
     }
 
-    function fetchWallpapers() {
+    // Will get wallpapers and store them into wallpaper.json
+    function fetchWallpapers(): void {
         Globals.logDebug("Re-fetching wallpapers from directory.");
         getWallpapers.running = true;
 
@@ -43,27 +55,41 @@ Singleton {
     Process {
         id: getWallpapers
 
-        command: ["bash", "-c", `${Globals.selectorPath}/scripts/wallpaper.sh`]
+        command: [`${Globals.basePath}/scripts/wallpaper.sh`]
     }
 
-    function reloadWallpapers() {
+    // Will retrieve wallpapers from wallpaper.json
+    // Put them into the wallpapers object
+    function reloadWallpapers(): void {
         wallpaperManager.reloadWallpapers();
+    }
+
+    Process {
+        id: watchDirectory
+
+        running: true
+
+        command: ["inotifywait", "-m", "-e", "create,delete,move", Quickshell.env("HOME") + "/Pictures/Wallpaper/"]
+
+        stdout: SplitParser {
+            onRead: data => {
+                Globals.logDebug("Wallpaper directory changed: " + data);
+                root.fetchWallpapers();
+            }
+        }
     }
 
     QtObject {
         id: wallpaperManager
 
         property FileView file: FileView {
-            path: Qt.resolvedUrl(Globals.selectorPath + "/assets/wallpapers.json")
+            path: Qt.resolvedUrl(`${Globals.basePath}/assets/files/wallpapers.json`)
             preload: true
-
-            // The next 3 options are necessary to make it interactive
-            watchChanges: true
-
-            onFileChanged: syncWallpapers.start()
         }
 
-        function reloadWallpapers() {
+        function reloadWallpapers(): void {
+            root.loaded = false;
+
             file.reload();
 
             try {
@@ -75,6 +101,8 @@ Singleton {
                 }
 
                 root.wallpapers = JSON.parse(text);
+                root.loaded = true;
+
                 Globals.logDebug("Reloaded " + root.wallpapers.length + " wallpapers.");
             } catch (e) {
                 console.log("Error parsing wallpapers file:", e);
@@ -86,7 +114,7 @@ Singleton {
         id: syncWallpapers
 
         repeat: false
-        interval: 5000
+        interval: 300
 
         onTriggered: root.reloadWallpapers()
     }

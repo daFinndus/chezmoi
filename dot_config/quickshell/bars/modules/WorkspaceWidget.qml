@@ -7,7 +7,7 @@ import qs.bars.modules.components
 Widget {
     id: root
 
-    required property string accent
+    property string accent: Colors.color7
 
     width: row.implicitWidth
     height: Themes.barHeight

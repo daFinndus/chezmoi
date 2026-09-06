@@ -15,7 +15,7 @@ Singleton {
     Process {
         id: fetchTemperature
 
-        command: [`${Globals.barsPath}/scripts/homeassistant.sh`, "temp"]
+        command: [`${Globals.basePath}/scripts/homeassistant.sh`, "temp"]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -34,7 +34,7 @@ Singleton {
     Process {
         id: fetchHumidity
 
-        command: [`${Globals.barsPath}/scripts/homeassistant.sh`, "humi"]
+        command: [`${Globals.basePath}/scripts/homeassistant.sh`, "humi"]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -50,7 +50,7 @@ Singleton {
         }
     }
 
-    function updateStates() {
+    function updateStates(): void {
         fetchTemperature.running = true;
         fetchHumidity.running = true;
     }
@@ -63,4 +63,6 @@ Singleton {
 
         onTriggered: root.updateStates()
     }
+
+    Component.onCompleted: root.updateStates()
 }

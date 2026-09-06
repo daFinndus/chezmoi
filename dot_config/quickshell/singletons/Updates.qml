@@ -12,18 +12,18 @@ Singleton {
     property bool updatesLoaded: false
     property int updateCount: 0
 
-    function refreshUpdates() {
+    function refreshUpdates(): void {
         checkUpdates.running = true;
     }
 
-    function runUpdateScript() {
+    function runUpdateScript(): void {
         runUpdateScript.running = true;
     }
 
     Process {
         id: checkUpdates
 
-        command: [`${Globals.barsPath}/scripts/updater.sh`, "get_updates"]
+        command: [`${Globals.basePath}/scripts/updater.sh`, "get_updates"]
 
         stdout: StdioCollector {
             waitForEnd: true
@@ -38,7 +38,7 @@ Singleton {
     Process {
         id: runUpdateScript
 
-        command: [`${Globals.barsPath}/scripts/updater.sh`, "do_updates"]
+        command: [`${Globals.basePath}/scripts/updater.sh`, "do_updates"]
 
         onExited: exitCode => {
             if (exitCode === 0) {
@@ -56,4 +56,6 @@ Singleton {
 
         onTriggered: root.refreshUpdates()
     }
+
+    Component.onCompleted: root.refreshUpdates()
 }

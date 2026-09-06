@@ -9,16 +9,25 @@ Singleton {
 
     property bool vpnActive: false
     property var vpnConnections: []
-    property string lastConnection: ""
+    property string lastConnection: "Tailscale: down"
 
-    function fetchVPN() {
+    // Check if anything's running, return if so, otherwise nothing
+    function getText(index: int): string {
+        if (root.vpnConnections != undefined && root.vpnConnections.length > 0) {
+            return root.vpnConnections[index].type;
+        } else {
+            return root.lastConnection;
+        }
+    }
+
+    function fetchVPN(): void {
         fetchVPN.running = true;
     }
 
     Process {
         id: fetchVPN
 
-        command: [`${Globals.barsPath}/scripts/vpn.sh`]
+        command: [`${Globals.basePath}/scripts/vpn.sh`]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -34,7 +43,13 @@ Singleton {
                         for (var connection in root.vpnConnections) {
                             Globals.logDebug("Connection: " + root.vpnConnections[connection].type);
                         }
+
+                        root.lastConnection = root.vpnConnections[0].type;
                     }
+
+                    Globals.logEverything("Active is now: " + root.vpnActive);
+                    Globals.logEverything("lastConnection is now: " + root.lastConnection);
+                    Globals.logEverything("vpnConnections is now: " + root.vpnConnections);
                 } catch (e) {
                     if (this.text.trim() != "") {
                         Globals.logError("VPN parse failed: " + e);
@@ -46,12 +61,5 @@ Singleton {
         }
     }
 
-    Timer {
-        interval: 5000
-
-        running: true
-        repeat: true
-
-        onTriggered: root.fetchVPN()
-    }
+    Component.onCompleted: root.fetchVPN()
 }
