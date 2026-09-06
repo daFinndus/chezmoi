@@ -102,7 +102,6 @@ Singleton {
                 root.loaded = true;
 
                 Globals.logDebug("Reloaded colors.");
-                Themes.applyTheme(Themes.activeTheme);
             } catch (e) {
                 console.log("Error parsing colors file:", e);
             }

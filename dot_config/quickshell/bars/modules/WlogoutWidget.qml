@@ -1,10 +1,13 @@
 import QtQuick
 
 import qs.singletons
-import qs.bars.modules.components
+import qs.bars.popups
+import qs.bars.components
 
 Widget {
     id: root
+
+    property bool showPanel: false
 
     text: Wlogout.getText()
 
@@ -21,7 +24,7 @@ Widget {
             break;
         }
 
-        root.text = Wlogout.getText(true);
+        root.text = Wlogout.getText();
     }
 
     MouseArea {
@@ -33,7 +36,7 @@ Widget {
         cursorShape: Qt.PointingHandCursor
 
         onEntered: root.forceActiveFocus()
-        onClicked: Wlogout.startSystemFunction()
+        onClicked: Themes.iconMode ? root.togglePanel() : Wlogout.startSystemFunction()
 
         onWheel: event => {
             if (event.angleDelta.y > 0) {
@@ -42,7 +45,7 @@ Widget {
                 Wlogout.wlogoutIndex = (Wlogout.wlogoutIndex + 1) % Wlogout.systemFunctions.length;
             }
 
-            root.text = Wlogout.getText(true);
+            root.text = Wlogout.getText();
         }
 
         onHoveredChanged: {
@@ -52,7 +55,16 @@ Widget {
                 Wlogout.wlogoutIndex = 0;
             }
 
-            root.text = Wlogout.getText(mouseArea.containsMouse);
+            root.text = Wlogout.getText();
         }
+    }
+
+    function togglePanel(): void {
+        root.showPanel = !root.showPanel;
+    }
+
+    WlogoutPopup {
+        target: root
+        available: root.showPanel
     }
 }

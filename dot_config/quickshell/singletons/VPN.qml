@@ -47,7 +47,7 @@ Singleton {
                         root.lastConnection = root.vpnConnections[0].type;
                     }
 
-                    Globals.logEverything("Active is now: " + root.vpnActive);
+                    Globals.logEverything("vpnActive is now: " + root.vpnActive);
                     Globals.logEverything("lastConnection is now: " + root.lastConnection);
                     Globals.logEverything("vpnConnections is now: " + root.vpnConnections);
                 } catch (e) {

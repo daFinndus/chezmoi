@@ -2,6 +2,7 @@
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
 import qs.selector
 import qs.singletons
@@ -19,6 +20,7 @@ ShellRoot {
 
     Loader {
         id: loader
+
         active: false
         source: root.themes[Themes.activeTheme] ?? Qt.resolvedUrl("bars/themes/Simple.qml")
     }
@@ -27,10 +29,9 @@ ShellRoot {
         target: Themes
 
         function onActiveThemeChanged() {
-            loader.active = false;
             loader.active = true;
 
-            Globals.logDebug("Themes changed! It's now: " + Themes.theme);
+            Globals.logDebug("Themes changed! It's now: " + Themes.activeTheme);
         }
     }
 

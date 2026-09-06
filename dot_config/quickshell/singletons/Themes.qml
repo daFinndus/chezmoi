@@ -31,13 +31,21 @@ Singleton {
 
     // Font stuff
     property string fontFamily: "Minecraft"
-    property double fontSize: 12
+    property double fontSize: 10
+
+    // Color stuff
+    property bool transparentBackground: false
 
     // Rectangle geometry
-    property int barHeight: 28
-    property int borderWidth: 1
-    property int borderRadius: 4
+    property int barHeight: 22
+    property int borderWidth: 0
+    property int borderRadius: 0
     property int paddingSize: 12
+
+    // Relevant for icon based themes
+    property bool iconMode: false
+    property string iconFont: "JetBrainsMono Nerd Font"
+    property int iconSize: 11
 
     // Animations and so on
     property int animationDuration: 250
@@ -79,6 +87,8 @@ Singleton {
     }
 
     function applyTheme(name): void {
+        Globals.logDebug("Setting theme: " + name);
+
         switch (name) {
         case "simple":
             root.fontFamily = "Minecraft";
@@ -88,27 +98,36 @@ Singleton {
             root.borderRadius = 0;
             root.paddingSize = 12;
             root.animationDuration = 250;
+            root.iconMode = false;
+            root.iconFont = "JetBrainsMono Nerd Font";
+            root.iconSize = 0;
             root.applyHyprlandRules(true, false, true, 0, 0);
             break;
         case "blown":
-            root.fontFamily = "JetBrains Mono NF";
+            root.fontFamily = "JetBrainsMono Nerd Font";
             root.fontSize = 12;
             root.barHeight = 26;
             root.borderWidth = 1;
             root.borderRadius = 4;
             root.paddingSize = 16;
             root.animationDuration = 250;
+            root.iconMode = false;
+            root.iconFont = "JetBrainsMono Nerd Font";
+            root.iconSize = 0;
             root.applyHyprlandRules(false, true, false, 4, 2);
             break;
         case "quattro":
-            root.fontFamily = "JetBrains Mono NF";
+            root.fontFamily = "Cascadia Code NF";
             root.fontSize = 14;
-            root.barHeight = 32;
+            root.barHeight = 36;
             root.borderWidth = 0;
             root.borderRadius = 0;
-            root.paddingSize = 16;
+            root.paddingSize = 8;
             root.animationDuration = 250;
-            root.applyHyprlandRules(false, true, false, 2, 6);
+            root.iconMode = true;
+            root.iconFont = "JetBrainsMono Nerd Font";
+            root.iconSize = 15;
+            root.applyHyprlandRules(true, true, false, 4, 12);
             break;
         }
 
@@ -124,6 +143,8 @@ Singleton {
 
             onStreamFinished: {
                 const theme = this.text.trim();
+
+                Globals.logDebug("The theme state is: " + theme);
 
                 if (theme !== "") {
                     root.activeTheme = theme;
@@ -142,8 +163,5 @@ Singleton {
         writeTheme.running = true;
     }
 
-    Component.onCompleted: {
-        readTheme.running = true;
-        root.applyTheme(root.activeTheme);
-    }
+    Component.onCompleted: readTheme.running = true
 }

@@ -18,10 +18,14 @@ Singleton {
     property bool toggler: false
 
     function getText(): string {
-        if (root.type === "none") {
-            return "No network";
+        if (Themes.iconMode) {
+            return "\udb80\udc02";
         } else {
-            return `Connected via ${root.type}`;
+            if (root.type === "none") {
+                return "No network";
+            } else {
+                return root.online ? root.toggler ? root.speed : "up: " + root.hardware : "down: network";
+            }
         }
     }
 

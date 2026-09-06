@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell.Hyprland
 
 import qs.singletons
-import qs.bars.modules.components
+import qs.bars.components
 
 Widget {
     id: root
@@ -52,12 +52,12 @@ Widget {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    text: workspace.id
+                    text: Themes.iconMode ? workspace.focused ? "\uf0c8" : workspace.id : workspace.id
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize
 
-                    color: workspace.focused ? (mouseArea.containsMouse ? root.accent : Colors.color6) : (mouseArea.containsMouse ? Colors.color4 : root.shade)
+                    color: workspace.focused ? (mouseArea.containsMouse ? root.shade : root.accent) : (mouseArea.containsMouse ? Colors.color7 : root.shade)
 
                     Behavior on color {
                         ColorAnimation {

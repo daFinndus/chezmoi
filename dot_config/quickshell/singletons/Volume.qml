@@ -11,12 +11,16 @@ Singleton {
     property bool muted: false
 
     function getText(): string {
-        refreshVolume();
-
-        if (root.volume === 0 || root.muted) {
-            return `Volume muted`;
+        if (Themes.iconMode) {
+            return "\uefcf";
         } else {
-            return `Volume at ${volume}%`;
+            refreshVolume();
+
+            if (root.volume === 0 || root.muted) {
+                return `Volume muted`;
+            } else {
+                return `Volume at ${volume}%`;
+            }
         }
     }
 

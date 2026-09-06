@@ -103,6 +103,8 @@ Singleton {
                 root.wallpapers = JSON.parse(text);
                 root.loaded = true;
 
+                root.fetchActive();
+
                 Globals.logDebug("Reloaded " + root.wallpapers.length + " wallpapers.");
             } catch (e) {
                 console.log("Error parsing wallpapers file:", e);

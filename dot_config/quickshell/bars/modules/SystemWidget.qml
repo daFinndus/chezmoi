@@ -9,7 +9,7 @@ Widget {
 
     property bool showPanel: false
 
-    text: Network.getText()
+    text: "\udb82\udcc7"
 
     MouseArea {
         id: mouseArea
@@ -19,16 +19,14 @@ Widget {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        acceptedButtons: Qt.LeftButton
-
-        onClicked: Themes.iconMode ? root.togglePanel() : Network.startIwctl()
+        onClicked: root.togglePanel()
     }
 
     function togglePanel(): void {
         root.showPanel = !root.showPanel;
     }
 
-    NetworkPopup {
+    SystemPopup {
         target: root
         available: root.showPanel
     }

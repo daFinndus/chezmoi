@@ -1,10 +1,13 @@
 import QtQuick
 
 import qs.singletons
-import qs.bars.modules.components
+import qs.bars.popups
+import qs.bars.components
 
 Widget {
     id: root
+
+    property bool showPanel: false
 
     text: Volume.getText()
 
@@ -35,16 +38,20 @@ Widget {
         acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
 
         onClicked: event => {
-            switch (event.button) {
-            case Qt.LeftButton:
-                Volume.toggleVolume();
-                break;
-            case Qt.RightButton:
-                Volume.startPavucontrol();
-                break;
-            case Qt.MiddleButton:
-                Volume.toggleDevice();
-                break;
+            if (Themes.iconMode) {
+                root.togglePanel();
+            } else {
+                switch (event.button) {
+                case Qt.LeftButton:
+                    Volume.toggleVolume();
+                    break;
+                case Qt.RightButton:
+                    Volume.startPavucontrol();
+                    break;
+                case Qt.MiddleButton:
+                    Volume.toggleDevice();
+                    break;
+                }
             }
         }
 
@@ -55,5 +62,14 @@ Widget {
                 Volume.decreaseVolume();
             }
         }
+    }
+
+    function togglePanel(): void {
+        root.showPanel = !root.showPanel;
+    }
+
+    VolumePopup {
+        target: root
+        available: root.showPanel
     }
 }

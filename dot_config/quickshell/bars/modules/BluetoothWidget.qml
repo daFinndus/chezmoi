@@ -1,10 +1,13 @@
 import QtQuick
 
 import qs.singletons
-import qs.bars.modules.components
+import qs.bars.popups
+import qs.bars.components
 
 Widget {
     id: root
+
+    property bool showPanel: false
 
     text: Bluetooth.getText()
 
@@ -16,7 +19,7 @@ Widget {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: Bluetooth.toggleDevice()
+        onClicked: Themes.iconMode ? root.togglePanel() : Bluetooth.toggleDevice()
 
         onWheel: event => {
             if (event.angleDelta.y > 0) {
@@ -42,5 +45,14 @@ Widget {
         function onConnectedChanged() {
             root.text = Bluetooth.getText(mouseArea.containsMouse);
         }
+    }
+
+    function togglePanel(): void {
+        root.showPanel = !root.showPanel;
+    }
+
+    BluetoothPopup {
+        target: root
+        available: root.showPanel
     }
 }

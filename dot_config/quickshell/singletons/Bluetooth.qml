@@ -17,14 +17,18 @@ Singleton {
     property var devices: Bluetooth.devices
 
     function getText(containsMouse = false): string {
-        if (containsMouse) {
-            if (root.deviceCount <= 0) {
-                return "No devices";
-            } else {
-                return root.deviceSelected.deviceName + ": " + root.deviceSelected.state;
-            }
+        if (Themes.iconMode) {
+            return "\udb80\udcaf";
         } else {
-            return "Bluetooth: " + (root.enabled ? "Active" : "Disabled");
+            if (containsMouse) {
+                if (root.deviceCount <= 0) {
+                    return "No devices";
+                } else {
+                    return root.deviceSelected.deviceName + ": " + root.deviceSelected.state;
+                }
+            } else {
+                return "Bluetooth: " + (root.enabled ? "Active" : "Disabled");
+            }
         }
     }
 

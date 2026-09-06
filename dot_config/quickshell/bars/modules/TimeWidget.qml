@@ -1,7 +1,7 @@
 import QtQuick
 
 import qs.singletons
-import qs.bars.modules.components
+import qs.bars.components
 
 Widget {
     id: root
@@ -12,5 +12,11 @@ Widget {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+    }
+
+    Tooltip {
+        target: root
+        text: Time.fullTime
+        available: mouseArea.containsMouse
     }
 }

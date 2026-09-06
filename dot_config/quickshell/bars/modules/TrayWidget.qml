@@ -1,10 +1,11 @@
 import QtQuick
 import Quickshell
 import Quickshell.Widgets
+import Qt5Compat.GraphicalEffects
 import Quickshell.Services.SystemTray
 
 import qs.singletons
-import qs.bars.modules.components
+import qs.bars.components
 
 Widget {
     id: root
@@ -65,6 +66,8 @@ Widget {
                 }
 
                 IconImage {
+                    id: image
+
                     asynchronous: true
 
                     width: parent.width

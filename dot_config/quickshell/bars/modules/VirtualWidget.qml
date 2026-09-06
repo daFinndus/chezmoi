@@ -1,7 +1,7 @@
 import QtQuick
 
 import qs.singletons
-import qs.bars.modules.components
+import qs.bars.components
 
 Widget {
     id: root

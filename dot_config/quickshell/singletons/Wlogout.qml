@@ -23,37 +23,42 @@ Singleton {
     }
 
     function getText(containsMouse = false): string {
-        if (containsMouse) {
-            return root.systemFunctions[root.wlogoutIndex].inhalt;
+        if (Themes.iconMode) {
+            return "\uf08b";
         } else {
-            return "System";
+            if (containsMouse) {
+                return root.systemFunctions[root.wlogoutIndex].text;
+            } else {
+                return "System";
+            }
         }
     }
 
     default property list<var> systemFunctions: [
         {
             command: "systemctl poweroff",
-            inhalt: "Shutdown"
+            text: "Shutdown",
+            icon: "\f0425"
         },
         {
             command: "systemctl reboot",
-            inhalt: "Reboot"
+            text: "Reboot"
         },
         {
             command: "systemctl reboot --firmware",
-            inhalt: "Firmware"
+            text: "Firmware"
         },
         {
             command: "systemctl suspend",
-            inhalt: "Suspend"
+            text: "Suspend"
         },
         {
             command: "hyprctl dispatch 'hl.dsp.exit()'",
-            inhalt: "Logout"
+            text: "Logout"
         },
         {
             command: "hyprlock",
-            inhalt: "Lock"
+            text: "Lock"
         }
     ]
 }
