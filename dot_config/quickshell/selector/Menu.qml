@@ -324,6 +324,11 @@ PanelWindow {
     MouseArea {
         id: mouseArea
 
-        hoverEnabled: true
+        anchors.fill: parent
+
+        onClicked: {
+            Globals.logDebug("Clicked inside Menu Area!");
+            Selector.toggleMenu(Selector.type);
+        }
     }
 }

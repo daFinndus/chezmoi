@@ -7,14 +7,11 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    property bool widgetHovered: false
-    property bool wlogoutVisible: false
-
     property var wlogoutSelected: root.systemFunctions[root.wlogoutIndex]
     property int wlogoutIndex: 0
 
-    function startSystemFunction(): void {
-        runCommand.command = ["sh", "-c", `${root.wlogoutSelected.command}`];
+    function startSystemFunction(command: string): void {
+        runCommand.command = ["sh", "-c", `${command}`];
         runCommand.running = true;
     }
 
@@ -22,15 +19,11 @@ Singleton {
         id: runCommand
     }
 
-    function getText(containsMouse = false): string {
+    function getText(index: int): string {
         if (Themes.iconMode) {
             return "\uf08b";
         } else {
-            if (containsMouse) {
-                return root.systemFunctions[root.wlogoutIndex].text;
-            } else {
-                return "System";
-            }
+            return root.systemFunctions[index].text;
         }
     }
 

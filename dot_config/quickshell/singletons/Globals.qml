@@ -23,6 +23,30 @@ Singleton {
         return index === -1 ? 0 : index;
     }
 
+    // Relevant for opening a maximum of one single popup a time
+    property QtObject activePopup: null
+
+    function togglePopup(popup: QtObject): void {
+        if (root.activePopup != popup) {
+            root.closePopup();
+            root.openPopup(popup);
+        } else {
+            root.closePopup();
+        }
+    }
+
+    function openPopup(popup: QtObject): void {
+        root.activePopup = popup;
+        root.activePopup.available = true;
+    }
+
+    function closePopup(): void {
+        if (root.activePopup) {
+            root.activePopup.available = false;
+            root.activePopup = null;
+        }
+    }
+
     property int verbosity: 4
 
     function logError(message): void {

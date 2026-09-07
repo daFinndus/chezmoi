@@ -23,27 +23,31 @@ Singleton {
         target: "menu"
 
         function toggleMenu(type: string): void {
-            if (Wallpaper.loaded) {
-                switch (type) {
-                case "wallpaper":
-                    root.type = "wallpaper";
-                    root.object = Wallpaper.wallpapers;
-                    root.active = root.activeWallpaperIndex;
+            root.toggleMenu(type);
+        }
+    }
 
-                    Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and active index of ${root.activeWallpaperIndex}.`);
+    function toggleMenu(type: string): void {
+        if (Wallpaper.loaded) {
+            switch (type) {
+            case "wallpaper":
+                root.type = "wallpaper";
+                root.object = Wallpaper.wallpapers;
+                root.active = root.activeWallpaperIndex;
 
-                    root.widgetVisible = !root.widgetVisible;
-                    break;
-                case "theme":
-                    root.type = "theme";
-                    root.object = Themes.themes;
-                    root.active = root.activeThemeIndex;
+                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and active index of ${root.activeWallpaperIndex}.`);
 
-                    Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and active index of ${root.activeThemeIndex}.`);
+                root.widgetVisible = !root.widgetVisible;
+                break;
+            case "theme":
+                root.type = "theme";
+                root.object = Themes.themes;
+                root.active = root.activeThemeIndex;
 
-                    root.widgetVisible = !root.widgetVisible;
-                    break;
-                }
+                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and active index of ${root.activeThemeIndex}.`);
+
+                root.widgetVisible = !root.widgetVisible;
+                break;
             }
         }
     }
