@@ -6,8 +6,8 @@ import qs.singletons
 Rectangle {
     id: root
 
-    property color background: Colors.background
-    property color shade: Colors.color1
+    property color background: Themes.background
+    property color shade: Themes.shade
 
     required property string text
     property bool icon: Themes.iconMode
@@ -17,18 +17,12 @@ Rectangle {
     width: text.width + padding * 2
     height: Themes.barHeight
 
+    color: root.background
+
     border.color: root.shade
     border.width: Themes.borderWidth
 
     radius: Themes.borderRadius
-
-    onRadiusChanged: {
-        Globals.logDebug("Radius is now: " + root.radius);
-        Globals.logDebug("Width is: " + border.width);
-        Globals.logDebug("Active theme is: " + Themes.fontSize);
-    }
-
-    color: root.background
 
     Behavior on opacity {
         NumberAnimation {

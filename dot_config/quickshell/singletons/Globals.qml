@@ -23,6 +23,12 @@ Singleton {
         return index === -1 ? 0 : index;
     }
 
+    // This is for transparency
+    // Only used for the Quattro bar currently
+    function clamp(minimumValue: double, maximumValue: double, currentValue: double): double {
+        return Math.min(maximumValue, Math.max(minimumValue, currentValue));
+    }
+
     // Relevant for opening a maximum of one single popup a time
     property QtObject activePopup: null
 
@@ -47,7 +53,7 @@ Singleton {
         }
     }
 
-    property int verbosity: 4
+    property int verbosity: 3
 
     function logError(message): void {
         if (root.verbosity >= 1) {

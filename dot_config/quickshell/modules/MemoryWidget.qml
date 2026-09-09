@@ -6,5 +6,5 @@ import qs.components
 Widget {
     id: root
 
-    text: "R: " + Hardware.loadRAM + "%"
+    text: "R: " + Hardware.ramLoad + "%"
 }

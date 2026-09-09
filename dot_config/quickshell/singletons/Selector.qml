@@ -35,7 +35,7 @@ Singleton {
                 root.object = Wallpaper.wallpapers;
                 root.active = root.activeWallpaperIndex;
 
-                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and active index of ${root.activeWallpaperIndex}.`);
+                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and wallpaper active index of ${root.activeWallpaperIndex}.`);
 
                 root.widgetVisible = !root.widgetVisible;
                 break;
@@ -44,7 +44,7 @@ Singleton {
                 root.object = Themes.themes;
                 root.active = root.activeThemeIndex;
 
-                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and active index of ${root.activeThemeIndex}.`);
+                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and themes active index of ${root.activeThemeIndex}.`);
 
                 root.widgetVisible = !root.widgetVisible;
                 break;

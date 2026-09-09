@@ -10,6 +10,9 @@ PopupWindow {
     required property Item target
     required property string text
 
+    property color background: Themes.background
+    property color shade: Themes.shade
+
     property bool available: false
 
     visible: rect.opacity > 0
@@ -32,9 +35,9 @@ PopupWindow {
 
         anchors.fill: parent
 
-        color: Colors.background
+        color: root.background
 
-        border.color: Colors.color7
+        border.color: root.shade
         border.width: 1
 
         radius: Themes.borderRadius
@@ -54,7 +57,7 @@ PopupWindow {
 
             text: root.text
 
-            color: Colors.foreground
+            color: root.shade
 
             font.family: Themes.fontFamily
             font.pixelSize: Themes.fontSize

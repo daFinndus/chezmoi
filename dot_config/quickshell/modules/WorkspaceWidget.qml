@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    property string accent: Colors.color7
+    property string accent: Colors.getColor(7)
 
     width: row.implicitWidth
     height: Themes.barHeight
@@ -57,7 +57,7 @@ Widget {
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize
 
-                    color: workspace.focused ? (mouseArea.containsMouse ? root.shade : root.accent) : (mouseArea.containsMouse ? Colors.color7 : root.shade)
+                    color: workspace.focused ? (mouseArea.containsMouse ? root.shade : root.accent) : (mouseArea.containsMouse ? Colors.getColor(5) : root.shade)
 
                     Behavior on color {
                         ColorAnimation {

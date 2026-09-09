@@ -6,7 +6,7 @@ import qs.components
 Widget {
     id: root
 
-    text: `${Updates.updateCount} Updates`
+    text: Themes.iconMode ? "\udb81\udeb0" : `${Updates.updateCount} Updates`
 
     opacity: Updates.updateCount > 0 ? 1 : 0
     visible: root.opacity > 0
@@ -21,5 +21,11 @@ Widget {
 
         onClicked: Updates.runUpdateScript()
         onHoveredChanged: Updates.widgetHovered = !Updates.widgetHovered
+    }
+
+    Tooltip {
+        target: root
+        text: `${Updates.updateCount} Updates`
+        available: Themes.iconMode && mouseArea.containsMouse
     }
 }

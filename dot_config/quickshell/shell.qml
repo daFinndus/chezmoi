@@ -3,6 +3,8 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Quickshell.Wayland
+import Qt5Compat.GraphicalEffects
 
 import qs.themes
 import qs.modules
@@ -14,8 +16,8 @@ ShellRoot {
     id: root
 
     property var themes: {
-        "simple": Qt.resolvedUrl("themes/Simple.qml"),
-        "blown": Qt.resolvedUrl("themes/Blown.qml"),
+        "tsoding": Qt.resolvedUrl("themes/Tsoding.qml"),
+        "prototype": Qt.resolvedUrl("themes/Prototype.qml"),
         "quattro": Qt.resolvedUrl("themes/Quattro.qml")
     }
 
@@ -23,7 +25,7 @@ ShellRoot {
         id: loader
 
         active: false
-        source: root.themes[Themes.activeTheme] ?? Qt.resolvedUrl("themes/Simple.qml")
+        source: root.themes[Themes.activeTheme] ?? Qt.resolvedUrl("themes/Quattro.qml")
 
         DesktopArea {}
         WallpaperArea {}
@@ -34,8 +36,6 @@ ShellRoot {
 
         function onActiveThemeChanged() {
             loader.active = true;
-
-            Globals.logDebug("Themes changed! It's now: " + Themes.activeTheme);
         }
     }
 

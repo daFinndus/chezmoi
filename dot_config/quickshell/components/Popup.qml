@@ -10,6 +10,9 @@ PopupWindow {
     required property Item target
     required property Component contentComponent
 
+    property color background: Themes.background
+    property color shade: Themes.shade
+
     property bool available: false
 
     visible: root.available
@@ -24,17 +27,17 @@ PopupWindow {
     anchor.rect.x: target.width / 2
     anchor.rect.y: Themes.barHeight + root.implicitHeight + 5
 
-    implicitWidth: loader.item ? loader.item.width : 0
-    implicitHeight: loader.item ? loader.item.height : 0
+    implicitWidth: loader.item ? loader.item.width + Themes.paddingSize * 4 : 0
+    implicitHeight: loader.item ? loader.item.height + Themes.paddingSize * 4 : 0
 
     Rectangle {
         id: rect
 
         anchors.fill: parent
 
-        color: Colors.background
+        color: root.background
 
-        border.color: Colors.color7
+        border.color: root.shade
         border.width: 1
 
         radius: Themes.borderRadius
@@ -44,9 +47,6 @@ PopupWindow {
 
             anchors.centerIn: parent
             sourceComponent: root.contentComponent
-
-            width: item ? item.implicitWidth : 0
-            height: item ? item.implicitHeight : 0
         }
     }
 }

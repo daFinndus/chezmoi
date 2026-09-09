@@ -9,7 +9,7 @@ Popup {
     contentComponent: Rectangle {
         id: rect
 
-        color: Colors.background
+        color: Themes.background
 
         implicitWidth: text.width
         implicitHeight: text.height
@@ -21,7 +21,7 @@ Popup {
 
             text: "Bluetooth Widget"
 
-            color: Colors.foreground
+            color: Themes.shade
 
             font.family: Themes.fontFamily
             font.pixelSize: Themes.fontSize

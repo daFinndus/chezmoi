@@ -57,7 +57,7 @@ Widget {
 
         property int index: 0
 
-        color: Colors.color1
+        color: Themes.shade
 
         x: parent.padding
         y: parent.padding
@@ -66,7 +66,7 @@ Widget {
 
         text: Media.current.length > 0 ? Media.current : "No players found"
 
-        property var colors: [Colors.color1, Colors.color2, Colors.color3, Colors.color4, Colors.color5, Colors.color6]
+        property var colors: [Themes.shade, Colors.color2, Colors.color3, Colors.color4, Colors.color5, Colors.color6]
 
         Behavior on color {
             ColorAnimation {

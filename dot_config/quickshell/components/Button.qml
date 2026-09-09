@@ -6,15 +6,17 @@ import qs.singletons
 Rectangle {
     id: root
 
-    property color background: Colors.background
-    property color shade: Colors.color7
+    property color background: Themes.background
+    property color shade: Themes.shade
+
+    property int iconSize: Themes.iconSize * 0.8
 
     property bool onClickClosePopup: false
 
     required property string text
-    required property string command
+    property string command: ""
 
-    width: text.width * 1.5
+    width: text.width + Themes.paddingSize * 2
     height: text.height + Themes.paddingSize
 
     // Border color is darker than text color
@@ -29,10 +31,10 @@ Rectangle {
         id: text
 
         font.family: Themes.fontFamily
-        font.pixelSize: Themes.iconSize * 0.8
+        font.pixelSize: root.iconSize
 
         text: root.text
-        color: mouseArea.containsMouse ? Colors.color0 : root.shade
+        color: mouseArea.containsMouse ? root.background : root.shade
 
         anchors.centerIn: parent
 
@@ -52,12 +54,27 @@ Rectangle {
 
         hoverEnabled: true
         onClicked: {
-            command.running = true;
-
+            // Either wait for a closing popup
+            // Or execute the function directly
             if (root.onClickClosePopup) {
                 Globals.closePopup();
+                debounceCommand.start();
+            } else {
+                command.running = true;
             }
         }
+    }
+
+    // Wait until the popup disappears
+    // Then execute the function
+    // This is so animations are done before function execution
+    Timer {
+        id: debounceCommand
+
+        running: false
+        interval: Themes.animationDuration
+
+        onTriggered: command.running = true
     }
 
     Process {

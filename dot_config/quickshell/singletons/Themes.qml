@@ -7,27 +7,25 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    property string activeTheme: "simple"
-    property var themes: [
-        {
-            "name": "simple",
-            "path": "/home/finn/.config/quickshell/assets/thumbs/japan.jpg",
-            "thumb": "/home/finn/.config/quickshell/assets/thumbs/japan.jpg",
-            "command": "qs ipc call theme applyTheme simple"
-        },
-        {
-            "name": "blown",
-            "path": "/home/finn/.config/quickshell/assets/thumbs/cherryblossom.jpg",
-            "thumb": "/home/finn/.config/quickshell/assets/thumbs/cherryblossom.jpg",
-            "command": "qs ipc call theme applyTheme blown"
-        },
-        {
-            "name": "quattro",
-            "path": "/home/finn/.config/quickshell/assets/thumbs/ayanami_rei.jpg",
-            "thumb": "/home/finn/.config/quickshell/assets/thumbs/ayanami_rei.jpg",
-            "command": "qs ipc call theme applyTheme quattro"
+    property string activeTheme: "tsoding"
+
+    property bool loaded: false
+    property var themes: []
+
+    property FileView file: FileView {
+        path: Qt.resolvedUrl(`${Globals.basePath}/assets/files/themes.json`)
+        preload: true
+
+        watchChanges: true
+
+        onLoaded: {
+            root.themes = JSON.parse(file.text());
+            root.loaded = true;
+
+            Globals.logDebug("Themes file is parsed! Applying theme...");
+            Themes.applyTheme(root.activeTheme);
         }
-    ]
+    }
 
     // Font stuff
     property string fontFamily: "Minecraft"
@@ -35,6 +33,17 @@ Singleton {
 
     // Color stuff
     property bool transparentBackground: false
+
+    property color background: "#ffffff"
+    property color shade: "#000000"
+
+    Connections {
+        target: Colors
+
+        function onLoadedChanged() {
+            Themes.applyTheme(root.activeTheme);
+        }
+    }
 
     // Rectangle geometry
     property int barHeight: 22
@@ -49,24 +58,6 @@ Singleton {
 
     // Animations and so on
     property int animationDuration: 250
-
-    IpcHandler {
-        target: "theme"
-
-        function applyTheme(theme: string): void {
-            switch (theme) {
-            case "simple":
-                Themes.applyTheme("simple");
-                break;
-            case "blown":
-                Themes.applyTheme("blown");
-                break;
-            case "quattro":
-                Themes.applyTheme("quattro");
-                break;
-            }
-        }
-    }
 
     Process {
         id: reloadHypr
@@ -86,53 +77,51 @@ Singleton {
         applyHypr.running = true;
     }
 
-    function applyTheme(name): void {
-        Globals.logDebug("Setting theme: " + name);
+    IpcHandler {
+        target: "theme"
 
-        switch (name) {
-        case "simple":
-            root.fontFamily = "Minecraft";
-            root.fontSize = 10;
-            root.barHeight = 22;
-            root.borderWidth = 0;
-            root.borderRadius = 0;
-            root.paddingSize = 12;
-            root.animationDuration = 250;
-            root.iconMode = false;
-            root.iconFont = "JetBrainsMono Nerd Font";
-            root.iconSize = 0;
-            root.applyHyprlandRules(true, false, true, 0, 0);
-            break;
-        case "blown":
-            root.fontFamily = "JetBrainsMono Nerd Font";
-            root.fontSize = 12;
-            root.barHeight = 26;
-            root.borderWidth = 1;
-            root.borderRadius = 4;
-            root.paddingSize = 16;
-            root.animationDuration = 250;
-            root.iconMode = false;
-            root.iconFont = "JetBrainsMono Nerd Font";
-            root.iconSize = 0;
-            root.applyHyprlandRules(false, true, false, 4, 2);
-            break;
-        case "quattro":
-            root.fontFamily = "Cascadia Code NF";
-            root.fontSize = 14;
-            root.barHeight = 36;
-            root.borderWidth = 0;
-            root.borderRadius = 0;
-            root.paddingSize = 8;
-            root.animationDuration = 250;
-            root.iconMode = true;
-            root.iconFont = "JetBrainsMono Nerd Font";
-            root.iconSize = 15;
-            root.applyHyprlandRules(true, true, false, 4, 12);
-            break;
+        function applyTheme(theme: string): void {
+            root.applyTheme(theme);
+        }
+    }
+
+    function applyTheme(theme): void {
+        if (!root.loaded) {
+            Globals.logDebug("Themes file not parsed yet, aborting...");
+            return;
         }
 
-        root.activeTheme = name;
-        root.writeDisk(root.activeTheme);
+        Globals.logDebug("Setting theme: " + theme);
+
+        theme = root.themes.find(composition => composition.name === theme);
+
+        if (!theme) {
+            Globals.logDebug("Theme is not existant in json file.");
+            return;
+        }
+
+        root.fontFamily = theme.fontFamily ?? root.fontFamily;
+        root.fontSize = theme.fontSize ?? root.fontSize;
+
+        root.transparentBackground = theme.transparentBackground ?? root.transparentBackground;
+
+        root.background = Colors.getColor(theme.background) ?? root.background;
+        root.shade = Colors.getColor(theme.shade) ?? root.shade;
+
+        root.barHeight = theme.barHeight ?? root.barHeight;
+        root.borderWidth = theme.borderWidth ?? root.borderWidth;
+        root.borderRadius = theme.borderRadius ?? root.borderRadius;
+        root.paddingSize = theme.paddingSize ?? root.paddingSize;
+        root.animationDuration = theme.animationDuration ?? root.animationDuration;
+
+        root.iconMode = theme.iconMode ?? root.iconMode;
+        root.iconFont = theme.iconFont ?? root.iconFont;
+        root.iconSize = theme.iconSize ?? root.iconSize;
+
+        root.applyHyprlandRules(theme.hypr.noRounding, theme.hypr.decorate, theme.hypr.noBorder, theme.hypr.gapsIn, theme.hypr.gapsOut);
+
+        root.activeTheme = theme.name;
+        root.writeDisk(theme.name);
     }
 
     Process {

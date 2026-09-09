@@ -29,11 +29,7 @@ PanelWindow {
     color: "transparent"
 
     visible: Selector.widgetVisible
-
-    onVisibleChanged: {
-        Globals.logDebug("Menu has (dis-)appeared.");
-        root.currentIndex = Selector.active;
-    }
+    onVisibleChanged: root.currentIndex = Selector.active
 
     implicitWidth: Screen.width
     implicitHeight: Screen.height

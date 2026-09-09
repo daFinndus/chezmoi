@@ -9,17 +9,17 @@ Popup {
     id: root
 
     contentComponent: Column {
+        spacing: Themes.paddingSize
+
         Row {
             id: row
-
-            padding: Themes.paddingSize
 
             AnimatedImage {
                 source: root.visible ? `${Globals.basePath}/assets/pictures/lucy.gif` : ""
 
                 antialiasing: false
 
-                width: 72
+                width: 96
                 height: 72
 
                 playing: root.visible
@@ -31,7 +31,7 @@ Popup {
                 leftPadding: Themes.paddingSize
 
                 Text {
-                    color: Colors.color7
+                    color: Themes.shade
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.9
@@ -42,7 +42,7 @@ Popup {
                 }
 
                 Text {
-                    color: Colors.color7
+                    color: Themes.shade
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.9
@@ -53,7 +53,7 @@ Popup {
                 }
 
                 Text {
-                    color: Colors.color7
+                    color: Themes.shade
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.9
@@ -65,12 +65,8 @@ Popup {
             }
         }
 
-        // Horizontal separator
-        Rectangle {
-            width: parent.implicitWidth
-            height: 1
-
-            color: Colors.color7
+        Separator {
+            margin: 0
         }
 
         Grid {
@@ -78,72 +74,20 @@ Popup {
 
             columns: 2
 
-            padding: Themes.paddingSize
             spacing: Themes.paddingSize / 2
 
             Repeater {
                 model: Wlogout.systemFunctions
-                delegate: Rectangle {
+                delegate: Button {
                     required property var modelData
 
                     width: row.width / 2
                     height: 32
 
-                    color: mouseArea.containsMouse ? Colors.color7 : "transparent"
+                    onClickClosePopup: true
 
-                    border.color: Colors.color7
-
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: Themes.animationDuration
-                            easing.type: Easing.OutCubic
-                        }
-                    }
-
-                    MouseArea {
-                        id: mouseArea
-
-                        anchors.fill: parent
-
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-
-                        onClicked: {
-                            root.available = false;
-                            debounceSystemFunction.start();
-                        }
-                    }
-
-                    // Wait until the wlogout menu disappears
-                    // Then execute the function
-                    // This is so animations are done before function execution
-                    Timer {
-                        id: debounceSystemFunction
-
-                        running: false
-                        interval: Themes.animationDuration
-
-                        onTriggered: Wlogout.startSystemFunction(modelData.command)
-                    }
-
-                    Text {
-                        id: text
-
-                        font.family: Themes.fontFamily
-                        font.pixelSize: Themes.fontSize
-
-                        anchors.centerIn: parent
-                        color: mouseArea.containsMouse ? Colors.color0 : Colors.color7
-
-                        text: modelData.text
-
-                        Behavior on color {
-                            ColorAnimation {
-                                duration: Themes.animationDuration
-                                easing.type: Easing.OutCubic
-                            }
-                        }
-                    }
+                    text: modelData.text
+                    command: modelData.command
                 }
             }
         }

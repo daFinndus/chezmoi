@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-WALLPAPER_FILE="/tmp/wallpaper"
+WALLPAPER_FILE="$HOME/.config/quickshell/assets/states/wallpaper"
 
 # Wait for hyprpaper socket
 wait_for_hyprpaper() {
@@ -48,9 +48,15 @@ change() {
   echo "$WALLPAPER_PATH" >"$WALLPAPER_FILE"
   echo "[WALLPAPER] Saved to $WALLPAPER_FILE"
 
+
   echo "[PYWAL] Applying pywal colorscheme..."
 
   wal -i "$WALLPAPER_PATH"
+
+  local theme=$(cat $HOME/.config/quickshell/assets/states/theme)
+  
+  echo "[QUICKSHELL] Making sure theme is re-applied..."
+  qs ipc call theme applyTheme $theme
 
   echo "[DUNST] Restarting dunst, killing and disowning..."
   pkill dunst

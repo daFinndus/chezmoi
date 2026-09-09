@@ -6,5 +6,5 @@ import qs.components
 Widget {
     id: root
 
-    text: "G: " + Hardware.loadGPU + "%" + " " + Hardware.tempGPU + "°C"
+    text: "G: " + Hardware.gpuLoad + "%" + " " + Hardware.gpuTemp + "°C"
 }

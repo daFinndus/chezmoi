@@ -1,0 +1,75 @@
+[
+  {
+    "name": "tsoding",
+    "path": "/home/finn/.config/quickshell/assets/thumbs/japan.jpg",
+    "command": "qs ipc call theme applyTheme tsoding",
+    "fontFamily": "Minecraft",
+    "fontSize": 10,
+    "background": 0,
+    "shade": 1,
+    "barHeight": 22,
+    "borderWidth": 0,
+    "borderRadius": 0,
+    "paddingSize": 12,
+    "animationDuration": 250,
+    "iconMode": false,
+    "iconFont": "JetBrainsMono Nerd Font",
+    "iconSize": 0,
+    "hypr": {
+      "noRounding": true,
+      "decorate": false,
+      "noBorder": true,
+      "gapsIn": 0,
+      "gapsOut": 0
+    }
+  },
+  {
+    "name": "prototype",
+    "path": "/home/finn/.config/quickshell/assets/thumbs/cherryblossom.jpg",
+    "command": "qs ipc call theme applyTheme prototype",
+    "fontFamily": "JetBrainsMono Nerd Font",
+    "fontSize": 12,
+    "background": 0,
+    "shade": 1,
+    "barHeight": 26,
+    "borderWidth": 1,
+    "borderRadius": 4,
+    "paddingSize": 16,
+    "animationDuration": 250,
+    "iconMode": false,
+    "iconFont": "JetBrainsMono Nerd Font",
+    "iconSize": 0,
+    "hypr": {
+      "noRounding": false,
+      "decorate": true,
+      "noBorder": false,
+      "gapsIn": 4,
+      "gapsOut": 2
+    }
+  },
+  {
+    "name": "quattro",
+    "path": "/home/finn/.config/quickshell/assets/thumbs/ayanami_rei.jpg",
+    "command": "qs ipc call theme applyTheme quattro",
+    "fontFamily": "Cascadia Code NF",
+    "fontSize": 14,
+    "transparentBackground": true,
+    "background": 0,
+    "shade": 7,
+    "barHeight": 36,
+    "borderWidth": 0,
+    "borderRadius": 0,
+    "paddingSize": 8,
+    "animationDuration": 250,
+    "iconMode": true,
+    "iconFont": "JetBrainsMono Nerd Font",
+    "iconSize": 16,
+    "hypr": {
+      "noRounding": true,
+      "decorate": true,
+      "noBorder": false,
+      "gapsIn": 4,
+      "gapsOut": 12
+    }
+  }
+]

@@ -6,5 +6,5 @@ import qs.components
 Widget {
     id: root
 
-    text: "/: " + Hardware.rootDisk + "%"
+    text: "/: " + Hardware.rootLoad + "%"
 }

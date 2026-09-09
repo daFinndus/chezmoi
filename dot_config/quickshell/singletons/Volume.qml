@@ -29,6 +29,11 @@ Singleton {
         getMute.running = true;
     }
 
+    function setVolume(volume: int): void {
+        changeVolume.command = ["pactl", "set-sink-volume", "@DEFAULT_SINK@", `${volume}%`];
+        changeVolume.running = true;
+    }
+
     function increaseVolume(): void {
         volumeUp.running = true;
     }
@@ -69,7 +74,17 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.volume = parseInt(this.text.trim());
-                Globals.logEverything("Volume updated: " + root.volume);
+                Globals.logDebug("Volume updated: " + root.volume);
+            }
+        }
+    }
+
+    Process {
+        id: changeVolume
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.refreshVolume();
             }
         }
     }

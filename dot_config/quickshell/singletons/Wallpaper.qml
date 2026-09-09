@@ -13,10 +13,6 @@ Singleton {
 
     property bool loaded: false
 
-    onLoadedChanged: {
-        Globals.logDebug("Loaded is now: " + root.loaded);
-    }
-
     property var wallpapers: []
     property string activeWallpaper: ""
 
@@ -31,7 +27,7 @@ Singleton {
 
         running: true
 
-        command: ["bash", "-c", "basename $(cat /tmp/wallpaper) | sed 's/\\.[^.]*$//'"]
+        command: ["bash", "-c", `basename $(cat ${Globals.basePath}/assets/states/wallpaper) | sed 's/\\.[^.]*$//'`]
 
         stdout: StdioCollector {
             onStreamFinished: {
