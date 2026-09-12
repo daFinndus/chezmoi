@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# More example scripts for awww-based stuff
+# https://codeberg.org/LGFae/awww/src/branch/main/example_scripts
+
 WALLPAPER_FILE="$HOME/.config/quickshell/assets/states/wallpaper"
 
 # Wait for hyprpaper socket
