@@ -7,24 +7,29 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    property string type: "none"
+    property string interfaceType: ""
     property string interfaceTitle: ""
-    property bool online: false
+
+    property bool onlineState: false
 
     property string download: "dl: 0 B/s"
     property string upload: "ul: 0 B/s"
-
     property string speed: Network.download + " " + Network.upload
+
+    property string address: ""
+    property string gateway: ""
+    property string dns: ""
+
     property bool toggler: false
 
     function getText(): string {
         if (Themes.iconMode) {
             return "\udb80\udc02";
         } else {
-            if (root.type === "none") {
+            if (root.interfaceType === "") {
                 return "No network";
             } else {
-                return root.online ? root.toggler ? root.speed : "up: " + root.interfaceTitle : "down: network";
+                return root.onlineState ? root.toggler ? root.speed : "up: " + root.interfaceTitle : "down: network";
             }
         }
     }
@@ -32,10 +37,6 @@ Singleton {
     function refreshNetworkState(): void {
         Globals.logDebug("Refreshing network.");
         networkCheck.running = true;
-    }
-
-    function startIwctl(): void {
-        startIwctl.running = true;
     }
 
     Process {
@@ -50,15 +51,17 @@ Singleton {
                 Globals.logEverything("Detected network interface: " + root.interfaceTitle);
 
                 if (root.interfaceTitle.startsWith("wl")) {
-                    root.type = "wifi";
-                    root.online = true;
+                    root.interfaceType = "wifi";
+                    root.onlineState = true;
                 } else if (root.interfaceTitle.startsWith("en")) {
-                    root.type = "ethernet";
-                    root.online = true;
+                    root.interfaceType = "ethernet";
+                    root.onlineState = true;
                 } else {
-                    root.type = "none";
-                    root.online = false;
+                    root.interfaceType = "none";
+                    root.onlineState = false;
                 }
+
+                root.fetchNetworkInformation();
             }
         }
     }
@@ -91,6 +94,49 @@ Singleton {
         stdout: SplitParser {
             onRead: data => {
                 Globals.logDebug("Network address event detected: " + data);
+                getAddress.running = true;
+            }
+        }
+    }
+
+    function fetchNetworkInformation() {
+        getAddress.running = true;
+        getGateway.running = true;
+        getDNS.running = true;
+    }
+
+    // Address fetching is prolly not precised
+    Process {
+        id: getAddress
+        command: ["hostname", "-i"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.address = this.text.trim();
+            }
+        }
+    }
+
+    Process {
+        id: getGateway
+        command: ["bash", "-c", "ip route | grep default | awk '{print $3}'"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.gateway = this.text.trim();
+            }
+        }
+    }
+
+    Process {
+        id: getDNS
+        command: ["bash", "-c", `resolvectl dns ${root.interfaceTitle} | awk '{print $NF}'`]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                Globals.logDebug("Just ran: " + getDNS.command);
+                Globals.logDebug("Output is: " + this.text.trim());
+                root.dns = this.text.trim();
             }
         }
     }
@@ -114,26 +160,27 @@ Singleton {
         }
     }
 
+    function startIwctl(): void {
+        startIwctl.running = true;
+    }
+
     Process {
         id: startIwctl
-
         command: ["kitty", "--title", "iwctl", "-e", "iwctl"]
     }
 
     Timer {
         interval: 3000
 
-        running: true
+        running: root.onlineState
         repeat: true
 
-        onTriggered: {
-            if (root.online && !fetchSpeed.running) {
-                fetchSpeed.running = true;
-            }
-        }
+        onTriggered: fetchSpeed.running = true
     }
 
     Timer {
+        id: toggleToggler
+
         interval: root.toggler ? 10000 : 5000
 
         running: true

@@ -11,6 +11,7 @@ require("autostart")
 require("binds")
 require("input")
 require("monitors")
+require("layerrules")
 require("windowrules")
 require("workspacerules")
 
@@ -104,9 +105,4 @@ hl.animation({ leaf = "fade", enabled = true, speed = 2.5, bezier = "md3_decel" 
 hl.animation({ leaf = "workspaces", enabled = true, speed = 3.5, bezier = "easeOutExpo", style = "slide" })
 hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "md3_decel", style = "slidevert" })
 
--- Just a test
-hl.layer_rule({
-    name = "quattro-taskbar-blur",
-    match = { namespace = "quattro-taskbar" },
-    blur = true,
-})
+

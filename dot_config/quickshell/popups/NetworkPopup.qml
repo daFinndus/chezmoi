@@ -16,24 +16,54 @@ Popup {
 
         OneLiner {
             type: "Interface"
-            value: (Network.online ? "Online: " : "Offline: ") + Network.interfaceTitle
+            value: (Network.onlineState ? "Online: " : "Offline: ") + Network.interfaceTitle
         }
 
         OneLiner {
             type: "Type"
-            value: Network.type
+            value: Network.interfaceType
         }
 
-        Separator {}
+        Column {
+            width: rootColumn.width
+            visible: Network.onlineState
 
-        OneLiner {
-            type: "Download"
-            value: Network.download
-        }
+            spacing: Themes.paddingSize
 
-        OneLiner {
-            type: "Upload"
-            value: Network.upload
+            Separator {}
+
+            OneLiner {
+                visible: Network.address != ""
+
+                type: "IP Address"
+                value: Network.address
+            }
+
+            OneLiner {
+                visible: Network.gateway != ""
+
+                type: "Gateway"
+                value: Network.gateway
+            }
+
+            OneLiner {
+                visible: Network.dns != ""
+
+                type: "DNS"
+                value: Network.dns
+            }
+
+            Separator {}
+
+            OneLiner {
+                type: "Download"
+                value: Network.download
+            }
+
+            OneLiner {
+                type: "Upload"
+                value: Network.upload
+            }
         }
     }
 
