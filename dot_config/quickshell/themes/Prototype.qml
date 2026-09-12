@@ -47,8 +47,8 @@ Scope {
                 }
 
                 InhibitorWidget {
-                    background: Inhibitor.inhibited ? Colors.color3 : Themes.background
-                    shade: Inhibitor.inhibited ? Colors.color0 : Themes.shade
+                    background: Inhibitor.inhibited ? Colors.getColor(3) : Themes.background
+                    shade: Inhibitor.inhibited ? Themes.background : Themes.shade
                 }
 
                 PowerWidget {
@@ -65,8 +65,8 @@ Scope {
                 TrayWidget {}
 
                 UpdateWidget {
-                    background: Updates.widgetHovered ? Colors.color3 : Themes.background
-                    shade: Updates.widgetHovered ? Colors.color0 : Themes.shade
+                    background: Updates.widgetHovered ? Colors.getColor(3) : Themes.background
+                    shade: Updates.widgetHovered ? Themes.background : Themes.shade
                 }
 
                 NetworkWidget {

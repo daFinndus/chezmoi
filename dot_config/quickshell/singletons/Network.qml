@@ -8,7 +8,7 @@ Singleton {
     id: root
 
     property string type: "none"
-    property string hardware: ""
+    property string interfaceTitle: ""
     property bool online: false
 
     property string download: "dl: 0 B/s"
@@ -24,7 +24,7 @@ Singleton {
             if (root.type === "none") {
                 return "No network";
             } else {
-                return root.online ? root.toggler ? root.speed : "up: " + root.hardware : "down: network";
+                return root.online ? root.toggler ? root.speed : "up: " + root.interfaceTitle : "down: network";
             }
         }
     }
@@ -45,35 +45,52 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: data => {
-                hardware = this.text.trim();
+                root.interfaceTitle = this.text.trim();
 
-                Globals.logDebug("Detected network interface: " + hardware);
+                Globals.logEverything("Detected network interface: " + root.interfaceTitle);
 
-                if (hardware.startsWith("wl")) {
-                    type = "wifi";
-                    online = true;
-                } else if (hardware.startsWith("en")) {
-                    type = "ethernet";
-                    online = true;
+                if (root.interfaceTitle.startsWith("wl")) {
+                    root.type = "wifi";
+                    root.online = true;
+                } else if (root.interfaceTitle.startsWith("en")) {
+                    root.type = "ethernet";
+                    root.online = true;
                 } else {
-                    type = "none";
-                    online = false;
+                    root.type = "none";
+                    root.online = false;
                 }
             }
         }
     }
 
     Process {
-        id: events
+        id: interfaceEvents
         command: ["ip", "monitor", "link"]
         running: true
 
         stdout: SplitParser {
             onRead: data => {
-                Globals.logEverything("Network event detected: " + data);
+                Globals.logDebug("Network interface event detected: " + data);
 
-                refreshNetworkState();
-                VPN.fetchVPN();
+                if (data.match(/^\d+:/)) {
+                    root.refreshNetworkState();
+
+                    if (data.includes("tun0")) {
+                        VPN.fetchVPN();
+                    }
+                }
+            }
+        }
+    }
+
+    Process {
+        id: addressEvents
+        command: ["ip", "monitor", "address"]
+        running: true
+
+        stdout: SplitParser {
+            onRead: data => {
+                Globals.logDebug("Network address event detected: " + data);
             }
         }
     }
@@ -81,7 +98,7 @@ Singleton {
     Process {
         id: fetchSpeed
 
-        command: [`${Globals.basePath}/scripts/hardware.sh`, "net", root.hardware]
+        command: [`${Globals.basePath}/scripts/hardware.sh`, "net", root.interfaceTitle]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -104,25 +121,13 @@ Singleton {
     }
 
     Timer {
-        id: debounceTimer
-        interval: 800
-
-        running: true
-        repeat: false
-
-        onTriggered: {
-            root.refreshNetworkState();
-        }
-    }
-
-    Timer {
         interval: 3000
 
         running: true
         repeat: true
 
         onTriggered: {
-            if (root.online && root.hardware !== "" && !fetchSpeed.running) {
+            if (root.online && !fetchSpeed.running) {
                 fetchSpeed.running = true;
             }
         }

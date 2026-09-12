@@ -1,7 +1,7 @@
 [
   {
     "name": "tsoding",
-    "path": "/home/finn/.config/quickshell/assets/thumbs/japan.jpg",
+    "path": "/home/finn/Pictures/Wallpaper/japan.gif",
     "command": "qs ipc call theme applyTheme tsoding",
     "fontFamily": "Minecraft",
     "fontSize": 10,
@@ -14,7 +14,7 @@
     "animationDuration": 250,
     "iconMode": false,
     "iconFont": "JetBrainsMono Nerd Font",
-    "iconSize": 0,
+    "iconSize": 14,
     "hypr": {
       "noRounding": true,
       "decorate": false,
@@ -25,7 +25,7 @@
   },
   {
     "name": "prototype",
-    "path": "/home/finn/.config/quickshell/assets/thumbs/cherryblossom.jpg",
+    "path": "/home/finn/Pictures/Wallpaper/cherryblossom.jpeg",
     "command": "qs ipc call theme applyTheme prototype",
     "fontFamily": "JetBrainsMono Nerd Font",
     "fontSize": 12,
@@ -38,7 +38,7 @@
     "animationDuration": 250,
     "iconMode": false,
     "iconFont": "JetBrainsMono Nerd Font",
-    "iconSize": 0,
+    "iconSize": 14,
     "hypr": {
       "noRounding": false,
       "decorate": true,
@@ -49,7 +49,7 @@
   },
   {
     "name": "quattro",
-    "path": "/home/finn/.config/quickshell/assets/thumbs/ayanami_rei.jpg",
+    "path": "/home/finn/Pictures/Wallpaper/ayanami_rei.png",
     "command": "qs ipc call theme applyTheme quattro",
     "fontFamily": "Cascadia Code NF",
     "fontSize": 14,

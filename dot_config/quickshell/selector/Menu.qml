@@ -86,7 +86,7 @@ PanelWindow {
         Timer {
             id: unlockKeys
 
-            interval: Themes.animationDuration / 2
+            interval: Themes.animationDuration / 4
 
             onTriggered: item.keysLocked = false
         }
@@ -199,7 +199,6 @@ PanelWindow {
                         cache: false
 
                         visible: loader.active
-
                         playing: loader.isActive
                     }
 

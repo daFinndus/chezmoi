@@ -1,4 +1,6 @@
 import QtQuick
+import Quickshell
+import QtQuick.Layouts
 
 import qs.singletons
 import qs.components
@@ -6,25 +8,64 @@ import qs.components
 Popup {
     id: root
 
-    contentComponent: Rectangle {
-        id: rect
+    contentComponent: Column {
+        id: rootColumn
 
-        color: Themes.background
+        width: 256
+        spacing: Themes.paddingSize
 
-        implicitWidth: text.width
-        implicitHeight: text.height
+        OneLiner {
+            type: "Interface"
+            value: (Network.online ? "Online: " : "Offline: ") + Network.interfaceTitle
+        }
+
+        OneLiner {
+            type: "Type"
+            value: Network.type
+        }
+
+        Separator {}
+
+        OneLiner {
+            type: "Download"
+            value: Network.download
+        }
+
+        OneLiner {
+            type: "Upload"
+            value: Network.upload
+        }
+    }
+
+    component OneLiner: RowLayout {
+        id: rowLayout
+
+        required property string type
+        required property string value
+
+        width: parent.width
 
         Text {
-            id: text
-
-            anchors.centerIn: parent
-
-            text: "Network Widget"
+            font.family: Themes.fontFamily
+            font.pixelSize: Themes.fontSize * 0.7
+            font.capitalization: Font.AllUppercase
 
             color: Themes.shade
 
+            text: rowLayout.type
+        }
+
+        Item {
+            Layout.fillWidth: true
+        }
+
+        Text {
             font.family: Themes.fontFamily
-            font.pixelSize: Themes.fontSize
+            font.pixelSize: Themes.fontSize * 0.7
+
+            color: Themes.shade
+
+            text: rowLayout.value
         }
     }
 }

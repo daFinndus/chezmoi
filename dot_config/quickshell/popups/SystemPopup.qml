@@ -55,7 +55,7 @@ Popup {
                 width: 72
 
                 text: "\uf0ad btop"
-                command: "kitty --class kitty --title btop -e btop"
+                onClick: "kitty --class kitty --title btop -e btop"
             }
         }
 

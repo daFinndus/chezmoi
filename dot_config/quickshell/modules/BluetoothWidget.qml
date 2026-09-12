@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Bluetooth.getText()
+    text: Themes.iconMode ? "\udb80\udcaf" : (mouseArea.containsMouse ? Bluetooth.getText() : "Bluetooth: " + (root.enabled ? "Active" : "Disabled"))
 
     MouseArea {
         id: mouseArea
@@ -17,31 +17,19 @@ Widget {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: Themes.iconMode ? Globals.togglePopup(popup) : Bluetooth.toggleDevice()
+        onClicked: Themes.iconMode ? Globals.togglePopup(popup) : Bluetooth.toggleAdapter()
 
         onWheel: event => {
-            if (event.angleDelta.y > 0) {
-                Bluetooth.deviceIndex = (Bluetooth.deviceIndex - 1 + Bluetooth.deviceCount) % Bluetooth.deviceCount;
-            } else {
-                Bluetooth.deviceIndex = (Bluetooth.deviceIndex + 1) % Bluetooth.deviceCount;
+            // Not needed in icon mode
+            if (Themes.iconMode) {
+                return;
             }
 
-            root.text = Bluetooth.getText(true);
-        }
-
-        onHoveredChanged: {
-            if (!mouseArea.containsMouse)
-                Bluetooth.deviceIndex = 0;
-
-            root.text = Bluetooth.getText(mouseArea.containsMouse);
-        }
-    }
-
-    Connections {
-        target: Bluetooth.deviceSelected
-
-        function onConnectedChanged() {
-            root.text = Bluetooth.getText(mouseArea.containsMouse);
+            if (event.angleDelta.y > 0) {
+                Bluetooth.deviceIndex = (Bluetooth.deviceIndex - 1 + Bluetooth.devices.length) % Bluetooth.devices.length;
+            } else {
+                Bluetooth.deviceIndex = (Bluetooth.deviceIndex + 1) % Bluetooth.devices.length;
+            }
         }
     }
 

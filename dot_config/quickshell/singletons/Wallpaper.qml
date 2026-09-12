@@ -40,24 +40,36 @@ Singleton {
         }
     }
 
+    Process {
+        id: watchWallpaperState
+
+        running: true
+
+        command: ["inotifywait", "-m", "-e", "modify", `${Globals.basePath}/assets/states/wallpaper`]
+
+        stdout: SplitParser {
+            onRead: data => {
+                root.fetchActive();
+            }
+        }
+    }
+
     // Will get wallpapers and store them into wallpaper.json
     function fetchWallpapers(): void {
         Globals.logDebug("Re-fetching wallpapers from directory.");
         getWallpapers.running = true;
-
-        syncWallpapers.start();
     }
 
     Process {
         id: getWallpapers
 
         command: [`${Globals.basePath}/scripts/wallpaper.sh`]
-    }
 
-    // Will retrieve wallpapers from wallpaper.json
-    // Put them into the wallpapers object
-    function reloadWallpapers(): void {
-        wallpaperManager.reloadWallpapers();
+        stdout: StdioCollector {
+            onStreamFinished: {
+                wallpaperManager.reloadWallpapers();
+            }
+        }
     }
 
     Process {
@@ -69,10 +81,16 @@ Singleton {
 
         stdout: SplitParser {
             onRead: data => {
-                Globals.logDebug("Wallpaper directory changed: " + data);
+                Globals.logDebug("Event happened in wallpaper directory: " + data);
                 root.fetchWallpapers();
             }
         }
+    }
+
+    // Will retrieve wallpapers from wallpaper.json
+    // Put them into the wallpapers object
+    function reloadWallpapers(): void {
+        wallpaperManager.reloadWallpapers();
     }
 
     QtObject {
@@ -80,14 +98,16 @@ Singleton {
 
         property FileView file: FileView {
             path: Qt.resolvedUrl(`${Globals.basePath}/assets/files/wallpapers.json`)
-            preload: true
+
+            onLoaded: wallpaperManager.processWallpapers()
         }
 
         function reloadWallpapers(): void {
             root.loaded = false;
-
             file.reload();
+        }
 
+        function processWallpapers(): void {
             try {
                 var text = file.text();
 
@@ -106,15 +126,6 @@ Singleton {
                 console.log("Error parsing wallpapers file:", e);
             }
         }
-    }
-
-    Timer {
-        id: syncWallpapers
-
-        repeat: false
-        interval: 300
-
-        onTriggered: root.reloadWallpapers()
     }
 
     Component.onCompleted: root.fetchWallpapers()

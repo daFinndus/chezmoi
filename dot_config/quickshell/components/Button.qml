@@ -9,12 +9,15 @@ Rectangle {
     property color background: Themes.background
     property color shade: Themes.shade
 
-    property int iconSize: Themes.iconSize * 0.8
+    property int textSize: Themes.fontSize * 0.8
 
     property bool onClickClosePopup: false
 
     required property string text
-    property string command: ""
+
+    // Either pass a command to be executed in a process
+    // Or a function executed from... the function
+    property var onClick: undefined
 
     width: text.width + Themes.paddingSize * 2
     height: text.height + Themes.paddingSize
@@ -27,11 +30,18 @@ Rectangle {
 
     color: mouseArea.containsMouse ? root.shade : root.background
 
+    Behavior on color {
+        ColorAnimation {
+            duration: Themes.animationDuration
+            easing.type: Easing.OutCubic
+        }
+    }
+
     Text {
         id: text
 
         font.family: Themes.fontFamily
-        font.pixelSize: root.iconSize
+        font.pixelSize: root.textSize
 
         text: root.text
         color: mouseArea.containsMouse ? root.background : root.shade
@@ -40,7 +50,7 @@ Rectangle {
 
         Behavior on color {
             ColorAnimation {
-                duration: Themes.animationDuration * 2
+                duration: Themes.animationDuration
                 easing.type: Easing.OutCubic
             }
         }
@@ -60,8 +70,25 @@ Rectangle {
                 Globals.closePopup();
                 debounceCommand.start();
             } else {
-                command.running = true;
+                root.runOnClick();
             }
+        }
+    }
+
+    function runOnClick() {
+        var type = typeof root.onClick;
+        Globals.logDebug("Provided onClick is of type: " + type);
+
+        switch (type) {
+        case "string":
+            command.running = true;
+            break;
+        case "function":
+            root.onClick();
+            break;
+        default:
+            Globals.logError("onClick seems to be invalid for this button.");
+            break;
         }
     }
 
@@ -74,7 +101,7 @@ Rectangle {
         running: false
         interval: Themes.animationDuration
 
-        onTriggered: command.running = true
+        onTriggered: root.runOnClick()
     }
 
     Process {
@@ -82,6 +109,6 @@ Rectangle {
 
         running: false
 
-        command: ["sh", "-c", `${root.command}`]
+        command: ["bash", "-c", `${root.onClick}`]
     }
 }

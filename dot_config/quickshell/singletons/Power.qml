@@ -7,22 +7,32 @@ import Quickshell.Services.UPower
 Singleton {
     id: root
 
-    property int power: PowerProfiles.profile
+    property int powerProfileIndex: PowerProfiles.profile
+    property string powerProfileName: root.getText()
 
+    onPowerProfileIndexChanged: Globals.logDebug("Profile changed to " + root.powerProfileIndex + "!")
+
+    // Will return the profile as a human-readable string
     function getText(): string {
-        switch (power) {
+        switch (root.powerProfileIndex) {
         case 0:
-            return "Profile: Chillin'";
+            return "Power Saver";
         case 1:
-            return "Profile: Balanced";
+            return "Balanced";
         case 2:
-            return "Profile: Performance";
+            return "Performance";
         default:
-            return "Profile: Unknown";
+            return "Unknown";
         }
     }
 
+    function setProfile(profileIndex: int): void {
+        Globals.logDebug("Changing profile to: " + profileIndex);
+
+        PowerProfiles.profile = profileIndex;
+    }
+
     function nextProfile() {
-        PowerProfiles.profile = (power + 1) % 3;
+        PowerProfiles.profile = (root.powerProfileIndex + 1) % 3;
     }
 }

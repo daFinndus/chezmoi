@@ -63,13 +63,21 @@ Singleton {
 
                 root.colors = JSON.parse(text);
 
-                // Make loaders active in Simple.qml theme
-                root.loaded = true;
+                debounceParsing.start();
 
                 Globals.logDebug("Updated colors object from wal-generated json.");
             } catch (e) {
                 console.log("Error parsing colors file:", e);
             }
         }
+    }
+
+    Timer {
+        id: debounceParsing
+
+        interval: 500
+
+        // Parsing needs a debounce timer
+        onTriggered: root.loaded = true
     }
 }

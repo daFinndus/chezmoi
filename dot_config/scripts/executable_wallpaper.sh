@@ -45,10 +45,6 @@ change() {
 
   awww img $WALLPAPER_PATH --transition-type grow --transition-duration 0.75
 
-  echo "$WALLPAPER_PATH" >"$WALLPAPER_FILE"
-  echo "[WALLPAPER] Saved to $WALLPAPER_FILE"
-
-
   echo "[PYWAL] Applying pywal colorscheme..."
 
   wal -i "$WALLPAPER_PATH"
@@ -58,6 +54,9 @@ change() {
   echo "[QUICKSHELL] Making sure theme is re-applied..."
   qs ipc call theme applyTheme $theme
 
+  echo "$WALLPAPER_PATH" >"$WALLPAPER_FILE"
+  echo "[WALLPAPER] Saved to $WALLPAPER_FILE"
+  
   echo "[DUNST] Restarting dunst, killing and disowning..."
   pkill dunst
   dunst &

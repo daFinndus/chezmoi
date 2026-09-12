@@ -7,7 +7,10 @@ import Quickshell.Io
 Singleton {
     id: root
 
+    // The available check is for widgets
+    // The hasBattery is for keep checking for battery or nah
     property bool available: false
+    property bool hasBattery: true
 
     property int percentage: 0
     property string battery: ""
@@ -58,14 +61,14 @@ Singleton {
                 if (root.percentage != 0) {
                     Globals.logDebug("Battery detected!");
                     root.available = true;
-                }
-
-                Globals.logDebug("No battery detected.");
-
-                if (root.status == "Charging" || root.status == "Full") {
-                    root.loading = true;
+                    if (root.status == "Charging" || root.status == "Full") {
+                        root.loading = true;
+                    } else {
+                        root.loading = false;
+                    }
                 } else {
-                    root.loading = false;
+                    Globals.logDebug("No battery detected.");
+                    root.hasBattery = false;
                 }
             }
         }
@@ -86,7 +89,7 @@ Singleton {
     Timer {
         id: refreshBattery
 
-        running: true
+        running: root.hasBattery
         repeat: true
 
         interval: 1000 * 60

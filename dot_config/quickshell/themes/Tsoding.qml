@@ -105,6 +105,7 @@ Scope {
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
         color: Themes.background
+        visible: Colors.loaded && Themes.loaded
 
         anchors {
             bottom: true
@@ -128,10 +129,6 @@ Scope {
 
                     delegate: Loader {
                         id: leftLoader
-
-                        active: Colors.loaded
-
-                        // onActiveChanged: Globals.logDebug("Left panel is loading in! Active is: " + Colors.loaded)
 
                         required property var modelData
                         required property var index
@@ -158,10 +155,6 @@ Scope {
 
                     delegate: Loader {
                         id: rightLoader
-
-                        active: Colors.loaded
-
-                        // onActiveChanged: Globals.logDebug("Right panel is loading in! Active is: " + Colors.loaded)
 
                         required property var modelData
                         required property var index

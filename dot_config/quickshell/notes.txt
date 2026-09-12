@@ -1,3 +1,13 @@
-- Fix double tap on bar
+- Fix initial default sink and source fetching in VolumePopup.qml (maybe fixed)
+
+- Network widget (Show IP, DNS (change DNS button), Listening ports and established connections, WLAN settings (show WLAN, connect via password), Captive Portal)
+- VPN widget
+- Threat indicator (show failed ssh attempts and status, new sockets, apparmor, firewall status, disk encryption, secure boot, kernel lockdown, failed services)
+
+- Fix dynamic wallpaper fetching, reloading and so on doesn't work properly yet
+- Make everything else on this system react to Themes.background, .shade, the border properties and so on
 - Add color pick
 - Infinitely scrolling wallpaper
+
+- Make dotfiles (available for all usernames, structures, etc.)
+- Create installscript (for fresh devices, with dependencies, etc.)

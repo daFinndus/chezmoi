@@ -17,8 +17,4 @@ Singleton {
 
         precision: SystemClock.Minutes
     }
-
-    Component.onCompleted: {
-        Globals.logDebug("Time widget uses colors: " + root.shade + " and " + root.background);
-    }
 }

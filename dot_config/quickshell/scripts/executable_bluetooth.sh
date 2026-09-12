@@ -1,30 +1,39 @@
 #!/bin/bash
 
-DEVICE=$1
-ACTION=$2
+# This will fetch devices after scanning from bluetoothctl
+# It's doing that so weirdly and complicated to keep the interactive session alive
+scan_devices() {
+    {
+        echo "scan on"
+        sleep 5
+        echo "devices"
+        echo "scan off"
+    } |
+        bluetoothctl |
+        awk '/^Device/ {print $2}'
+}
 
-case "$ACTION" in
-connect)
-    output=$(bluetoothctl connect "$DEVICE" 2>&1)
+get_device_info() {
+    local address=$1
+    local info=$(bluetoothctl info "$address")
 
-    if echo "$output" | grep -q "Connection successful"; then
-        notify-send "Bluetooth" "Connected to $DEVICE"
-    else
-        error=$(echo "$output" | grep "Failed" | head -1)
-        notify-send "Bluetooth" "Failed: ${error:-Unknown error}"
-    fi
+    local name=$(echo "$info" | awk -F': ' '/^\s+Name:/      {print $2}')
 
-    echo "Output was: $output"
-    ;;
-disconnect)
+    local paired=$(echo "$info" | awk '/Paired:/    {print ($2=="yes") ? "true" : "false"}')
+    local trusted=$(echo "$info" | awk '/Trusted:/   {print ($2=="yes") ? "true" : "false"}')
+    local connected=$(echo "$info" | awk '/Connected:/ {print ($2=="yes") ? "true" : "false"}')
 
-    output=$(bluetoothctl disconnect "$DEVICE" 2>&1)
-    if echo "$output" | grep -q "Disconnection successful"; then
-        notify-send "Bluetooth" "Disconnected from $DEVICE"
-    else
-        notify-send "Bluetooth" "Failed to disconnect"
-    fi
+    [[ -z "$name" || "$name" =~ ^[0-9A-F]{2}(-[0-9A-F]{2}){5}$ ]] && return 1
 
-    echo "Output was: $output"
-    ;;
-esac
+    echo "{\"address\":\"$address\",\"name\":\"$name\",\"paired\":${paired:-false},\"trusted\":${trusted:-false},\"connected\":${connected:-false}}"
+}
+
+# Get all available devices
+# Fetch relevant information via `bluetoothctl info`
+fetch_devices() {
+    scan_devices | while read -r address; do
+        echo $(get_device_info "$address")
+    done | jq -s '.'
+}
+
+fetch_devices

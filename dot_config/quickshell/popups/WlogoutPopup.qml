@@ -87,7 +87,7 @@ Popup {
                     onClickClosePopup: true
 
                     text: modelData.text
-                    command: modelData.command
+                    onClick: modelData.command
                 }
             }
         }

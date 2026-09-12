@@ -7,30 +7,42 @@ import Quickshell.Services.SystemTray
 import qs.singletons
 import qs.components
 
-Widget {
+Item {
     id: root
 
     width: row.width
+    height: Themes.barHeight
 
-    color: "transparent"
-    shade: "transparent"
-
-    text: ""
+    // These values have to be here
+    // They are not used
+    // This is only to make the alternating thingy in Tsoding work
+    property string background
+    property string shade
 
     Row {
         id: row
 
         anchors.centerIn: parent
 
+        spacing: 12
         padding: 8
-        spacing: 6
 
         Repeater {
             model: SystemTray.items
 
-            delegate: Item {
-                width: 12
-                height: Themes.barHeight
+            delegate: Widget {
+                id: root
+
+                required property var modelData
+
+                width: Themes.iconSize
+                height: Themes.iconSize
+
+                background: "transparent"
+                border.color: "transparent"
+
+                icon: true
+                text: Tray.convertId(modelData.id)
 
                 MouseArea {
                     id: mouseArea
@@ -41,9 +53,6 @@ Widget {
                     cursorShape: Qt.PointingHandCursor
 
                     acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
-
-                    implicitWidth: parent.width
-                    implicitHeight: parent.height
 
                     onClicked: event => {
                         const position = mouseArea.mapToItem(null, event.x, event.y);
@@ -65,15 +74,12 @@ Widget {
                     }
                 }
 
-                IconImage {
-                    id: image
+                Tooltip {
+                    target: root
 
-                    asynchronous: true
+                    available: Themes.iconMode && mouseArea.containsMouse && modelData.title != ""
 
-                    width: parent.width
-                    height: parent.height
-
-                    source: Qt.resolvedUrl(modelData.icon)
+                    text: modelData.title
                 }
             }
         }

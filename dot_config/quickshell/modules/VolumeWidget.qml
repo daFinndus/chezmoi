@@ -7,19 +7,19 @@ import qs.components
 Widget {
     id: root
 
-    text: Volume.getText()
+    text: Themes.iconMode ? "\uefcf" : Audio.getText()
 
     Keys.enabled: !Themes.iconMode
     Keys.onPressed: event => {
         switch (event.key) {
         case Qt.Key_Up:
-            Volume.increaseVolume();
+            Audio.increaseVolume();
             break;
         case Qt.Key_Down:
-            Volume.decreaseVolume();
+            Audio.decreaseVolume();
             break;
         case Qt.Key_M:
-            Volume.toggleVolume();
+            Audio.toggleVolume();
             break;
         }
     }
@@ -42,24 +42,28 @@ Widget {
             } else {
                 switch (event.button) {
                 case Qt.LeftButton:
-                    Volume.toggleVolume();
+                    Audio.setSinkVolume(0);
                     break;
                 case Qt.RightButton:
-                    Volume.startPavucontrol();
+                    Audio.startPavucontrol();
                     break;
                 case Qt.MiddleButton:
-                    Volume.toggleDevice();
+                    Audio.toggleDevice();
                     break;
                 }
             }
         }
 
         onWheel: event => {
-            if (event.angleDelta.y > 0) {
-                Volume.increaseVolume();
-            } else {
-                Volume.decreaseVolume();
+            // Not needed in icon mode
+            if (Themes.iconMode) {
+                return;
             }
+
+            var volumeDelta = ((event.angleDelta.y / 120) * 5) + Audio.sinkVolume;
+            volumeDelta = Globals.clamp(0, 100, volumeDelta);
+
+            Audio.setSinkVolume(volumeDelta);
         }
     }
 

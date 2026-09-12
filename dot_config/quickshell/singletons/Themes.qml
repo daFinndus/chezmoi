@@ -20,10 +20,11 @@ Singleton {
 
         onLoaded: {
             root.themes = JSON.parse(file.text());
-            root.loaded = true;
 
             Globals.logDebug("Themes file is parsed! Applying theme...");
             Themes.applyTheme(root.activeTheme);
+
+            root.loaded = true;
         }
     }
 

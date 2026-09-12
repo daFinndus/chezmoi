@@ -21,6 +21,7 @@ Singleton {
     }
 
     function fetchVPN(): void {
+        Globals.logEverything("Fetching for VPN state...");
         fetchVPN.running = true;
     }
 
