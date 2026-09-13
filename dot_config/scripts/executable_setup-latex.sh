@@ -47,19 +47,17 @@ packages=(
   "texlive-mathscience"
   "texlive-metapost"
   "texlive-pictures"
-  "texlive-xetex"
-)
+  "texlive-xetex")
 
 main() {
   log "Welcome, this script is gonna install LaTeX for you!"
   log "This is used for LaTeX Workshop in VSCode and Arch Linux."
-
+  
   for package in "${packages[@]}"; do
     install_pkg "$package"
   done
-
+  
   check_ngerman
-
   log "Succesfully setup LaTeX!"
 }
 

@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# This script shortcuts certain veracrypt commands.
-# Can't memorize that.
-
 set -euo pipefail
 
 RED="\033[38;2;220;50;50m"
@@ -11,10 +8,10 @@ GREEN="\033[38;2;50;200;50m"
 BLUE="\033[38;2;50;120;220m"
 RESET="\033[0m"
 
-log_step() { echo -e "\n${BLUE}[*]${RESET} $1"; }
-log_success() { echo -e "${GREEN}[+]${RESET} $1"; }
-log_warn() { echo -e "${YELLOW}[!]${RESET} $1"; }
-log_error() { echo -e "${RED}[-]${RESET} $1"; }
+log_step() { echo -e "\n$BLUE[*]$RESET $1"; }
+log_success() { echo -e "$GREEN[+]$RESET $1"; }
+log_warn() { echo -e "$YELLOW[!]$RESET $1"; }
+log_error() { echo -e "$RED[-]$RESET $1"; }
 
 mount() {
   if [[ $# -eq 2 ]]; then
@@ -32,12 +29,12 @@ mount() {
       log_error "Couldn't identify the file path. Please use ABSOLUTE file path. Aborting..."
       exit 1
     fi
-  else 
+  else
     log_success "Using $1 as file path and env variable for password."
 
     FILE=$1
 
-    if [[ -n "$VERA_PASSWORD" ]]; then
+    if [[ -n $VERA_PASSWORD ]]; then
       PASSWORD="$VERA_PASSWORD"
     else
       log_error "Couldn't find password, aborting..."

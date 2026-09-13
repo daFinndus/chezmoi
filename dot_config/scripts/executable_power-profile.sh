@@ -1,22 +1,17 @@
 #!/usr/bin/env bash
-# Auto switch power-profiles-daemon profiles based on AC adapter state
-# Requires: power-profiles-daemon, systemd
 
-# Change this if your adapter name differs!
 AC_PATH="/sys/class/power_supply/AC/online"
 
 set_profile() {
   case "$1" in
-  "1") # AC connected
+  "1")
     powerprofilesctl set performance
     ;;
-  "0") # AC disconnected
-    powerprofilesctl set power-saver
-    ;;
+  "0") powerprofilesctl set power-saver ;;
   esac
 }
 
-if [[ -f "$AC_PATH" ]]; then
+if [[ -f $AC_PATH ]]; then
   AC_STATE=$(cat "$AC_PATH")
   set_profile "$AC_STATE"
 else

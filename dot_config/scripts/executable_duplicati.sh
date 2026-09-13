@@ -1,38 +1,37 @@
 #!/bin/bash
 
-# This script is used to run specific duplicati backups.
-
 RED="\033[38;2;220;50;50m"
 YELLOW="\033[38;2;220;180;0m"
 GREEN="\033[38;2;50;200;50m"
 BLUE="\033[38;2;50;120;220m"
 RESET="\033[0m"
 
-log_step() { echo -e "\n${BLUE}[*]${RESET} $1"; }
-log_success() { echo -e "${GREEN}[+]${RESET} $1"; }
-log_warn() { echo -e "${YELLOW}[!]${RESET} $1"; }
-log_error() { echo -e "${RED}[-]${RESET} $1"; }
+log_step() { echo -e "\n$BLUE[*]$RESET $1"; }
+log_success() { echo -e "$GREEN[+]$RESET $1"; }
+log_warn() { echo -e "$YELLOW[!]$RESET $1"; }
+log_error() { echo -e "$RED[-]$RESET $1"; }
 
 PASSWORD=""
 TOKEN=""
-
 URL="http://192.168.178.74:8200/api/v1"
 
 prompt_password() {
   log_step "Please enter your password."
+
   read -s -r -p "[:] > " PASSWORD
   echo
 
-  if [[ -z "$PASSWORD" ]]; then
+  if [[ -z $PASSWORD ]]; then
     log_error "Please enter a valid password."
     exit 1
   fi
 
   log_step "Please confirm your password."
+
   read -s -r -p "[:] > " CONFIRM
   echo
 
-  if [[ "$PASSWORD" != "$CONFIRM" ]]; then
+  if [[ $PASSWORD != "$CONFIRM" ]]; then
     log_error "Passwords do not match!"
     exit 1
   fi
@@ -44,7 +43,7 @@ test_target_reachability() {
   WORKSTATION=$(ping 192.168.172.80 -w 3 | grep "time")
   DUPLICATI=$(ping 192.168.172.74 -w 3 | grep "time")
 
-  if [[ -n "$DUPLICATI" ]]; then
+  if [[ -n $DUPLICATI ]]; then
     log_success "Duplicati seems reachable."
   else
     log_error "Duplicati seems not reachable, aborting..."
@@ -52,21 +51,19 @@ test_target_reachability() {
   fi
 }
 
-# This is to curl the auth token.
 curl_auth_token() {
   log_step "Going to curl access token..."
 
-  if [[ -z "$PASSWORD" ]]; then
+  if [[ -z $PASSWORD ]]; then
     log_error "Provided no password, aborting!"
     exit 1
   else
-    RESPONSE=$(curl -s -X POST ${URL}/auth/login \
+    RESPONSE=$(curl -s -X POST $URL/auth/login \
       -H "Content-Type: application/json" \
       -d "{\"Password\": \"$PASSWORD\"}")
-
     TOKEN=$(echo "$RESPONSE" | jq -r '.AccessToken')
 
-    if [[ "$TOKEN" != "null" ]]; then
+    if [[ $TOKEN != "null" ]]; then
       log_success "Got token!"
     else
       log_error "Couldn't retrieve token."
@@ -78,49 +75,43 @@ curl_auth_token() {
 IDS=()
 NAMES=()
 
-# This is to retrieve current backups ids
 get_backup_ids() {
   log_step "Going to retrieve backups."
 
-  RESPONSE=$(curl -s ${URL}/backups \
+  RESPONSE=$(curl -s $URL/backups \
     -H "Authorization: Bearer $TOKEN")
-
   IDS=$(echo "$RESPONSE" | jq -r '.[].Backup.ID')
   NAMES=$(echo "$RESPONSE" | jq -r '.[].Backup.Name')
 
   mapfile -t IDS <<<"$IDS"
   mapfile -t NAMES <<<"$NAMES"
 
-  if [[ "${#IDS[@]}" -eq 0 ]]; then
+  if [[ ${#IDS[@]} -eq 0 ]]; then
     log_warn "Didn't find any backups... aborting."
     exit 0
   fi
 }
 
-# This will make sure my HDD is mounted, necessary for one backup.
 mount_hdd() {
-  if [[ "$HOSTNAME" == "bartmoss" ]]; then
+  if [[ $HOSTNAME == "bartmoss" ]]; then
     log_step "Going to make sure HDD is mounted."
 
     MOUNTED=$(df -h | grep "/mnt/hdd")
 
-    if [[ -n "$MOUNTED" ]]; then
+    if [[ -n $MOUNTED ]]; then
       log_success "Found HDD in mounted drives, nice!"
     else
       log_warn "HDD is not mounted, going to mount it now."
-
       sudo mount /dev/sda2 /mnt/hdd -t ntfs
     fi
   fi
 }
 
-# This function will backup everything.
-# Maybe update this to do specific backups later.
 do_backups() {
   log_step "Going to do backups..."
 
   for ((i = 0; i < ${#IDS[@]}; i++)); do
-    if [[ "${NAMES[i]}" != *"Local"* && "$HOSTNAME" != "bartmoss" ]]; then
+    if [[ ${NAMES[i]} != *"Local"* && $HOSTNAME != "bartmoss" ]]; then
       log_warn "Skipping backup ${NAMES[i]} since it is not a local backup and we are not on bartmoss.\n"
       continue
     fi
@@ -129,23 +120,22 @@ do_backups() {
 
     log_success "Going to run update for backup: ${NAMES[i]}"
 
-    RESPONSE=$(curl -s -X POST ${URL}/backup/${IDS[i]}/run \
+    RESPONSE=$(curl -s -X POST $URL/backup/${IDS[i]}/run \
       -H "Authorization: Bearer $TOKEN")
 
-    if [[ "$RESPONSE" == *"OK"* ]]; then
+    if [[ $RESPONSE == *"OK"* ]]; then
       log_success "Authorized backup for ${NAMES[i]}."
     else
       log_error "Backup progress failed for ${NAMES[i]}."
     fi
-
     sleep 3
-  done
 
+  done
   echo ""
   log_success "Successfully initiated all backups!"
 }
 
-if [[ -z "$DUPLICATI_PASSWORD" ]]; then
+if [[ -z $DUPLICATI_PASSWORD ]]; then
   prompt_password
 else
   PASSWORD="$DUPLICATI_PASSWORD"

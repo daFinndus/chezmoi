@@ -72,6 +72,14 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	name = "float-bitwarden-chrome",
+	match = { class = "chrome-nngceckbapebfimnlniiiahkandclblb-Default" },
+	size = { 800, 600 },
+	center = true,
+	float = true,
+})
+
+hl.window_rule({
 	name = "float-virt-manager",
 	match = { class = "virt-manager" },
 	size = { 1200, 800 },
