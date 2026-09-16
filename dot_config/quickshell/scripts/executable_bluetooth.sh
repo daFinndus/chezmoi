@@ -23,17 +23,29 @@ get_device_info() {
     local trusted=$(echo "$info" | awk '/Trusted:/   {print ($2=="yes") ? "true" : "false"}')
     local connected=$(echo "$info" | awk '/Connected:/ {print ($2=="yes") ? "true" : "false"}')
 
-    [[ -z "$name" || "$name" =~ ^[0-9A-F]{2}(-[0-9A-F]{2}){5}$ ]] && return 1
+    [[ -z $name || $name =~ ^[0-9A-F]{2}(-[0-9A-F]{2}){5}$ ]] && return 1
 
-    echo "{\"address\":\"$address\",\"name\":\"$name\",\"paired\":${paired:-false},\"trusted\":${trusted:-false},\"connected\":${connected:-false}}"
+    jq -n \
+        --arg address "$address" \
+        --arg name "$name" \
+        --argjson paired "${paired:-false}" \
+        --argjson trusted "${trusted:-false}" \
+        --argjson connected "${connected:-false}" \
+        '{
+	    address: $address,
+		name: $name,
+        paired: $paired,
+        trusted: $trusted,
+        connected: $connected
+    }'
 }
 
 # Get all available devices
 # Fetch relevant information via `bluetoothctl info`
 fetch_devices() {
     scan_devices | while read -r address; do
-        echo $(get_device_info "$address")
-    done | jq -s '.'
+        get_device_info "$address"
+    done | jq -s "."
 }
 
 fetch_devices

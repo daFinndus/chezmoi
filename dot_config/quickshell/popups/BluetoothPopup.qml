@@ -145,25 +145,10 @@ Popup {
 
         required property bool connected
 
-        onConnectedChanged: device.setColor(mouseArea.containsMouse)
+        onConnectedChanged: Globals.setColor(device, device.connected, mouseArea.containsMouse)
 
         property color background: device.connected ? Themes.shade : Themes.background
         property color shade: device.connected ? Themes.background : Themes.shade
-
-        // This is for giving color based on default color, active state, and hover
-        function setColor(inverted: bool): void {
-            if (!device.connected) {
-                if (inverted) {
-                    device.background = Themes.shade;
-                    device.shade = Themes.background;
-                    device.border.width = 0;
-                } else {
-                    device.background = Themes.background;
-                    device.shade = Themes.shade;
-                    device.border.width = 1;
-                }
-            }
-        }
 
         width: rootColumn.width
         height: 32
@@ -173,6 +158,13 @@ Popup {
         border.color: Themes.shade
         border.width: device.connected ? 0 : 1
 
+        Behavior on color {
+            ColorAnimation {
+                duration: Themes.animationDuration
+                easing.type: Easing.OutCubic
+            }
+        }
+
         MouseArea {
             id: mouseArea
 
@@ -180,7 +172,7 @@ Popup {
             cursorShape: Qt.PointingHandCursor
 
             hoverEnabled: true
-            onHoveredChanged: device.setColor(mouseArea.containsMouse)
+            onHoveredChanged: Globals.setColor(device, device.connected, mouseArea.containsMouse)
 
             onClicked: device.onClick()
         }

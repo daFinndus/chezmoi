@@ -27,7 +27,7 @@ ShellRoot {
         active: false
         source: root.themes[Themes.activeTheme] ?? Qt.resolvedUrl("themes/Quattro.qml")
 
-        DesktopArea {}
+        // DesktopArea {}
         WallpaperArea {}
     }
 

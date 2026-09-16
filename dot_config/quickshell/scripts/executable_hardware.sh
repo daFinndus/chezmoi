@@ -121,36 +121,6 @@ fetch_disk() {
     printf '{"rootTotal":%s, "rootUsed":%s, "rootLoad":%s, "homeTotal":%s, "homeUsed":%s, "homeLoad":%s}\n' "${rootTotal:-0}" "${rootUsed:-0}" "${rootLoad:-0}" "${homeTotal:-0}" "${homeUsed:-0}" "${homeLoad:-0}"
 }
 
-fetch_net() {
-    local iface=$1
-    [[ -z "$iface" ]] && printf '{"rx":"0 B/s","tx":"0 B/s"}\n' && return
-
-    local rx1 tx1 rx2 tx2
-    rx1=$(awk -v i="${iface}:" '$1==i {print $2}' /proc/net/dev)
-    tx1=$(awk -v i="${iface}:" '$1==i {print $10}' /proc/net/dev)
-
-    sleep 1
-
-    rx2=$(awk -v i="${iface}:" '$1==i {print $2}' /proc/net/dev)
-    tx2=$(awk -v i="${iface}:" '$1==i {print $10}' /proc/net/dev)
-
-    format_speed() {
-        local b=$1
-
-        if ((b >= 1048576)); then
-            awk "BEGIN {printf \"%.1f MB/s\", $b/1048576}"
-        elif ((b >= 1024)); then
-            awk "BEGIN {printf \"%.0f KB/s\", $b/1024}"
-        else
-            echo "${b} B/s"
-        fi
-    }
-
-    printf '{"rx":"%s","tx":"%s"}\n' \
-        "$(format_speed $((rx2 - rx1)))" \
-        "$(format_speed $((tx2 - tx1)))"
-}
-
 case "$1" in
 cpu) fetch_cpu ;;
 ram) fetch_ram ;;

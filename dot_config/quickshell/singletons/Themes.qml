@@ -8,8 +8,6 @@ Singleton {
     id: root
 
     property string activeTheme: "tsoding"
-
-    property bool loaded: false
     property var themes: []
 
     property FileView file: FileView {
@@ -18,14 +16,7 @@ Singleton {
 
         watchChanges: true
 
-        onLoaded: {
-            root.themes = JSON.parse(file.text());
-
-            Globals.logDebug("Themes file is parsed! Applying theme...");
-            Themes.applyTheme(root.activeTheme);
-
-            root.loaded = true;
-        }
+        onLoaded: root.themes = JSON.parse(file.text())
     }
 
     // Font stuff
@@ -87,11 +78,6 @@ Singleton {
     }
 
     function applyTheme(theme): void {
-        if (!root.loaded) {
-            Globals.logDebug("Themes file not parsed yet, aborting...");
-            return;
-        }
-
         Globals.logDebug("Setting theme: " + theme);
 
         theme = root.themes.find(composition => composition.name === theme);

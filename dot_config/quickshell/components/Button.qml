@@ -9,11 +9,27 @@ Rectangle {
     property color background: Themes.background
     property color shade: Themes.shade
 
+    // This only needs to be done, if an active value is provided
+    // This is used for buttons like audiosinks, powerprofiles, etc.
+    onActiveChanged: Globals.setColor(root, root.active, mouseArea.containsMouse)
+
+    // This has to be done, so if the background values change
+    // E.g. through file parsing, the values in the components are updated
+    Connections {
+        target: Themes
+
+        function onShadeChanged() {
+            Globals.setColor(root, root.active, mouseArea.containsMouse);
+        }
+    }
+
     property int textSize: Themes.fontSize * 0.8
 
+    // Shall the button close the corresponding popup
     property bool onClickClosePopup: false
 
     required property string text
+    property bool active: false
 
     // Either pass a command to be executed in a process
     // Or a function executed from... the function
@@ -24,11 +40,11 @@ Rectangle {
 
     // Border color is darker than text color
     border.color: Qt.rgba(root.shade.r, root.shade.g, root.shade.b, 0.25)
-    border.width: mouseArea.containsMouse ? 0 : 1
+    border.width: 1
 
     radius: Themes.borderRadius
 
-    color: mouseArea.containsMouse ? root.shade : root.background
+    color: root.background
 
     Behavior on color {
         ColorAnimation {
@@ -44,7 +60,7 @@ Rectangle {
         font.pixelSize: root.textSize
 
         text: root.text
-        color: mouseArea.containsMouse ? root.background : root.shade
+        color: root.shade
 
         anchors.centerIn: parent
 
@@ -63,6 +79,7 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
 
         hoverEnabled: true
+        onHoveredChanged: Globals.setColor(root, root.active, mouseArea.containsMouse)
         onClicked: {
             // Either wait for a closing popup
             // Or execute the function directly
@@ -77,7 +94,6 @@ Rectangle {
 
     function runOnClick() {
         var type = typeof root.onClick;
-        Globals.logDebug("Provided onClick is of type: " + type);
 
         switch (type) {
         case "string":

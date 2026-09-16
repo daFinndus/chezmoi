@@ -23,12 +23,26 @@ Singleton {
         return index === -1 ? 0 : index;
     }
 
-    // This is for transparency
+    // This is to make sure a value is between two anchors
     // Only used for the Quattro bar currently
     function clamp(minimumValue: double, maximumValue: double, currentValue: double): double {
         return Math.min(maximumValue, Math.max(minimumValue, currentValue));
     }
 
+    // This is for giving color based on active state and (mostly) hover
+    // Used a lot in different popups
+    function setColor(component: var, active: bool, inverted: bool): void {
+        const invert = active || inverted;
+
+        component.background = invert ? Themes.shade : Themes.background;
+        component.shade = invert ? Themes.background : Themes.shade;
+        component.border.width = invert ? 0 : 1;
+    }
+
+    // =================== Popups ====================
+    //
+    //
+    //
     // Relevant for opening a maximum of one single popup a time
     property QtObject activePopup: null
 
@@ -53,6 +67,11 @@ Singleton {
         }
     }
 
+    // =================== Logging ====================
+    //
+    //
+    //
+    //
     property int verbosity: 3
 
     function logError(message): void {

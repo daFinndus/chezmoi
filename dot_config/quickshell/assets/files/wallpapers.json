@@ -1,5 +1,20 @@
 [
   {
+    "name": "alexandre_cabanel",
+    "path": "/home/finn/Pictures/Wallpaper/alexandre_cabanel.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/alexandre_cabanel.png"
+  },
+  {
+    "name": "arch_larp",
+    "path": "/home/finn/Pictures/Wallpaper/arch_larp.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/arch_larp.jpg"
+  },
+  {
+    "name": "arch_larp_the_second",
+    "path": "/home/finn/Pictures/Wallpaper/arch_larp_the_second.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/arch_larp_the_second.png"
+  },
+  {
     "name": "ash_and_gengar",
     "path": "/home/finn/Pictures/Wallpaper/ash_and_gengar.gif",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/ash_and_gengar.gif"
@@ -25,9 +40,24 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/cat_girl.png"
   },
   {
+    "name": "chainsmoker_cat",
+    "path": "/home/finn/Pictures/Wallpaper/chainsmoker_cat.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/chainsmoker_cat.jpg"
+  },
+  {
     "name": "cherryblossom",
     "path": "/home/finn/Pictures/Wallpaper/cherryblossom.jpeg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/cherryblossom.jpeg"
+  },
+  {
+    "name": "cloudinsect",
+    "path": "/home/finn/Pictures/Wallpaper/cloudinsect.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/cloudinsect.jpg"
+  },
+  {
+    "name": "coastline_mountain",
+    "path": "/home/finn/Pictures/Wallpaper/coastline_mountain.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/coastline_mountain.jpg"
   },
   {
     "name": "cyberpunk_aesthetic",
@@ -70,6 +100,11 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/emerald.gif"
   },
   {
+    "name": "falling_man",
+    "path": "/home/finn/Pictures/Wallpaper/falling_man.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/falling_man.png"
+  },
+  {
     "name": "forest",
     "path": "/home/finn/Pictures/Wallpaper/forest.gif",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/forest.gif"
@@ -78,11 +113,6 @@
     "name": "future",
     "path": "/home/finn/Pictures/Wallpaper/future.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/future.jpg"
-  },
-  {
-    "name": "futuristic_city",
-    "path": "/home/finn/Pictures/Wallpaper/futuristic_city.gif",
-    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/futuristic_city.gif"
   },
   {
     "name": "gavryl_tampil",
@@ -98,6 +128,11 @@
     "name": "ghost",
     "path": "/home/finn/Pictures/Wallpaper/ghost.gif",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/ghost.gif"
+  },
+  {
+    "name": "ghost_in_the_shell",
+    "path": "/home/finn/Pictures/Wallpaper/ghost_in_the_shell.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/ghost_in_the_shell.png"
   },
   {
     "name": "girl",
@@ -120,6 +155,16 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/hamato.gif"
   },
   {
+    "name": "harish_rajan",
+    "path": "/home/finn/Pictures/Wallpaper/harish_rajan.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/harish_rajan.jpg"
+  },
+  {
+    "name": "hatsune_miku",
+    "path": "/home/finn/Pictures/Wallpaper/hatsune_miku.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/hatsune_miku.png"
+  },
+  {
     "name": "hyprpaper",
     "path": "/home/finn/Pictures/Wallpaper/hyprpaper.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/hyprpaper.jpg"
@@ -128,6 +173,11 @@
     "name": "itachi_uchiha_moon",
     "path": "/home/finn/Pictures/Wallpaper/itachi_uchiha_moon.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/itachi_uchiha_moon.jpg"
+  },
+  {
+    "name": "itachi_uchiha",
+    "path": "/home/finn/Pictures/Wallpaper/itachi_uchiha.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/itachi_uchiha.png"
   },
   {
     "name": "japan",
@@ -153,6 +203,11 @@
     "name": "kitty",
     "path": "/home/finn/Pictures/Wallpaper/kitty.gif",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/kitty.gif"
+  },
+  {
+    "name": "lani_cafe",
+    "path": "/home/finn/Pictures/Wallpaper/lani_cafe.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/lani_cafe.jpg"
   },
   {
     "name": "late_drink",
@@ -190,6 +245,11 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/lynae.jpg"
   },
   {
+    "name": "madara",
+    "path": "/home/finn/Pictures/Wallpaper/madara.jpeg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/madara.jpeg"
+  },
+  {
     "name": "mahoraga",
     "path": "/home/finn/Pictures/Wallpaper/mahoraga.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/mahoraga.jpg"
@@ -200,6 +260,11 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/mid_autumn_festival.jpg"
   },
   {
+    "name": "monochrome_sculpture",
+    "path": "/home/finn/Pictures/Wallpaper/monochrome_sculpture.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/monochrome_sculpture.png"
+  },
+  {
     "name": "mountain_landscape",
     "path": "/home/finn/Pictures/Wallpaper/mountain_landscape.png",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/mountain_landscape.png"
@@ -208,6 +273,16 @@
     "name": "mount_fuji",
     "path": "/home/finn/Pictures/Wallpaper/mount_fuji.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/mount_fuji.jpg"
+  },
+  {
+    "name": "neon_genesis_evangelion",
+    "path": "/home/finn/Pictures/Wallpaper/neon_genesis_evangelion.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/neon_genesis_evangelion.png"
+  },
+  {
+    "name": "neon_genesis_rei",
+    "path": "/home/finn/Pictures/Wallpaper/neon_genesis_rei.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/neon_genesis_rei.png"
   },
   {
     "name": "neverness_to_everness",
@@ -223,6 +298,11 @@
     "name": "panam",
     "path": "/home/finn/Pictures/Wallpaper/panam.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/panam.jpg"
+  },
+  {
+    "name": "pavel_kondrashov",
+    "path": "/home/finn/Pictures/Wallpaper/pavel_kondrashov.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/pavel_kondrashov.jpg"
   },
   {
     "name": "persona_5",
@@ -245,14 +325,34 @@
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/relaxo.gif"
   },
   {
+    "name": "rosario_vampire",
+    "path": "/home/finn/Pictures/Wallpaper/rosario_vampire.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/rosario_vampire.jpg"
+  },
+  {
     "name": "shotaro_kaneda",
     "path": "/home/finn/Pictures/Wallpaper/shotaro_kaneda.png",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/shotaro_kaneda.png"
   },
   {
+    "name": "solitaire",
+    "path": "/home/finn/Pictures/Wallpaper/solitaire.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/solitaire.jpg"
+  },
+  {
     "name": "star",
     "path": "/home/finn/Pictures/Wallpaper/star.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/star.jpg"
+  },
+  {
+    "name": "street_sundown",
+    "path": "/home/finn/Pictures/Wallpaper/street_sundown.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/street_sundown.png"
+  },
+  {
+    "name": "swimming_woman",
+    "path": "/home/finn/Pictures/Wallpaper/swimming_woman.png",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/swimming_woman.png"
   },
   {
     "name": "tight_room",
@@ -263,5 +363,15 @@
     "name": "tranquility",
     "path": "/home/finn/Pictures/Wallpaper/tranquility.jpg",
     "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/tranquility.jpg"
+  },
+  {
+    "name": "windows_95",
+    "path": "/home/finn/Pictures/Wallpaper/windows_95.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/windows_95.jpg"
+  },
+  {
+    "name": "zhang_lu",
+    "path": "/home/finn/Pictures/Wallpaper/zhang_lu.jpg",
+    "command": "/home/finn/.config/scripts/wallpaper.sh /home/finn/Pictures/Wallpaper/zhang_lu.jpg"
   }
 ]

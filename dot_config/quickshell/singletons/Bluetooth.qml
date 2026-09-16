@@ -25,8 +25,7 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                Globals.logDebug("Just ran: " + bluetoothAction.command + ".");
-                Globals.logDebug("Output: " + this.text.trim());
+                //
             }
         }
     }
@@ -79,7 +78,6 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.devices = JSON.parse(this.text.trim());
-                Globals.logDebug("Found bluetoothdevices: " + root.devices.length);
             }
         }
     }

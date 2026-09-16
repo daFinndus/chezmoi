@@ -8,7 +8,6 @@ Singleton {
     id: root
 
     property bool loaded: false
-
     property var colors: []
 
     signal colorReloadRequested

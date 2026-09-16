@@ -31,7 +31,7 @@ Item {
     Rectangle {
         id: overlay
 
-        property double calculatedPercentage: (root.actualValue - root.minimumValue) / (root.maximumValue - root.minimumValue)
+        property double calculatedPercentage: Math.min(1, ((root.actualValue - root.minimumValue) / (root.maximumValue - root.minimumValue)))
 
         width: Math.max(height, parent.width * overlay.calculatedPercentage)
         height: parent.height

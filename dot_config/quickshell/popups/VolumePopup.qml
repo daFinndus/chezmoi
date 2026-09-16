@@ -176,10 +176,10 @@ Popup {
 
         property bool active: type === "sink" ? section.identifier === Audio.defaultSink : section.identifier === Audio.defaultSource
 
-        onActiveChanged: section.setColor(mouseArea.containsMouse)
+        onActiveChanged: Globals.setColor(section, section.active, mouseArea.containsMouse)
 
-        property color shade: active ? Themes.background : Themes.shade
         property color background: active ? Themes.shade : Themes.background
+        property color shade: active ? Themes.background : Themes.shade
 
         width: rootColumn.width
         height: row.height
@@ -196,21 +196,6 @@ Popup {
             }
         }
 
-        // This is for giving color based on default color, active state, and hover
-        function setColor(inverted: bool): void {
-            if (!section.active) {
-                if (inverted) {
-                    section.background = Themes.shade;
-                    section.shade = Themes.background;
-                    section.border.width = 0;
-                } else {
-                    section.background = Themes.background;
-                    section.shade = Themes.shade;
-                    section.border.width = 1;
-                }
-            }
-        }
-
         MouseArea {
             id: mouseArea
 
@@ -218,7 +203,7 @@ Popup {
             cursorShape: Qt.PointingHandCursor
 
             hoverEnabled: true
-            onHoveredChanged: section.setColor(mouseArea.containsMouse)
+            onHoveredChanged: Globals.setColor(section, section.active, mouseArea.containsMouse)
 
             onClicked: section.onClick()
         }
