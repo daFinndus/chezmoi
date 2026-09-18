@@ -6,7 +6,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("dunst")
 
 	-- Get active wallpaper on boot
-	hl.exec_cmd(execWallpaper)
+	hl.exec_cmd(wallpaperScript)
 
 	-- Set dark mode and remote button layouts
 	hl.exec_cmd(dark)

@@ -123,26 +123,22 @@ alias lx='eza -lbhHigUmuSa@'
 alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
-alias metasploit='sudo /home/finn/.config/scripts/setup-metasploit.sh'
+alias metasploit="sudo $XDG_DATA_HOME/../bin/setup-metasploit.sh"
 
-alias wallpaper='/home/finn/.config/scripts/wallpaper.sh'
-alias wireguard='/home/finn/.config/scripts/wireguard.sh'
+alias wallpaper='$XDG_DATA_HOME/../bin/set-wallpaper.sh'
 
 alias delamain='cd ~/Coding/delamain && uv run python main.py'
+alias poke-calc='cd ~/Coding/poke-calc && uv run python main.py'
 
-alias duplicati='/home/finn/.config/scripts/duplicati.sh'
-alias pihole='/home/finn/.config/scripts/pihole.sh'
+alias duplicati='$XDG_DATA_HOME/../bin/run-backups.sh'
+alias pihole='$XDG_DATA_HOME/../toggle-pihole.sh'
 
-alias rmshit='python /home/finn/.config/scripts/rmshit.py'
+alias rmshit='python $XDG_DATA_HOME/../bin/rmshit.py'
 alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist'
 
 alias bash='kitty --config ~/.config/kitty/clean.conf bash & disown'
 
 alias binds='bat -p ~/.config/hypr/binds.conf'
-
-alias poke-calc='cd ~/Coding/poke-calc && uv run python main.py'
-
-alias qs-ipc='/home/finn/.config/scripts/qs-ipc.sh'
 
 alias shfmt-alias='shfmt -i 2 -w -s'
 

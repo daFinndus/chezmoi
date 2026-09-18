@@ -1,178 +1,67 @@
-- Network widget (Bandwidth per application (maybe only the biggest ones, QR code for network, Captive Portal)
-- VPN widget (Display connected VPN, used interface and ip)
+- Network widget (Bandwidth per application (maybe only the biggest ones), QR code for network, Captive Portal)
+- VPN widget (Display connected VPN, used interface and ip, speed, endpoint)
 - Threat indicator (show failed ssh attempts and status, new sockets, apparmor, firewall status, listening ports, established connectsions, disk encryption, secure boot, kernel lockdown, failed services)
+- Distinguish updates, security, misc, etc. (arch audit)
+- Battery widget (estimated time, percentage, etc.)
 
 - Make everything else on this system react to Themes.background, .shade, the border properties and so on
+
+# Theme System
+
+## Theme data
+
+- [ ] Decide theme directory location
+- [ ] Create `themes/`
+- [ ] Create/migrate `themes.json` with all theme definitions
+- [ ] Create `active.json` containing the currently active theme
+- [ ] Define the theme override structure
+- [ ] Define theme value precedence:
+  - [ ] Theme definition
+  - [ ] Active theme
+  - [ ] Overrides
+  - [ ] Effective theme
+
+## Theme application
+
+- [ ] Create `apply-theme.sh`
+- [ ] Read active theme and overrides
+- [ ] Generate Hyprland configuration
+- [ ] Generate Dunst configuration
+- [ ] Generate Rofi configuration
+- [ ] Generate VS Code configuration
+- [ ] Generate Obsidian configuration
+- [ ] Reload/restart affected applications
+- [ ] Keep generated configurations separate from chezmoi-managed files
+
+## Quickshell / IPC
+
+- [ ] Create `ThemeManager` singleton
+- [ ] Load `themes.json`
+- [ ] Load `active.json`
+- [ ] Expose effective theme values to Quickshell
+- [ ] Add `theme.get` IPC handler
+- [ ] Add `theme.set` IPC handler
+- [ ] Add `theme.override` IPC handler
+- [ ] Add `theme.reset-overrides` IPC handler
+- [ ] Write theme changes to `active.json`
+- [ ] Run `apply-theme.sh` after changes
+- [ ] Watch `active.json` for external changes
+
+## Integration
+
+- [ ] Add theme files/scripts to chezmoi
+- [ ] Convert application configurations to consume generated theme data
+- [ ] Ensure theme changes do not modify chezmoi-managed source files
+- [ ] Test changing themes from Quickshell
+- [ ] Test changing themes through IPC
+- [ ] Test external changes to `active.json`
+- [ ] Test a fresh chezmoi deployment
+
 - Add color pick
 - Infinitely scrolling wallpaper
 
 - Make dotfiles (available for all usernames, structures, etc.)
 - Create installscript (for fresh devices, with dependencies, etc.)
-
-
-1. 🔐 Security / Security Posture widget — #1 recommendation
-
-3. 🌐 Network security widget
-
-4. 👁️ "Network activity" / connection monitor
-
-Separate from your network widget.
-
-Tiny indicator:
-
-↓ 2.4 MB/s   ↑ 184 KB/s
-
-But clicking it could give:
-
-NETWORK ACTIVITY
-
-RX       2.4 MB/s
-TX       184 KB/s
-
-Connections
-────────────────
-firefox       23
-discord        8
-steam          4
-ssh            1
-
-You could make this particularly fun with ss, /proc, or something like nethogs.
-
-For your cybersecurity interests, I'd make the connection list the interesting part rather than the bandwidth graph.
-
-5. 🔥 Firewall widget
-
-This could either be its own widget or part of Security.
-
-For example:
-
-󰒃
-
-Green/normal when:
-
-nftables: active
-
-Warning when:
-
-nftables: inactive
-
-And click:
-
-FIREWALL
-
-Status       ACTIVE
-Backend      nftables
-
-Rules        27
-Blocked      183
-
-If you're using nftables, you could even expose a little live blocked-packet counter.
-
-That would be sick visually.
-
-6. 📦 Update/security update widget
-
-You already have UpdateWidget, so I'd extend it rather than create another one.
-
-Instead of:
-
-󰏗 12
-
-you could distinguish:
-
-󰏗 12
-
-normal updates
-
-versus:
-
-󰒃 2
-
-security-relevant updates.
-
-For Arch, you could optionally integrate arch-audit alongside pacman updates. A security-posture project I found also uses pending package updates and optional arch-audit results as part of its checks.
-
-Some non-security ones I'd definitely consider
-7. 🔋 Battery
-
-If you're using the laptop:
-
-󰁹 87%
-
-with charging state and maybe estimated time.
-
-Probably essential on the notebook, less interesting on the desktop.
-
-8. 🌡️ Hardware temperature
-
-You already have your System widget, but I'd consider a tiny:
-
-󰔏 54°C
-
-especially because you have the 9070 XT.
-
-Click:
-
-CPU    52°C
-GPU    48°C
-SSD    37°C
-
-No giant graphs necessary.
-
-9. 💾 Disk / storage
-
-Something like:
-
-󰋊 63%
-
-Click:
-
-ROOT     63%
-HOME     41%
-GAMES    78%
-
-And make it only appear/change color at something like >80%.
-
-10. 🔒 VPN
-
-If you ever use one, this is absolutely worth having.
-
-󰖂
-
-Connected:
-
-󰖂 DE-FRA
-
-Disconnected:
-
-󰖂
-
-And clicking gives:
-
-VPN
-
-Status      CONNECTED
-Interface   wg0
-Endpoint    ...
-RX          ...
-TX          ...
-
-[Disconnect]
-
-I'd actually put this next to Network.
-
-And one slightly more insane idea
-🕵️ "Threat Monitor"
-
-This could be your cybersecurity nerd widget.
-
-Normally:
-
-󰒃
-
-Everything normal.
-
-But it monitors things like:
 
 failed SSH authentication attempts
 newly opened listening ports
@@ -184,14 +73,6 @@ firewall state changes
 Secure Boot / kernel lockdown state
 unusual authentication activity
 
-Then suddenly:
-
-󰒃 3
-
-Click:
-
-THREAT MONITOR
-
 !  4 failed SSH attempts
    2 min ago
 
@@ -202,14 +83,3 @@ THREAT MONITOR
 !  AppArmor denial
    firefox
    11:42
-
-──────────────────
-
-[Open journal]
-[Inspect]
-
-That's the one I'd personally build if this were my Quickshell config.
-
-Not because it's going to replace proper monitoring—it won't—but because it gives you a very low-noise early warning system.
-
-AppArmor, for example, explicitly exposes enforce/complain status and denied operations through its tooling/logging, so there's useful information to surface rather than inventing a meaningless score.

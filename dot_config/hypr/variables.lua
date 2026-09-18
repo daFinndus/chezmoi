@@ -10,8 +10,7 @@ browser = "helium-browser"
 
 screenshot = 'hyprshot -m region -o "$HOME/Pictures/Screenshots"'
 
-toggleKeyboard = "/home/finn/.config/scripts/toggle-keyboard.sh"
-execWallpaper = "/home/finn/.config/scripts/wallpaper.sh"
+wallpaperScript = os.getenv("XDG_DATA_HOME") .. "/../bin/set-wallpaper.sh"
 
 dark = 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
 button = "gsettings set org.gnome.desktop.wm.preferences button-layout ':'"

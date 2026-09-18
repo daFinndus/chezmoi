@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script will fetch the temperature and humidity from my sensors
+
 source ~/.config/shell/environment.sh
 
 log() {

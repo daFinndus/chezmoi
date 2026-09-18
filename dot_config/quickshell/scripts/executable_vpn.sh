@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script will fetch all running VPNs
+
 fetch_vpn() {
     local -a connections=()
     declare -A seen

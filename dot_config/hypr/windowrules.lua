@@ -74,7 +74,6 @@ hl.window_rule({
 hl.window_rule({
 	name = "float-bitwarden-chrome",
 	match = { class = "chrome-nngceckbapebfimnlniiiahkandclblb-Default" },
-	size = { 800, 600 },
 	center = true,
 	float = true,
 })

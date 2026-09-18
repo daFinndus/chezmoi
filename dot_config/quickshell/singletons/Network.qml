@@ -14,10 +14,23 @@ Singleton {
 
     property int downloadSpeed: 0
     property int maximumDownloadSpeed: 0
+
+    onDownloadSpeedChanged: {
+        if (root.downloadSpeed > root.maximumDownloadSpeed) {
+            root.maximumDownloadSpeed = root.downloadSpeed;
+        }
+    }
+
     property int uploadSpeed: 0
     property int maximumUploadSpeed: 0
 
-    property string formattedSpeed: Network.download + " B/s " + Network.upload + " B/s"
+    onUploadSpeedChanged: {
+        if (root.uploadSpeed > root.maximumUploadSpeed) {
+            root.maximumUploadSpeed = root.uploadSpeed;
+        }
+    }
+
+    property string formattedSpeed: Network.downloadSpeed + " B/s " + Network.uploadSpeed + " B/s"
 
     property string ipAddress: ""
     property string gatewayAddress: ""
@@ -25,6 +38,9 @@ Singleton {
 
     property string activeWirelessNetwork: ""
     property var wirelessNetworks: []
+
+    property var processMap: ({})
+    property var networkProcesses: []
 
     // This is used to toggle between display-states
     property bool displayToggler: false
@@ -292,20 +308,23 @@ Singleton {
     }
 
     // This will return a string with a human readable format and size extension
-    function formatNetworkSpeed(speed: int): string {
-        var kilobit = 1024;
-        var megabit = (kilobit ** 2);
-        var gigabit = (megabit ** 2);
+    function formatNetworkSpeed(speed: real, bits: bool): string {
+        var units = bits ? ["bit/s", "kbit/s", "Mbit/s", "Gbit/s"] : ["B/s", "kB/s", "MB/s", "GB/s"];
+        var divider = 1000;
 
-        if (speed >= gigabit) {
-            return Math.round(speed / gigabit) + " Gbit/s";
-        } else if (speed >= megabit) {
-            return Math.round(speed / megabit) + " Mbit/s";
-        } else if (speed >= kilobit) {
-            return Math.round(speed / kilobit) + " kbit/s";
-        } else {
-            return speed + " bit/s";
+        if (!bits) {
+            speed = speed / 8;
         }
+
+        var unit = 0;
+
+        // Iterate through speed until it's smaller than 1000
+        while (speed >= divider && unit < units.length - 1) {
+            speed = speed / divider;
+            unit++;
+        }
+
+        return Math.round(speed) + " " + units[unit];
     }
 
     Timer {
@@ -315,6 +334,103 @@ Singleton {
         repeat: true
 
         onTriggered: fetchSpeed.running = true
+    }
+
+    // =================== Network Processes ====================
+    //
+    //
+    //
+    // This will fetch up- and downloading processes
+    Process {
+        id: getNetworkProcesses
+
+        running: false
+        command: ["nethogs", "-t", "-d", "3", "-v", "2"]
+
+        property var activePids: []
+
+        stdout: SplitParser {
+            onRead: data => {
+                if (data.startsWith("Unknown") || data.trim() === "") {
+                    return;
+                } else {
+                    if (data.startsWith("Refreshing")) {
+                        // Remove stale entries
+                        // Basically every pid that wasn't in the last nethog output
+                        for (const pid in root.processMap) {
+                            if (!getNetworkProcesses.activePids.includes(pid)) {
+                                Globals.logDebug("Pid " + pid + " is not active anymore... removing.");
+
+                                delete root.processMap[pid];
+                            }
+                        }
+
+                        // Convert processMap to networkProcess object again
+                        root.networkProcesses = Object.values(processMap).filter(process => process.process !== "unknown");
+                        getNetworkProcesses.activePids = [];
+                        return;
+                    }
+
+                    const parts = data.split("\t");
+
+                    if (parts.length < 3) {
+                        return;
+                    } else {
+                        const command = parts[0];
+                        const sent = parseFloat(parts[1]);
+                        const received = parseFloat(parts[2]);
+
+                        const segments = command.split("/");
+                        const pid = parseInt(segments[segments.length - 2]);
+                        const uid = parseInt(segments[segments.length - 1]);
+
+                        if (isNaN(pid) || pid === 0) {
+                            return;
+                        }
+
+                        getNetworkProcesses.activePids.push(pid);
+                        root.updateProcess(pid, sent, received);
+                    }
+                }
+            }
+        }
+    }
+
+    function updateProcess(pid, sent, received) {
+        // Get name from /proc/pid/comm if not there yet
+        if (!root.processMap[pid]) {
+            // Default values
+            processMap[pid] = {
+                pid: pid,
+                process: "unknown",
+                sent: 0,
+                received: 0
+            };
+
+            parseProcessFromPid.command = ["cat", `/proc/${pid}/comm`];
+            parseProcessFromPid.running = true;
+        }
+
+        root.processMap[pid].sent = sent;
+        root.processMap[pid].received = received;
+    }
+
+    Process {
+        id: parseProcessFromPid
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const process = this.text.trim();
+                const pid = parseInt(parseProcessFromPid.command[1].split("/")[2]);
+
+                if (pid in root.processMap) {
+                    root.processMap[pid].process = process;
+                    root.networkProcesses = Object.values(processMap).filter(process => process.process !== "unknown");
+                }
+
+                Globals.logDebug("Network processes now has " + root.networkProcesses.length + " entries.");
+            }
+        }
     }
 
     Component.onCompleted: {

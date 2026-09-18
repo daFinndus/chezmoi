@@ -6,4 +6,8 @@
 ~/.config/quickshell/assets/states/theme
 ~/.config/quickshell/assets/states/wallpaper
 
+~/.local/bin/uv
+~/.local/bin/uvx
+~/.local/bin/env
+
 key.txt.age

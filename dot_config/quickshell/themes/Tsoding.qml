@@ -105,7 +105,7 @@ Scope {
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
         color: Themes.background
-        visible: Colors.loaded && Themes.loaded
+        visible: Colors.loaded
 
         anchors {
             bottom: true

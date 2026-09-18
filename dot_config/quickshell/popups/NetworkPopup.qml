@@ -8,10 +8,14 @@ import qs.components
 Popup {
     id: root
 
-    onVisibleChanged: visible ? "" : Network.stopWirelessNetworkScan()
+    onVisibleChanged: if (!root.visible) {
+        Network.stopWirelessNetworkScan();
+    }
 
     contentComponent: Column {
         id: rootColumn
+
+        property bool displaySpeedInBits: true
 
         width: 256
         spacing: Themes.paddingSize
@@ -95,16 +99,48 @@ Popup {
 
                 Item {
                     width: rootColumn.width
-                    height: 8
+                    height: 4
                 }
 
-                Button {
-                    text: "Refetch ISP speeds"
+                Row {
+                    width: rootColumn.width
+                    spacing: Themes.paddingSize
+
+                    Button {
+                        text: "Refetch ISP"
+
+                        width: (rootColumn.width - Themes.paddingSize) / 2
+                        height: 32
+
+                        onClick: () => Network.fetchMaximumSpeeds()
+                    }
+
+                    Button {
+                        text: rootColumn.displaySpeedInBits ? "Displaying Bits" : "Displaying Bytes"
+
+                        width: (rootColumn.width - Themes.paddingSize) / 2
+                        height: 32
+
+                        onClick: () => rootColumn.displaySpeedInBits = !rootColumn.displaySpeedInBits
+                    }
+                }
+
+                Column {
+                    visible: networkProcessRepeater.count > 0
+
+                    topPadding: Themes.paddingSize
 
                     width: rootColumn.width
-                    height: 32
+                    spacing: Themes.paddingSize
 
-                    onClick: () => Network.fetchMaximumSpeeds()
+                    Repeater {
+                        id: networkProcessRepeater
+
+                        model: Network.networkProcesses // Network.networkProcesses.filter(process => (process.sent >= (Network.maximumUploadSpeed * 0.05) || process.received >= (Network.maximumDownloadSpeed * 0.05)))
+                        delegate: ProcessSection {
+                            required property var modelData
+                        }
+                    }
                 }
             }
 
@@ -237,7 +273,7 @@ Popup {
                 font.family: Themes.fontFamily
                 font.pixelSize: Themes.fontSize * 0.7
 
-                text: Network.formatNetworkSpeed(speedSection.absoluteSpeed) + " of " + Network.formatNetworkSpeed(speedSection.maximumSpeed)
+                text: Network.formatNetworkSpeed(speedSection.absoluteSpeed, rootColumn.displaySpeedInBits) + " of " + Network.formatNetworkSpeed(speedSection.maximumSpeed, rootColumn.displaySpeedInBits)
             }
         }
 
@@ -245,6 +281,68 @@ Popup {
             minimumValue: 0.0
             maximumValue: speedSection.maximumSpeed
             actualValue: speedSection.absoluteSpeed
+        }
+    }
+
+    component ProcessSection: Rectangle {
+        id: processRectangle
+
+        width: rootColumn.width
+        height: processRow.height
+
+        color: Themes.background
+
+        border.color: Qt.rgba(root.shade.r, root.shade.g, root.shade.b, 0.25)
+        border.width: 1
+
+        RowLayout {
+            id: processRow
+
+            width: rootColumn.width - Themes.paddingSize
+            height: 32
+
+            Text {
+                Layout.maximumWidth: processRow.width / 2
+
+                elide: Text.ElideRight
+
+                font.family: Themes.fontFamily
+                font.pixelSize: Themes.fontSize * 0.7
+
+                text: modelData.process.trim() + " " + "(" + modelData.pid + ")"
+                color: Themes.shade
+
+                leftPadding: Themes.paddingSize
+
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            }
+
+            Column {
+                width: processRow.width
+                rightPadding: Themes.paddingSize
+
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                Text {
+                    font.family: Themes.fontFamily
+                    font.pixelSize: Themes.fontSize * 0.7
+
+                    text: Network.formatNetworkSpeed(modelData.received, rootColumn.displaySpeedInBits) + " " + "\udb80\uddda"
+                    color: Themes.shade
+
+                    anchors.right: parent.right
+                }
+
+                Text {
+                    font.family: Themes.fontFamily
+                    font.pixelSize: Themes.fontSize * 0.7
+
+                    text: Network.formatNetworkSpeed(modelData.sent, rootColumn.displaySpeedInBits) + " " + "\udb81\udd52"
+                    color: Themes.shade
+
+                    anchors.right: parent.right
+                }
+            }
         }
     }
 

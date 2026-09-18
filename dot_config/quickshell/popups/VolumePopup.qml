@@ -50,63 +50,77 @@ Popup {
             }
         }
 
-        Separator {}
+        Column {
+            visible: Audio.sinks.length > 0
 
-        SliderBlock {
-            title: "Output"
-            value: Audio.sinkVolume
-            onMoved: par => Audio.setSinkVolume(par)
-        }
+            width: rootColumn.width
+            spacing: Themes.paddingSize
 
-        Separator {
-            shade: "transparent"
-            height: 4
-        }
+            Separator {}
 
-        Repeater {
-            model: Audio.sinks
-            delegate: Section {
-                required property var modelData
+            SliderBlock {
+                title: "Output"
+                value: Audio.sinkVolume
+                onMoved: par => Audio.setSinkVolume(par)
+            }
 
-                identifier: modelData.name
-                type: "sink"
+            Separator {
+                shade: "transparent"
+                height: 4
+            }
 
-                title: modelData.properties["alsa.card_name"]
-                description: modelData.properties["alsa.name"]
+            Repeater {
+                model: Audio.sinks
+                delegate: Section {
+                    required property var modelData
 
-                state: modelData.state
+                    identifier: modelData.name
+                    type: "sink"
 
-                onClick: () => Audio.setSink(identifier)
+                    title: modelData.properties["alsa.card_name"]
+                    description: modelData.properties["alsa.name"]
+
+                    state: modelData.state
+
+                    onClick: () => Audio.setSink(identifier)
+                }
             }
         }
 
-        Separator {}
+        Column {
+            visible: Audio.sources.length > 0
 
-        SliderBlock {
-            title: "Input"
-            value: Audio.sourceVolume
-            onMoved: par => Audio.setSourceVolume(par)
-        }
+            width: rootColumn.width
+            spacing: Themes.paddingSize
 
-        Separator {
-            shade: "transparent"
-            height: 4
-        }
+            Separator {}
 
-        Repeater {
-            model: Audio.sources
-            delegate: Section {
-                required property var modelData
+            SliderBlock {
+                title: "Input"
+                value: Audio.sourceVolume
+                onMoved: par => Audio.setSourceVolume(par)
+            }
 
-                identifier: modelData.name
-                type: "source"
+            Separator {
+                shade: "transparent"
+                height: 4
+            }
 
-                title: modelData.properties["alsa.card_name"]
-                description: modelData.properties["alsa.name"]
+            Repeater {
+                model: Audio.sources
+                delegate: Section {
+                    required property var modelData
 
-                state: modelData.state
+                    identifier: modelData.name
+                    type: "source"
 
-                onClick: () => Audio.setSource(identifier)
+                    title: modelData.properties["alsa.card_name"]
+                    description: modelData.properties["alsa.name"]
+
+                    state: modelData.state
+
+                    onClick: () => Audio.setSource(identifier)
+                }
             }
         }
     }
@@ -155,7 +169,6 @@ Popup {
             stepSize: 5.0
 
             value: sliderBlock.value
-
             onMoved: sliderBlock.onMoved(value)
         }
     }
