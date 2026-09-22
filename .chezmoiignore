@@ -6,6 +6,8 @@
 ~/.config/quickshell/assets/states/theme
 ~/.config/quickshell/assets/states/wallpaper
 
+~/.config/themes/active.json
+
 ~/.local/bin/uv
 ~/.local/bin/uvx
 ~/.local/bin/env

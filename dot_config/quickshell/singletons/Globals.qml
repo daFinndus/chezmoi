@@ -19,7 +19,7 @@ Singleton {
         Globals.logEverything("Object length: " + object.length);
 
         const index = object.findIndex(item => item.name === name);
-        Globals.logEverything("Found index of " + name + " in object: " + index);
+        Globals.logDebug("Found index of " + name + " in object: " + index);
         return index === -1 ? 0 : index;
     }
 

@@ -6,6 +6,9 @@ require("variables")
 -- Colors
 require("colors")
 
+-- Theming
+require(os.getenv("XDG_CACHE_HOME") .. "/themes/theming")
+
 -- Rest of 'em
 require("autostart")
 require("binds")
@@ -24,11 +27,6 @@ hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 -- Look and feel
 hl.config({
 	general = {
-		gaps_in = 1,
-		gaps_out = 2,
-
-		border_size = 1,
-
 		resize_on_border = false,
 		allow_tearing = false,
 		layout = "dwindle",
@@ -40,7 +38,6 @@ hl.config({
 	},
 	decoration = {
 		-- Window roundings
-		rounding = 4,
 		rounding_power = 2,
 
 		-- Window transparency

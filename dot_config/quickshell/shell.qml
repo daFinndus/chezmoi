@@ -25,21 +25,30 @@ ShellRoot {
         id: loader
 
         active: false
-        source: root.themes[Themes.activeTheme] ?? Qt.resolvedUrl("themes/Quattro.qml")
+        source: root.themes[Selector.activeThemeIndex] ?? Qt.resolvedUrl("themes/Quattro.qml")
 
         // DesktopArea {}
         WallpaperArea {}
     }
 
     Connections {
-        target: Themes
+        target: Colors
 
-        function onActiveThemeChanged() {
-            loader.active = true;
+        function onLoadedChanged(): void {
+            Globals.logDebug("Loaded for colors changed: " + Colors.loaded);
+
+            // Gotta wait until all colors are loaded
+            if (Colors.loaded) {
+                // Then the theme needs to apply
+                Themes.applyTheme();
+
+                // Then the loader can load the bar
+                if (!loader.active) {
+                    loader.active = true;
+                }
+            }
         }
     }
 
     Menu {}
-
-    Component.onCompleted: loader.active = true
 }

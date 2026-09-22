@@ -15,6 +15,11 @@ Singleton {
     // Index is based on the color object
     // The higher the index, the brighter the color... typically
     function getColor(index: int): color {
+        if (!root.colors || !root.colors.colors) {
+            Globals.logError("Something is trying to use colors, while it's not initiated yet.");
+            return "#5F95B7";
+        }
+
         return root.colors.colors["color" + index] || "#5F95B7";
     }
 

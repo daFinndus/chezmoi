@@ -15,6 +15,7 @@ Singleton {
 
     property var wallpapers: []
     property string activeWallpaper: ""
+    property int activeWallpaperIndex: 0
 
     // Returns the active wallpaper
     // Out of /tmp/wallpaper
@@ -32,8 +33,7 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.activeWallpaper = this.text.trim();
-
-                Selector.activeWallpaperIndex = Globals.findIndex(root.wallpapers, root.activeWallpaper);
+                root.activeWallpaperIndex = Globals.findIndex(root.wallpapers, root.activeWallpaper);
 
                 Globals.logDebug("Active wallpaper is: " + root.activeWallpaper);
             }

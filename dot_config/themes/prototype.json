@@ -1,0 +1,28 @@
+{
+  "name" : "prototype",
+  "path" : "/home/finn/Pictures/Wallpaper/cherryblossom.jpeg",
+  "command" : "qs ipc call theme applyTheme prototype",
+  "fontFamily" : "JetBrainsMono Nerd Font",
+  "fontSize" : 12,
+  "background" : 0,
+  "shade" : 1,
+  "quickshell" : {
+    "barHeight" : 26,
+    "borderWidth" : 1,
+    "borderRadius" : 4,
+    "paddingSize" : 16,
+    "iconMode" : false,
+    "iconFont" : "JetBrainsMono Nerd Font",
+    "iconSize" : 14
+  },
+  "hypr" : {
+    "noRounding" : false,
+    "decorate" : true,
+    "noBorder" : false,
+    "borderSize" : 1,
+    "rounding" : 4,
+    "roundingPower" : 2,
+    "gapsIn" : 4,
+    "gapsOut" : 2
+  }
+}

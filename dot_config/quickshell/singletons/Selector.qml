@@ -9,11 +9,8 @@ Singleton {
 
     property string type: "wallpaper"
 
-    property int activeWallpaperIndex: Globals.findIndex(root.object, Wallpaper.activeWallpaper)
-    property int activeThemeIndex: Globals.findIndex(root.object, Themes.activeTheme)
-
     property var object: Wallpaper.wallpapers
-    property string active: root.activeWallpaperIndex
+    property string active: Wallpaper.activeWallpaperIndex
 
     property bool widgetVisible: false
 
@@ -33,18 +30,18 @@ Singleton {
             case "wallpaper":
                 root.type = "wallpaper";
                 root.object = Wallpaper.wallpapers;
-                root.active = root.activeWallpaperIndex;
+                root.active = Wallpaper.activeWallpaperIndex;
 
-                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and wallpaper active index of ${root.activeWallpaperIndex}.`);
+                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length}.`);
 
                 root.widgetVisible = !root.widgetVisible;
                 break;
             case "theme":
                 root.type = "theme";
                 root.object = Themes.themes;
-                root.active = root.activeThemeIndex;
+                root.active = Themes.activeThemeIndex;
 
-                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length} and themes active index of ${root.activeThemeIndex}.`);
+                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length}.`);
 
                 root.widgetVisible = !root.widgetVisible;
                 break;

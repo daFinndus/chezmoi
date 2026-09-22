@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import QtQuick.Layouts
 import Quickshell.Wayland
 
 import qs.singletons

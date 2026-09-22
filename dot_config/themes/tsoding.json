@@ -1,0 +1,29 @@
+{
+  "name" : "tsoding",
+  "path" : "/home/finn/Pictures/Wallpaper/japan.gif",
+  "command" : "qs ipc call theme applyTheme tsoding",
+  "fontFamily" : "Minecraft",
+  "fontSize" : 10,
+  "background" : 0,
+  "shade" : 1,
+  "animationDuration" : 250,
+  "quickshell" : {
+    "barHeight" : 22,
+    "borderWidth" : 0,
+    "borderRadius" : 0,
+    "paddingSize" : 12,
+    "iconMode" : false,
+    "iconFont" : "JetBrainsMono Nerd Font",
+    "iconSize" : 14
+  },
+  "hypr" : {
+    "noRounding" : true,
+    "decorate" : false,
+    "noBorder" : true,
+    "borderSize" : 0,
+    "rounding" : 0,
+    "roundingPower" : 0,
+    "gapsIn" : 0,
+    "gapsOut" : 0
+  }
+}

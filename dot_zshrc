@@ -131,7 +131,7 @@ alias delamain='cd ~/Coding/delamain && uv run python main.py'
 alias poke-calc='cd ~/Coding/poke-calc && uv run python main.py'
 
 alias duplicati='$XDG_DATA_HOME/../bin/run-backups.sh'
-alias pihole='$XDG_DATA_HOME/../toggle-pihole.sh'
+alias pihole='$XDG_DATA_HOME/../bin/toggle-pihole.sh'
 
 alias rmshit='python $XDG_DATA_HOME/../bin/rmshit.py'
 alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist'

@@ -1,0 +1,30 @@
+{
+  "name" : "quattro",
+  "path" : "/home/finn/Pictures/Wallpaper/ayanami_rei.png",
+  "command" : "qs ipc call theme applyTheme quattro",
+  "fontFamily" : "Cascadia Code NF",
+  "fontSize" : 14,
+  "transparentBackground" : true,
+  "background" : 0,
+  "shade" : 7,
+  "animationDuration" : 250,
+  "quickshell" : {
+    "barHeight" : 36,
+    "borderWidth" : 0,
+    "borderRadius" : 0,
+    "paddingSize" : 8,
+    "iconMode" : true,
+    "iconFont" : "JetBrainsMono Nerd Font",
+    "iconSize" : 16
+  },
+  "hypr" : {
+    "noRounding" : true,
+    "decorate" : true,
+    "noBorder" : false,
+    "borderSize" : 1,
+    "rounding" : 0,
+    "roundingPower" : 2,
+    "gapsIn" : 4,
+    "gapsOut" : 12
+  }
+}

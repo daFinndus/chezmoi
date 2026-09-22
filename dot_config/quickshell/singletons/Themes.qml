@@ -7,16 +7,22 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    property string activeTheme: "tsoding"
-    property var themes: []
+    // This basically only holds the current theme properties
+    property var theme: ({})
 
     property FileView file: FileView {
-        path: Qt.resolvedUrl(`${Globals.basePath}/assets/files/themes.json`)
-        preload: true
+        path: Qt.resolvedUrl(`${Quickshell.env("XDG_CONFIG_HOME")}/themes/active.json`)
 
         watchChanges: true
 
-        onLoaded: root.themes = JSON.parse(file.text())
+        onFileChanged: file.reload()
+        onLoaded: root.theme = JSON.parse(file.text())
+    }
+
+    onThemeChanged: {
+        if (Colors.loaded) {
+            root.applyTheme();
+        }
     }
 
     // Font stuff
@@ -28,14 +34,6 @@ Singleton {
 
     property color background: "#ffffff"
     property color shade: "#000000"
-
-    Connections {
-        target: Colors
-
-        function onLoadedChanged() {
-            Themes.applyTheme(root.activeTheme);
-        }
-    }
 
     // Rectangle geometry
     property int barHeight: 22
@@ -51,24 +49,6 @@ Singleton {
     // Animations and so on
     property int animationDuration: 250
 
-    Process {
-        id: reloadHypr
-        command: ["hyprctl", "reload"]
-    }
-
-    Process {
-        id: applyHypr
-    }
-
-    function reloadHypr(): void {
-        reloadHypr.running = true;
-    }
-
-    function applyHyprlandRules(no_rounding, decorate, no_border, gaps_in, gaps_out): void {
-        applyHypr.command = ["hyprctl", "eval", `hl.workspace_rule({ workspace = '', no_rounding = ${no_rounding}, decorate = ${decorate}, no_border = ${no_border}, gaps_in = ${gaps_in}, gaps_out = ${gaps_out}})`];
-        applyHypr.running = true;
-    }
-
     IpcHandler {
         target: "theme"
 
@@ -77,15 +57,10 @@ Singleton {
         }
     }
 
-    function applyTheme(theme): void {
-        Globals.logDebug("Setting theme: " + theme);
+    function applyTheme(): void {
+        const theme = root.theme;
 
-        theme = root.themes.find(composition => composition.name === theme);
-
-        if (!theme) {
-            Globals.logDebug("Theme is not existant in json file.");
-            return;
-        }
+        Globals.logDebug("Setting theme: " + theme.name);
 
         root.fontFamily = theme.fontFamily ?? root.fontFamily;
         root.fontSize = theme.fontSize ?? root.fontSize;
@@ -95,49 +70,33 @@ Singleton {
         root.background = Colors.getColor(theme.background) ?? root.background;
         root.shade = Colors.getColor(theme.shade) ?? root.shade;
 
-        root.barHeight = theme.barHeight ?? root.barHeight;
-        root.borderWidth = theme.borderWidth ?? root.borderWidth;
-        root.borderRadius = theme.borderRadius ?? root.borderRadius;
-        root.paddingSize = theme.paddingSize ?? root.paddingSize;
+        root.barHeight = theme.quickshell.barHeight ?? root.barHeight;
+        root.borderWidth = theme.quickshell.borderWidth ?? root.borderWidth;
+        root.borderRadius = theme.quickshell.borderRadius ?? root.borderRadius;
+        root.paddingSize = theme.quickshell.paddingSize ?? root.paddingSize;
         root.animationDuration = theme.animationDuration ?? root.animationDuration;
 
-        root.iconMode = theme.iconMode ?? root.iconMode;
-        root.iconFont = theme.iconFont ?? root.iconFont;
-        root.iconSize = theme.iconSize ?? root.iconSize;
+        root.iconMode = theme.quickshell.iconMode ?? root.iconMode;
+        root.iconFont = theme.quickshell.iconFont ?? root.iconFont;
+        root.iconSize = theme.quickshell.iconSize ?? root.iconSize;
 
-        root.applyHyprlandRules(theme.hypr.noRounding, theme.hypr.decorate, theme.hypr.noBorder, theme.hypr.gapsIn, theme.hypr.gapsOut);
-
-        root.activeTheme = theme.name;
-        root.writeDisk(theme.name);
+        // Lastly look where the active theme is in all themes
+        root.activeThemeIndex = Globals.findIndex(root.themes, root.theme.name);
     }
 
+    // This is for all available theme-json files
+    property var themes: ({})
+    property int activeThemeIndex: 0
+
     Process {
-        id: readTheme
+        id: getThemes
         running: true
-        command: ["cat", `${Globals.basePath}/assets/states/theme`]
+        command: [`${Quickshell.env("XDG_DATA_HOME")}/../bin/theme-configurator.sh`, "fetch_themes"]
+
         stdout: StdioCollector {
-
             onStreamFinished: {
-                const theme = this.text.trim();
-
-                Globals.logDebug("The theme state is: " + theme);
-
-                if (theme !== "") {
-                    root.activeTheme = theme;
-                    root.applyTheme(theme);
-                }
+                root.themes = JSON.parse(this.text.trim());
             }
         }
     }
-
-    Process {
-        id: writeTheme
-    }
-
-    function writeDisk(name): void {
-        writeTheme.command = ["bash", "-c", `echo "${name}" > ${Globals.basePath}/assets/states/theme`];
-        writeTheme.running = true;
-    }
-
-    Component.onCompleted: readTheme.running = true
 }
