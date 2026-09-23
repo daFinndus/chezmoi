@@ -123,9 +123,10 @@ alias lx='eza -lbhHigUmuSa@'
 alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
-alias metasploit="sudo $XDG_DATA_HOME/../bin/setup-metasploit.sh"
+alias metasploit='sudo $XDG_DATA_HOME/../bin/setup-metasploit.sh'
 
 alias wallpaper='$XDG_DATA_HOME/../bin/set-wallpaper.sh'
+alias theme-configurator='$XDG_DATA_HOME/../bin/theme-configurator.sh'
 
 alias delamain='cd ~/Coding/delamain && uv run python main.py'
 alias poke-calc='cd ~/Coding/poke-calc && uv run python main.py'

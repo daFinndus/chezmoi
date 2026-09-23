@@ -1,5 +1,3 @@
-include $XDG_CACHE_HOME/themes/theming.conf
-
 [global]
     monitor = 0
     follow = mouse
