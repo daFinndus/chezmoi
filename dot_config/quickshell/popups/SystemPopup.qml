@@ -138,7 +138,7 @@ Popup {
 
                     color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
 
-                    text: "Available: " + Math.round((Hardware.ramTotal - Hardware.ramUsed) / 1000) + "GB of " + Math.floor(Hardware.ramTotal / 1000) + "GB"
+                    text: "Available: " + Globals.formatSizeUnit((Hardware.ramTotal - Hardware.ramUsed)) + " of " + Globals.formatSizeUnit(Hardware.ramTotal)
                 }
 
                 Item {
@@ -153,7 +153,7 @@ Popup {
 
                     color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
 
-                    text: "Swap: " + Math.round(Hardware.swapUsed / 1000) + "GB of " + Math.floor(Hardware.swapTotal / 1000) + "GB"
+                    text: "Swap: " + Globals.formatSizeUnit(Hardware.swapUsed) + " of " + Globals.formatSizeUnit(Hardware.swapTotal)
                 }
             }
         }
@@ -172,7 +172,7 @@ Popup {
 
                 color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
 
-                text: Math.round(Hardware.rootUsed / 1000) + "GB / " + Math.floor(Hardware.rootTotal / 1000) + "GB"
+                text: Globals.formatSizeUnit(Hardware.rootUsed) + " / " + Globals.formatSizeUnit(Hardware.rootTotal)
             }
         }
 
@@ -190,7 +190,7 @@ Popup {
 
                 color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
 
-                text: Math.round(Hardware.homeUsed / 1000) + "GB / " + Math.floor(Hardware.homeTotal / 1000) + "GB"
+                text: Globals.formatSizeUnit(Hardware.homeUsed) + " / " + Globals.formatSizeUnit(Hardware.homeTotal)
             }
         }
     }

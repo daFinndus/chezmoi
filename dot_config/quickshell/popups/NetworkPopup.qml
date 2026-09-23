@@ -273,7 +273,7 @@ Popup {
                 font.family: Themes.fontFamily
                 font.pixelSize: Themes.fontSize * 0.7
 
-                text: Network.formatNetworkSpeed(speedSection.absoluteSpeed, rootColumn.displaySpeedInBits) + " of " + Network.formatNetworkSpeed(speedSection.maximumSpeed, rootColumn.displaySpeedInBits)
+                text: Globals.formatNetworkSpeed(speedSection.absoluteSpeed, rootColumn.displaySpeedInBits) + " of " + Globals.formatNetworkSpeed(speedSection.maximumSpeed, rootColumn.displaySpeedInBits)
             }
         }
 
@@ -327,7 +327,7 @@ Popup {
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.7
 
-                    text: Network.formatNetworkSpeed(modelData.received, rootColumn.displaySpeedInBits) + " " + "\udb80\uddda"
+                    text: Globals.formatNetworkSpeed(modelData.received, rootColumn.displaySpeedInBits) + " " + "\udb80\uddda"
                     color: Themes.shade
 
                     anchors.right: parent.right
@@ -337,7 +337,7 @@ Popup {
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.7
 
-                    text: Network.formatNetworkSpeed(modelData.sent, rootColumn.displaySpeedInBits) + " " + "\udb81\udd52"
+                    text: Globals.formatNetworkSpeed(modelData.sent, rootColumn.displaySpeedInBits) + " " + "\udb81\udd52"
                     color: Themes.shade
 
                     anchors.right: parent.right

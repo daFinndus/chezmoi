@@ -60,7 +60,7 @@ fetch_cpu() {
 
 # This will fetch used RAM
 fetch_ram() {
-    local stats=$(free --mega | awk '/Mem:/ {print $2, $3}')
+    local stats=$(free -b | awk '/Mem:/ {print $2, $3}')
     local total=$(echo $stats | cut -d ' ' -f1)
     local used=$(echo $stats | cut -d ' ' -f2)
     local load=$(awk "BEGIN {printf \"%.0f\", ($used/$total)*100}")
@@ -71,9 +71,9 @@ fetch_ram() {
 # This will fetch swap space
 # If available
 fetch_swap() {
-    local stats=$(free --mega | awk '/Swap:/ {print $2, $3}')
+    local stats=$(free -b | awk '/Swap:/ {print $2, $3}')
 
-    if [[ -z "$stats" ]]; then
+    if [[ -n "$stats" ]]; then
         local total=$(echo $stats | cut -d ' ' -f1)
         local used=$(echo $stats | cut -d ' ' -f2)
         local load=$(awk "BEGIN {printf \"%.0f\", ($used/$total)*100}")
@@ -108,14 +108,14 @@ fetch_gpu() {
 
 # This will fetch used disk space on root and home
 fetch_disk() {
-    local rootStats=$(df / -B MB)
-    local rootTotal=$(echo "$rootStats" | awk 'NR==2 {printf $2}' | tr -d "MB")
-    local rootUsed=$(echo "$rootStats" | awk 'NR==2 {printf $3}' | tr -d "MB")
+    local rootStats=$(df / -B 1)
+    local rootTotal=$(echo "$rootStats" | awk 'NR==2 {printf $2}')
+    local rootUsed=$(echo "$rootStats" | awk 'NR==2 {printf $3}')
     local rootLoad=$(echo "$rootStats" | awk 'NR==2 {printf $5}' | tr -d "%")
 
-    local homeStats=$(df /home -B MB)
-    local homeTotal=$(echo "$homeStats" | awk 'NR==2 {printf $2}' | tr -d "MB")
-    local homeUsed=$(echo "$homeStats" | awk 'NR==2 {printf $3}' | tr -d "MB")
+    local homeStats=$(df /home -B 1)
+    local homeTotal=$(echo "$homeStats" | awk 'NR==2 {printf $2}')
+    local homeUsed=$(echo "$homeStats" | awk 'NR==2 {printf $3}')
     local homeLoad=$(echo "$homeStats" | awk 'NR==2 {printf $5}' | tr -d "%")
 
     printf '{"rootTotal":%s, "rootUsed":%s, "rootLoad":%s, "homeTotal":%s, "homeUsed":%s, "homeLoad":%s}\n' "${rootTotal:-0}" "${rootUsed:-0}" "${rootLoad:-0}" "${homeTotal:-0}" "${homeUsed:-0}" "${homeLoad:-0}"

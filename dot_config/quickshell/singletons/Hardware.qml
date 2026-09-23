@@ -20,22 +20,22 @@ Singleton {
 
     // Stats about RAM
     property int ramLoad: 23
-    property int ramTotal: 32703
-    property int ramUsed: 7440
+    property real ramTotal: 32703
+    property real ramUsed: 7440
 
     property int swapLoad: 0
-    property int swapTotal: 4294
-    property int swapUsed: 0
+    property real swapTotal: 4294
+    property real swapUsed: 0
 
     // Disk bases information
     property int rootLoad: 54
-    property int rootTotal: 195723
-    property int rootUsed: 98523
+    property real rootTotal: 195723
+    property real rootUsed: 98523
 
     // Disk bases information
     property int homeLoad: 36
-    property int homeTotal: 1460248
-    property int homeUsed: 498841
+    property real homeTotal: 1460248
+    property real homeUsed: 498841
 
     Process {
         id: fetchCPU
@@ -64,7 +64,7 @@ Singleton {
             onStreamFinished: {
                 const parsed = JSON.parse(this.text.trim());
 
-                root.gpuLoad = parseInt(parsed.usage) || 15;
+                root.gpuLoad = parseInt(parsed.load) || 15;
                 root.gpuTemp = parseInt(parsed.temp) || 46;
             }
         }
@@ -79,7 +79,7 @@ Singleton {
             onStreamFinished: {
                 const parsed = JSON.parse(this.text.trim());
 
-                root.ramLoad = parseInt(parsed.usage) || 23;
+                root.ramLoad = parseInt(parsed.load) || 23;
                 root.ramTotal = parseInt(parsed.total) || 32703;
                 root.ramUsed = parseInt(parsed.used) || 7440;
             }
@@ -95,7 +95,7 @@ Singleton {
             onStreamFinished: {
                 const parsed = JSON.parse(this.text.trim());
 
-                root.swapUsage = parseInt(parsed.usage) || 0;
+                root.swapLoad = parseInt(parsed.load) || 0;
                 root.swapTotal = parseInt(parsed.total) || 4294;
                 root.swapUsed = parseInt(parsed.used) || 0;
             }
@@ -126,6 +126,7 @@ Singleton {
         fetchCPU.running = true;
         fetchGPU.running = true;
         fetchRAM.running = true;
+        fetchSwap.running = true;
         fetchDisk.running = true;
     }
 

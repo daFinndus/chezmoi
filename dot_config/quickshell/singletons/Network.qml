@@ -307,26 +307,6 @@ Singleton {
         }
     }
 
-    // This will return a string with a human readable format and size extension
-    function formatNetworkSpeed(speed: real, bits: bool): string {
-        var units = bits ? ["bit/s", "kbit/s", "Mbit/s", "Gbit/s"] : ["B/s", "kB/s", "MB/s", "GB/s"];
-        var divider = 1000;
-
-        if (!bits) {
-            speed = speed / 8;
-        }
-
-        var unit = 0;
-
-        // Iterate through speed until it's smaller than 1000
-        while (speed >= divider && unit < units.length - 1) {
-            speed = speed / divider;
-            unit++;
-        }
-
-        return Math.round(speed) + " " + units[unit];
-    }
-
     Timer {
         interval: 3000
 
