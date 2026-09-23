@@ -1,28 +1,23 @@
+include $XDG_CACHE_HOME/themes/theming.conf
+
 [global]
     monitor = 0
     follow = mouse
+
     width = 320
+
     origin = top-right
     offset = (20, 20)
 
-    font = Minecraft 11
-    line_height = 2
-
-    padding = 10
-    horizontal_padding = 12
-    separator_height = 2
-
-    frame_width = 2
     frame_color = "{color1}"
-    corner_radius = 8
 
     background = "{background}"
     foreground = "{color1}"
     separator_color = frame
-    transparency = 10
 
     markup = full
     format = "<b>%s</b>\n%b"
+
     alignment = left
     vertical_alignment = center
     word_wrap = yes
@@ -39,7 +34,7 @@
     sticky_history = yes
     history_length = 20
 
-    browser = firefox
+    browser = helium-browser
     always_run_script = true
 
 [urgency_low]
