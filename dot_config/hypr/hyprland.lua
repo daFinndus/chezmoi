@@ -7,7 +7,7 @@ require("variables")
 require("colors")
 
 -- Theming
-require(os.getenv("XDG_CACHE_HOME") .. "/themes/theming")
+require("theming")
 
 -- Rest of 'em
 require("autostart")
