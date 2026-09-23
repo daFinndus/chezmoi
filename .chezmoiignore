@@ -8,6 +8,9 @@
 
 ~/.config/themes/active.json
 
+~/.config/hypr/theming.lua
+~/.config/dunst/dunstrc.d/99-theme.conf
+
 ~/.local/bin/uv
 ~/.local/bin/uvx
 ~/.local/bin/env
