@@ -14,12 +14,14 @@ Popup {
         Row {
             id: row
 
+            spacing: Themes.paddingSize
+
             AnimatedImage {
                 source: root.visible ? `${Globals.basePath}/assets/pictures/lucy.gif` : ""
 
-                antialiasing: false
+                antialiasing: true
 
-                width: 96
+                width: 72
                 height: 72
 
                 playing: root.visible
@@ -29,12 +31,15 @@ Popup {
                 anchors.verticalCenter: parent.verticalCenter
 
                 leftPadding: Themes.paddingSize
+                spacing: 2
 
                 Text {
                     color: Themes.shade
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.9
+
+                    bottomPadding: 4
 
                     font.capitalization: Font.Capitalize
 
@@ -42,10 +47,10 @@ Popup {
                 }
 
                 Text {
-                    color: Themes.shade
+                    color: Qt.rgba(Themes.shade.r, Themes.shade.b, Themes.shade.g, 0.5)
 
                     font.family: Themes.fontFamily
-                    font.pixelSize: Themes.fontSize * 0.9
+                    font.pixelSize: Themes.fontSize * 0.85
 
                     font.capitalization: Font.Capitalize
 
@@ -53,10 +58,10 @@ Popup {
                 }
 
                 Text {
-                    color: Themes.shade
+                    color: Qt.rgba(Themes.shade.r, Themes.shade.b, Themes.shade.g, 0.5)
 
                     font.family: Themes.fontFamily
-                    font.pixelSize: Themes.fontSize * 0.9
+                    font.pixelSize: Themes.fontSize * 0.85
 
                     font.capitalization: Font.Capitalize
 
