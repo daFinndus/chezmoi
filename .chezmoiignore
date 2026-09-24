@@ -1,10 +1,7 @@
 ~/.config/scripts/rmshit.yaml
 
 ~/.config/quickshell/assets/files/wallpapers.json
-
-~/.config/quickshell/assets/states
-~/.config/quickshell/assets/states/theme
-~/.config/quickshell/assets/states/wallpaper
+~/.config/quickshell/assets/states/
 
 ~/.config/themes/active.json
 
@@ -14,5 +11,8 @@
 ~/.local/bin/uv
 ~/.local/bin/uvx
 ~/.local/bin/env
+
+**/*/.zed
+**/*/.vscode
 
 key.txt.age
