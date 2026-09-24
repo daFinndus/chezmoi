@@ -30,7 +30,7 @@ Singleton {
         }
     }
 
-    property string formattedSpeed: Network.downloadSpeed + " B/s " + Network.uploadSpeed + " B/s"
+    property string formattedSpeed: "down: " + Globals.formatNetworkSpeed(Network.downloadSpeed) + " up: " + Globals.formatNetworkSpeed(Network.uploadSpeed)
 
     property string ipAddress: ""
     property string gatewayAddress: ""

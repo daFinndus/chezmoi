@@ -1,7 +1,7 @@
 {
   "name" : "tsoding",
   "path" : "/home/finn/Pictures/Wallpaper/japan.gif",
-  "command" : "qs ipc call theme applyTheme tsoding",
+  "command" : "$XDG_DATA_HOME/../bin/theme-configurat.sh set_theme tsoding",
   "fontFamily" : "Minecraft",
   "fontSize" : 10,
   "background" : 0,

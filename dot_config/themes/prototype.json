@@ -1,7 +1,7 @@
 {
   "name" : "prototype",
   "path" : "/home/finn/Pictures/Wallpaper/cherryblossom.jpeg",
-  "command" : "qs ipc call theme applyTheme prototype",
+  "command" : "$XDG_DATA_HOME/../bin/theme-configurator.sh set_theme prototype",
   "fontFamily" : "JetBrainsMono Nerd Font",
   "fontSize" : 12,
   "background" : 0,

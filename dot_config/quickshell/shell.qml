@@ -16,16 +16,16 @@ ShellRoot {
     id: root
 
     property var themes: {
-        "tsoding": Qt.resolvedUrl("themes/Tsoding.qml"),
         "prototype": Qt.resolvedUrl("themes/Prototype.qml"),
-        "quattro": Qt.resolvedUrl("themes/Quattro.qml")
+        "quattro": Qt.resolvedUrl("themes/Quattro.qml"),
+        "tsoding": Qt.resolvedUrl("themes/Tsoding.qml")
     }
 
     Loader {
         id: loader
 
         active: false
-        source: root.themes[Selector.activeThemeIndex] ?? Qt.resolvedUrl("themes/Quattro.qml")
+        source: root.themes[Themes.theme.name] ?? Qt.resolvedUrl("themes/Tsoding.qml")
 
         // DesktopArea {}
         WallpaperArea {}

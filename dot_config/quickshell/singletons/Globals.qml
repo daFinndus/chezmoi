@@ -60,8 +60,6 @@ Singleton {
     }
 
     function formatSizeUnit(size: real): string {
-        Globals.logDebug("Provided size: " + size);
-
         var units = ["B", "KB", "MB", "GB", "TB", "PB"];
         var divider = 1000;
 
@@ -72,8 +70,6 @@ Singleton {
             size = size / divider;
             unit++;
         }
-
-        Globals.logDebug("Made to: " + Math.round(size) + units[unit]);
 
         return Math.round(size) + units[unit];
     }

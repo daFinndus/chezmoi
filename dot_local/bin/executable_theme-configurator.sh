@@ -40,11 +40,12 @@ get_theme() {
 # This will basically fetch all possible themes
 fetch_themes() {
   local themes=()
+	local bin="$XDG_DATA_HOME/../bin/theme-configurator.sh"
 
   for file in "$THEMESDIR"/*.json; do
     [[ "$(basename "$file")" == "active.json" ]] && continue
 
-    themes+=("$(jq -c '{name, path}' "$file")")
+		themes+=("$(jq -c --arg bin $bin '{name, path, command: ($bin + " set_theme " + .name)}' "$file")")
   done
 
   jq -s '.' <<<"$(printf '%s\n' "${themes[@]}")"

@@ -1,7 +1,7 @@
 {
   "name" : "quattro",
   "path" : "/home/finn/Pictures/Wallpaper/ayanami_rei.png",
-  "command" : "qs ipc call theme applyTheme quattro",
+  "command" : "$XDG_DATA_HOME/../bin/theme-configurator.sh set_theme quattro",
   "fontFamily" : "Cascadia Code NF",
   "fontSize" : 14,
   "transparentBackground" : true,
