@@ -25,5 +25,15 @@
     "roundingPower" : 0,
     "gapsIn" : 0,
     "gapsOut" : 0
+  },
+  "dunst" : {
+    "fontSize" : 10,
+    "lineHeight" : 2,
+    "separatorHeight" : 2,
+    "padding" : 10,
+    "horizontalPadding" : 12,
+    "frameWidth" : 2,
+    "cornerRadius" : 8
   }
 }
+
