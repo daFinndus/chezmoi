@@ -143,19 +143,29 @@ Popup {
         required property string text
         required property var onClick
 
+        property color background: "transparent"
+        property color shade: Themes.shade
+
+        // This has to be done, so if the background values change
+        // E.g. through file parsing, the values in the components are updated
+        Connections {
+            target: Themes
+
+            function onShadeChanged() {
+                Globals.setColor(root, root.active, mouseArea.containsMouse);
+            }
+        }
+
         required property bool connected
 
         onConnectedChanged: Globals.setColor(device, device.connected, mouseArea.containsMouse)
-
-        property color background: device.connected ? Themes.shade : Themes.background
-        property color shade: device.connected ? Themes.background : Themes.shade
 
         width: rootColumn.width
         height: 32
 
         color: device.background
 
-        border.color: Themes.shade
+        border.color: Qt.rgba(device.shade.r, device.shade.g, device.shade.b, 0.25)
         border.width: device.connected ? 0 : 1
 
         Behavior on color {

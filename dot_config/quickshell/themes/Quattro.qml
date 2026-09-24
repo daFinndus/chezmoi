@@ -23,8 +23,6 @@ Scope {
         // This is for blur maybe
         WlrLayershell.namespace: "quattro-taskbar"
 
-        property double transparency: 0.5
-
         // Do not set this color to anything non-transparent
         // It will basically override hyprlands layer rule for blur
         color: "transparent"
@@ -41,17 +39,17 @@ Scope {
 
             onDoubleClicked: {
                 Themes.transparentBackground = !Themes.transparentBackground;
-                panel.transparency = 0.5;
+                Themes.transparency = 0.5;
             }
 
             onWheel: event => {
-                panel.transparency += (event.angleDelta.y / 120) / 20;
-                panel.transparency = Globals.clamp(0, 1, panel.transparency);
+                Themes.transparency += (event.angleDelta.y / 120) / 20;
+                Themes.transparency = Globals.clamp(0, 1, Themes.transparency);
             }
         }
 
         Rectangle {
-            color: Themes.transparentBackground ? Qt.rgba(Themes.background.r, Themes.background.g, Themes.background.b, panel.transparency) : Themes.background
+            color: Qt.rgba(Themes.background.r, Themes.background.g, Themes.background.b, Themes.transparency)
             anchors.fill: parent
 
             Row {

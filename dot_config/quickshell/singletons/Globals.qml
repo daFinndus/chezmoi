@@ -34,7 +34,7 @@ Singleton {
     function setColor(component: var, active: bool, inverted: bool): void {
         const invert = active || inverted;
 
-        component.background = invert ? Themes.shade : Themes.background;
+        component.background = invert ? Themes.shade : "transparent";
         component.shade = invert ? Themes.background : Themes.shade;
         component.border.width = invert ? 0 : 1;
     }

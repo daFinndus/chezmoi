@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import QtQuick.Layouts
 import Quickshell.Wayland
+import Quickshell.Hyprland
 
 import qs.singletons
 
@@ -18,7 +19,7 @@ PopupWindow {
 
     visible: root.available
 
-    color: "transparent"
+    color: Qt.rgba(root.background.r, root.background.g, root.background.b, Themes.transparency)
 
     anchor.item: target
 
@@ -31,12 +32,21 @@ PopupWindow {
     implicitWidth: loader.item ? loader.item.width + Themes.paddingSize * 4 : 0
     implicitHeight: loader.item ? loader.item.height + Themes.paddingSize * 4 : 0
 
+    HyprlandFocusGrab {
+        id: grab
+
+        active: root.available
+        windows: [root]
+
+        onCleared: Globals.closePopup()
+    }
+
     Rectangle {
         id: rect
 
         anchors.fill: parent
 
-        color: root.background
+        color: "transparent"
 
         border.color: root.shade
         border.width: 1

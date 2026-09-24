@@ -124,24 +124,6 @@ Popup {
                         onClick: () => rootColumn.displaySpeedInBits = !rootColumn.displaySpeedInBits
                     }
                 }
-
-                Column {
-                    visible: networkProcessRepeater.count > 0
-
-                    topPadding: Themes.paddingSize
-
-                    width: rootColumn.width
-                    spacing: Themes.paddingSize
-
-                    Repeater {
-                        id: networkProcessRepeater
-
-                        model: Network.networkProcesses // Network.networkProcesses.filter(process => (process.sent >= (Network.maximumUploadSpeed * 0.05) || process.received >= (Network.maximumDownloadSpeed * 0.05)))
-                        delegate: ProcessSection {
-                            required property var modelData
-                        }
-                    }
-                }
             }
 
             Column {
@@ -284,68 +266,6 @@ Popup {
         }
     }
 
-    component ProcessSection: Rectangle {
-        id: processRectangle
-
-        width: rootColumn.width
-        height: processRow.height
-
-        color: Themes.background
-
-        border.color: Qt.rgba(root.shade.r, root.shade.g, root.shade.b, 0.25)
-        border.width: 1
-
-        RowLayout {
-            id: processRow
-
-            width: rootColumn.width - Themes.paddingSize
-            height: 32
-
-            Text {
-                Layout.maximumWidth: processRow.width / 2
-
-                elide: Text.ElideRight
-
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-
-                text: modelData.process.trim() + " " + "(" + modelData.pid + ")"
-                color: Themes.shade
-
-                leftPadding: Themes.paddingSize
-
-                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            }
-
-            Column {
-                width: processRow.width
-                rightPadding: Themes.paddingSize
-
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-
-                Text {
-                    font.family: Themes.fontFamily
-                    font.pixelSize: Themes.fontSize * 0.7
-
-                    text: Globals.formatNetworkSpeed(modelData.received, rootColumn.displaySpeedInBits) + " " + "\udb80\uddda"
-                    color: Themes.shade
-
-                    anchors.right: parent.right
-                }
-
-                Text {
-                    font.family: Themes.fontFamily
-                    font.pixelSize: Themes.fontSize * 0.7
-
-                    text: Globals.formatNetworkSpeed(modelData.sent, rootColumn.displaySpeedInBits) + " " + "\udb81\udd52"
-                    color: Themes.shade
-
-                    anchors.right: parent.right
-                }
-            }
-        }
-    }
-
     component DnsButton: Button {
         id: dnsButton
 
@@ -366,8 +286,18 @@ Popup {
         width: rootColumn.width
         height: 32
 
-        property color background: Themes.background
+        property color background: "transparent"
         property color shade: Themes.shade
+
+        // This has to be done, so if the background values change
+        // E.g. through file parsing, the values in the components are updated
+        Connections {
+            target: Themes
+
+            function onShadeChanged() {
+                Globals.setColor(root, root.active, mouseArea.containsMouse);
+            }
+        }
 
         property bool active: Network.activeWirelessNetwork === modelData.ssid.trim()
 

@@ -4,6 +4,7 @@
   "command" : "$XDG_DATA_HOME/../bin/theme-configurat.sh set_theme tsoding",
   "fontFamily" : "Minecraft",
   "fontSize" : 10,
+  "transparency" : 1,
   "background" : 0,
   "shade" : 1,
   "animationDuration" : 250,
@@ -36,4 +37,3 @@
     "cornerRadius" : 8
   }
 }
-

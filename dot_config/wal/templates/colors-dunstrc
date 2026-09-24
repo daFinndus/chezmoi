@@ -8,9 +8,8 @@
     offset = (20, 20)
 
     frame_color = "{color1}"
-
-    background = "{background}"
     foreground = "{color1}"
+
     separator_color = frame
 
     markup = full
@@ -37,19 +36,16 @@
 
 [urgency_low]
     timeout = 3
-    background = "{background}"
     foreground = "{color3}"
     frame_color = "{color3}"
 
 [urgency_normal]
     timeout = 6
-    background = "{background}"
     foreground = "{color6}"
     frame_color = "{color6}"
 
 [urgency_critical]
     timeout = 0
-    background = "{background}"
     foreground = "{color9}"
     frame_color = "{color9}"
 

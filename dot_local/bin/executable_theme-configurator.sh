@@ -162,6 +162,9 @@ generate_dunst_config() {
 
 	mkdir -p "$XDG_CONFIG_HOME/dunst/dunstrc.d"
 
+	local background=$(cat "$XDG_CACHE_HOME/wal/colors" | head -n 1)
+	local transparency=$(printf '%02X' $(jq -r '.transparency * 255 | round' "$ACTIVEFILE"))
+
 	local font_family=$(jq -r '.fontFamily' "$ACTIVEFILE")
 	local font_size=$(jq -r '.dunst.fontSize' "$ACTIVEFILE")
 
@@ -173,11 +176,12 @@ generate_dunst_config() {
 
   local frame_width=$(jq -r '.dunst.frameWidth' "$ACTIVEFILE")
   local corner_radius=$(jq -r '.dunst.cornerRadius' "$ACTIVEFILE")
-  local transparency=$(jq -r '.dunst.transparency' "$ACTIVEFILE")
 
 	printf '%s\n' \
 		'[global]' \
 		$'\t'"font = $font_family $font_size" \
+		"" \
+		$'\t'"background = \"${background}${transparency}\"" \
 		"" \
 		$'\t'"line_height = $line_height" \
 		$'\t'"separator_height = $separator_height" \

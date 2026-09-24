@@ -27,7 +27,6 @@ ShellRoot {
         active: false
         source: root.themes[Themes.theme.name] ?? Qt.resolvedUrl("themes/Tsoding.qml")
 
-        // DesktopArea {}
         WallpaperArea {}
     }
 

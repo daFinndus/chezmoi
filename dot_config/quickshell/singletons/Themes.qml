@@ -35,6 +35,8 @@ Singleton {
     property color background: "#ffffff"
     property color shade: "#000000"
 
+    property double transparency: 0.5
+
     // Rectangle geometry
     property int barHeight: 22
     property int borderWidth: 0
@@ -65,8 +67,10 @@ Singleton {
         root.fontFamily = theme.fontFamily ?? root.fontFamily;
         root.fontSize = theme.fontSize ?? root.fontSize;
 
-        root.transparentBackground = theme.transparentBackground ?? root.transparentBackground;
+        root.transparency = theme.transparency ?? root.transparency;
 
+        // First fetch the color it-self, then apply transparency
+        // This is necessary because otherwise it would only be the color index
         root.background = Colors.getColor(theme.background) ?? root.background;
         root.shade = Colors.getColor(theme.shade) ?? root.shade;
 
@@ -82,6 +86,8 @@ Singleton {
 
         // Lastly look where the active theme is in all themes
         root.activeThemeIndex = Globals.findIndex(root.themes, root.theme.name);
+
+        Globals.logDebug("Background is now: " + root.background);
     }
 
     // This is for all available theme-json files

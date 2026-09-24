@@ -191,8 +191,18 @@ Popup {
 
         onActiveChanged: Globals.setColor(section, section.active, mouseArea.containsMouse)
 
-        property color background: active ? Themes.shade : Themes.background
-        property color shade: active ? Themes.background : Themes.shade
+        property color background: "transparent"
+        property color shade: Themes.shade
+
+        // This has to be done, so if the background values change
+        // E.g. through file parsing, the values in the components are updated
+        Connections {
+            target: Themes
+
+            function onShadeChanged() {
+                Globals.setColor(root, root.active, mouseArea.containsMouse);
+            }
+        }
 
         width: rootColumn.width
         height: row.height

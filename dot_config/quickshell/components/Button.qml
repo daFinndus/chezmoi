@@ -6,12 +6,8 @@ import qs.singletons
 Rectangle {
     id: root
 
-    property color background: Themes.background
+    property color background: "transparent"
     property color shade: Themes.shade
-
-    // This only needs to be done, if an active value is provided
-    // This is used for buttons like audiosinks, powerprofiles, etc.
-    onActiveChanged: Globals.setColor(root, root.active, mouseArea.containsMouse)
 
     // This has to be done, so if the background values change
     // E.g. through file parsing, the values in the components are updated
@@ -30,6 +26,10 @@ Rectangle {
 
     required property string text
     property bool active: false
+
+    // This only needs to be done, if an active value is provided
+    // This is used for buttons like audiosinks, powerprofiles, etc.
+    onActiveChanged: Globals.setColor(root, root.active, mouseArea.containsMouse)
 
     // Either pass a command to be executed in a process
     // Or a function executed from... the function

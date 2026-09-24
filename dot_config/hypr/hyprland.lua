@@ -37,12 +37,9 @@ hl.config({
 		},
 	},
 	decoration = {
-		-- Window roundings
-		rounding_power = 2,
-
 		-- Window transparency
 		active_opacity = 1.0,
-		inactive_opacity = 1.0,
+		inactive_opacity = 0.95,
 
 		-- Shadow settings
 		shadow = {
