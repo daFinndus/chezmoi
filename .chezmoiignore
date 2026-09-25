@@ -1,18 +1,19 @@
-~/.config/scripts/rmshit.yaml
+.config/scripts/rmshit.yaml
 
-~/.config/quickshell/assets/files/wallpapers.json
-~/.config/quickshell/assets/states/
+.config/quickshell/assets/files/wallpapers.json
+.config/quickshell/assets/states/
 
-~/.config/themes/active.json
+.config/themes/active.json
 
-~/.config/hypr/theming.lua
-~/.config/dunst/dunstrc.d/99-theme.conf
+.config/hypr/theming.lua
+.config/kitty/theming.conf
+.config/dunst/dunstrc.d/99-theme.conf
 
-~/.local/bin/uv
-~/.local/bin/uvx
-~/.local/bin/env
+.local/bin/uv
+.local/bin/uvx
+.local/bin/env
 
-**/*/.zed
-**/*/.vscode
+*/*/*.zed
+*/*/*.vscode
 
 key.txt.age

@@ -9,6 +9,25 @@ CACHEDIR="$XDG_CACHE_HOME/themes"
 
 ACTIVEFILE="$THEMESDIR/active.json"
 
+# This will basically generate all necessary files
+# This is so no errors are happening
+init() {
+  declare -A configs=(
+    ["$XDG_CONFIG_HOME/hypr/theming.lua"]='generate_hyprland_config'
+    ["$XDG_CONFIG_HOME/dunst/dunstrc.d/99-theming.conf"]='generate_dunst_config'
+    ["$XDG_CONFIG_HOME/kitty/theming.conf"]='generate_kitty_config'
+  )
+
+  for file in "${!configs[@]}"; do
+    if [[ ! -f $file ]]; then
+      log "$file doesn't exist yet.. generating."
+      "${configs[$file]}"
+    else
+      log "$file already exists. Nice!"
+    fi
+  done
+}
+
 # This function will set relevant properties
 # Then it will apply them to necessary applications
 set_theme() {
@@ -40,12 +59,12 @@ get_theme() {
 # This will basically fetch all possible themes
 fetch_themes() {
   local themes=()
-	local bin="$XDG_DATA_HOME/../bin/theme-configurator.sh"
+  local bin="$XDG_DATA_HOME/../bin/theme-configurator.sh"
 
   for file in "$THEMESDIR"/*.json; do
     [[ "$(basename "$file")" == "active.json" ]] && continue
 
-		themes+=("$(jq -c --arg bin $bin '{name, path, command: ($bin + " set_theme " + .name)}' "$file")")
+    themes+=("$(jq -c --arg bin $bin '{name, path, command: ($bin + " set_theme " + .name)}' "$file")")
   done
 
   jq -s '.' <<<"$(printf '%s\n' "${themes[@]}")"
@@ -109,10 +128,11 @@ generate_configs() {
 
   case "$application" in
   hyprland) generate_hyprland_config ;;
-	dunst) generate_dunst_config ;;
+  dunst) generate_dunst_config ;;
   *)
     generate_hyprland_config
-		generate_dunst_config
+    generate_dunst_config
+    generate_kitty_config
     ;;
   esac
 }
@@ -156,17 +176,17 @@ generate_hyprland_config() {
 }
 
 generate_dunst_config() {
-	local file="$XDG_CONFIG_HOME/dunst/dunstrc.d/99-theming.conf"
+  local file="$XDG_CONFIG_HOME/dunst/dunstrc.d/99-theming.conf"
 
-	log "Going to create $file"
+  log "Going to create $file"
 
-	mkdir -p "$XDG_CONFIG_HOME/dunst/dunstrc.d"
+  mkdir -p "$XDG_CONFIG_HOME/dunst/dunstrc.d"
 
-	local background=$(cat "$XDG_CACHE_HOME/wal/colors" | head -n 1)
-	local transparency=$(printf '%02X' $(jq -r '.transparency * 255 | round' "$ACTIVEFILE"))
+  local background=$(cat "$XDG_CACHE_HOME/wal/colors" | head -n 1)
+  local transparency=$(printf '%02X' $(jq -r '.transparency * 255 | round' "$ACTIVEFILE"))
 
-	local font_family=$(jq -r '.fontFamily' "$ACTIVEFILE")
-	local font_size=$(jq -r '.dunst.fontSize' "$ACTIVEFILE")
+  local font_family=$(jq -r '.fontFamily' "$ACTIVEFILE")
+  local font_size=$(jq -r '.dunst.fontSize' "$ACTIVEFILE")
 
   local line_height=$(jq -r '.dunst.lineHeight' "$ACTIVEFILE")
   local separator_height=$(jq -r '.dunst.separatorHeight' "$ACTIVEFILE")
@@ -177,34 +197,41 @@ generate_dunst_config() {
   local frame_width=$(jq -r '.dunst.frameWidth' "$ACTIVEFILE")
   local corner_radius=$(jq -r '.dunst.cornerRadius' "$ACTIVEFILE")
 
-	printf '%s\n' \
-		'[global]' \
-		$'\t'"font = $font_family $font_size" \
-		"" \
-		$'\t'"background = \"${background}${transparency}\"" \
-		"" \
-		$'\t'"line_height = $line_height" \
-		$'\t'"separator_height = $separator_height" \
-		"" \
-		$'\t'"padding = $padding" \
-		$'\t'"horizontal_padding = $horizontal_padding" \
-		"" \
-		$'\t'"frame_width = $frame_width" \
-		$'\t'"corner_radius = $corner_radius" >"$file"
+  printf '%s\n' \
+    '[global]' \
+    $'\t'"font = $font_family $font_size" \
+    "" \
+    $'\t'"background = \"${background}${transparency}\"" \
+    "" \
+    $'\t'"line_height = $line_height" \
+    $'\t'"separator_height = $separator_height" \
+    "" \
+    $'\t'"padding = $padding" \
+    $'\t'"horizontal_padding = $horizontal_padding" \
+    "" \
+    $'\t'"frame_width = $frame_width" \
+    $'\t'"corner_radius = $corner_radius" >"$file"
 
-	# Reload dunst without interrupting script flow
-	nohup dunstctl reload >/dev/null 2>&1 &
+  # Reload dunst without interrupting script flow
+  nohup dunstctl reload >/dev/null 2>&1 &
 }
 
-reload_apps() {
-  log "Reloading applications, bla bla bla"
+generate_kitty_config() {
+  local file="$XDG_CONFIG_HOME/kitty/theming.conf"
+
+  log "Going to create $file"
+
+  local transparency=$(jq -r '.transparency' "$ACTIVEFILE")
+
+  printf '%s\n' \
+    "background_opacity"$'\t'"$transparency" >"$file"
 }
 
 case "$1" in
+init) init ;;
 set_theme) set_theme "$2" ;;
 get_theme) get_theme "$2" ;;
 fetch_themes) fetch_themes ;;
 override_property) override_property "$2" "$3" "$4" ;;
 generate_configs) generate_configs "$2" ;;
-reload_apps) reload_apps ;;
 esac

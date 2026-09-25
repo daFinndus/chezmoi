@@ -1,5 +1,7 @@
 -- Autostart
 hl.on("hyprland.start", function()
+	hl.exec_cmd(os.getenv("XDG_CONFIG_HOME") .. "/../bin/theme-configurator.sh init")
+
 	hl.exec_cmd("awww-daemon")
 	hl.exec_cmd("hypridle")
 
