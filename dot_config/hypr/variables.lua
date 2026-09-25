@@ -12,7 +12,7 @@ screenshot = 'hyprshot -m region -o "$HOME/Pictures/Screenshots"'
 
 wallpaperScript = os.getenv("XDG_DATA_HOME") .. "/../bin/set-wallpaper.sh"
 
-dark = 'gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"'
+dark = "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'"
 button = "gsettings set org.gnome.desktop.wm.preferences button-layout ':'"
 
 -- Set main modifier key

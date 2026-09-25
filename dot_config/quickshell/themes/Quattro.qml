@@ -89,10 +89,6 @@ Scope {
                     background: "transparent"
                 }
 
-                LayoutWidget {
-                    background: "transparent"
-                }
-
                 PowerWidget {
                     background: "transparent"
                 }
