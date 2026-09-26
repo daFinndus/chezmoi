@@ -152,7 +152,7 @@ Popup {
             target: Themes
 
             function onShadeChanged() {
-                Globals.setColor(root, root.active, mouseArea.containsMouse);
+                Globals.setColor(device, device.active, mouseArea.containsMouse);
             }
         }
 
