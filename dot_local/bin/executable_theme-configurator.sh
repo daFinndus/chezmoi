@@ -16,6 +16,7 @@ init() {
     ["$XDG_CONFIG_HOME/hypr/theming.lua"]='generate_hyprland_config'
     ["$XDG_CONFIG_HOME/dunst/dunstrc.d/99-theming.conf"]='generate_dunst_config'
     ["$XDG_CONFIG_HOME/kitty/theming.conf"]='generate_kitty_config'
+    ["$XDG_CONFIG_HOME/rofi/theming.rasi"]='generate_rofi_config'
   )
 
   for file in "${!configs[@]}"; do
@@ -61,7 +62,7 @@ fetch_themes() {
   local themes=()
   local bin="$XDG_DATA_HOME/../bin/theme-configurator.sh"
 
-  for file in "$THEMESDIR"/*.json; do
+  for file in "$THEMESDIR"; do
     [[ "$(basename "$file")" == "active.json" ]] && continue
 
     themes+=("$(jq -c --arg bin $bin '{name, path, command: ($bin + " set_theme " + .name)}' "$file")")
@@ -92,7 +93,7 @@ override_property() {
   else
     path="[\"$property\"]"
   fi
-
+  
   local exists=$(jq -r "getpath($path)" $ACTIVEFILE)
 
   if [[ $exists == "null" ]]; then
@@ -129,10 +130,13 @@ generate_configs() {
   case "$application" in
   hyprland) generate_hyprland_config ;;
   dunst) generate_dunst_config ;;
+  kitty) generate_kitty_config ;;
+  rofi) generate_rofi_config ;;
   *)
     generate_hyprland_config
     generate_dunst_config
     generate_kitty_config
+    generate_rofi_config
     ;;
   esac
 }
@@ -225,6 +229,35 @@ generate_kitty_config() {
 
   printf '%s\n' \
     "background_opacity"$'\t'"$transparency" >"$file"
+}
+
+generate_rofi_config() {
+  local file="$XDG_CONFIG_HOME/rofi/theming.rasi"
+
+  log "Going to create $file"
+
+  local background_index=$(jq -r '.background + 1' "$ACTIVEFILE")
+  local shade_index=$(jq -r '.shade + 1' "$ACTIVEFILE")
+
+  local background=$(cat "$XDG_CACHE_HOME/wal/colors" | sed -n "${background_index}p")
+  local shade=$(cat "$XDG_CACHE_HOME/wal/colors" | sed -n "${shade_index}p")
+
+  local transparency=$(printf '%02X' $(jq -r '.transparency * 255 | round' "$ACTIVEFILE"))
+
+  local borderSize=$(jq -r '.rofi.borderSize' "$ACTIVEFILE")
+  local borderRadius=$(jq -r '.rofi.borderRadius' "$ACTIVEFILE")
+
+  printf '%s\n' \
+    "* {" \
+    $'\t'"background: $background;" \
+    $'\t'"foreground: $shade;" \
+    "}" \
+    "" \
+    "window {" \
+    $'\t'"background-color: ${background}${transparency};" \
+    $'\t'"border: $borderSize;" \
+    $'\t'"border-radius: $borderRadius;" \
+    "}" >"$file"
 }
 
 case "$1" in

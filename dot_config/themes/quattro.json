@@ -4,7 +4,7 @@
   "command" : "$XDG_DATA_HOME/../bin/theme-configurator.sh set_theme quattro",
   "fontFamily" : "Cascadia Code NF",
   "fontSize" : 14,
-  "transparency": 0.5,
+  "transparency" : 0.75,
   "background" : 0,
   "shade" : 7,
   "animationDuration" : 250,
@@ -35,5 +35,9 @@
     "horizontalPadding" : 12,
     "frameWidth" : 1,
     "cornerRadius" : 0
+  },
+  "rofi" : {
+    "borderSize" : 1,
+    "borderRadius" : 0
   }
 }

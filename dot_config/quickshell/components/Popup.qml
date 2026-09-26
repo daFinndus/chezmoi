@@ -12,14 +12,11 @@ PopupWindow {
     required property Item target
     required property Component contentComponent
 
-    property color background: Themes.background
-    property color shade: Themes.shade
-
     property bool available: false
 
     visible: root.available
 
-    color: Qt.rgba(root.background.r, root.background.g, root.background.b, Themes.transparency)
+    color: Qt.rgba(Themes.background.r, Themes.background.g, Themes.background.b, Themes.transparency)
 
     anchor.item: target
 
@@ -48,7 +45,7 @@ PopupWindow {
 
         color: "transparent"
 
-        border.color: root.shade
+        border.color: Themes.shade
         border.width: 1
 
         radius: Themes.borderRadius

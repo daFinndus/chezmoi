@@ -10,6 +10,17 @@ Singleton {
     property bool loaded: false
     property var colors: []
 
+    onLoadedChanged: {
+        if (root.loaded) {
+            regenerateConfigs.running = true;
+        }
+    }
+
+    Process {
+        id: regenerateConfigs
+        command: [`${Quickshell.env("XDG_DATA_HOME")}/../bin/theme-configurator.sh`, "generate_configs", "all"]
+    }
+
     signal colorReloadRequested
 
     // Index is based on the color object

@@ -98,6 +98,7 @@ hl.window_rule({
 	match = { class = terminal, title = "yazi" },
 	size = { 1200, 800 },
 	float = true,
+	center = true,
 })
 
 hl.window_rule({

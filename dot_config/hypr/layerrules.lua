@@ -15,3 +15,11 @@ hl.layer_rule({
     blur_popups = true,
     ignore_alpha = 0,
 })
+
+-- App menu
+hl.layer_rule({
+    name = "rofi-transparency",
+    match = { namespace = "rofi" },
+    blur = true,
+    ignore_alpha = 0,
+})

@@ -8,6 +8,7 @@
 .config/hypr/theming.lua
 .config/kitty/theming.conf
 .config/dunst/dunstrc.d/99-theme.conf
+.config/rofi/theming.rasi
 
 .local/bin/uv
 .local/bin/uvx

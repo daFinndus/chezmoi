@@ -34,5 +34,9 @@
     "horizontalPadding" : 12,
     "frameWidth" : 2,
     "cornerRadius" : 8
+  },
+  "rofi" : {
+    "borderSize" : 1,
+    "borderRadius" : 4
   }
 }
