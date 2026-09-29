@@ -111,9 +111,9 @@ override_property() {
     log "Invalid argument mode: $mode"
     exit 1
     ;;
-  esac
-
-  if [[ $? -eq 0 ]]; then
+	esac
+  
+	if [[ $? -eq 0 ]]; then
     log "Seems jq command went fine, proceeding."
     mv "$THEMESDIR/temp.json" "$ACTIVEFILE"
   fi
@@ -272,6 +272,8 @@ generate_rofi_config() {
   local background_index=$(jq -r '.background + 1' "$ACTIVEFILE")
   local shade_index=$(jq -r '.shade + 1' "$ACTIVEFILE")
 
+	local fontFamily=$(jq -r '.fontFamily' "$ACTIVEFILE")
+	
   local background=$(cat "$XDG_CACHE_HOME/wal/colors" | sed -n "${background_index}p")
   local shade=$(cat "$XDG_CACHE_HOME/wal/colors" | sed -n "${shade_index}p")
 
@@ -284,6 +286,7 @@ generate_rofi_config() {
     "* {" \
     $'\t'"background: $background;" \
     $'\t'"foreground: $shade;" \
+		$'\t'"font: \"$fontFamily 10\";" \
     "}" \
     "" \
     "window {" \
