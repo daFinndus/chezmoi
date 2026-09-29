@@ -24,9 +24,6 @@ Item {
 
         anchors.centerIn: parent
 
-        spacing: 12
-        padding: 8
-
         Repeater {
             model: SystemTray.items
 
@@ -34,9 +31,6 @@ Item {
                 id: root
 
                 required property var modelData
-
-                width: Themes.iconSize
-                height: Themes.iconSize
 
                 background: "transparent"
                 border.color: "transparent"

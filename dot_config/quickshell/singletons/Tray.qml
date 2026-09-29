@@ -14,17 +14,17 @@ Singleton {
         case "chrome_status_icon_1":
             return "\udb85\udd74";
         case "discord_status_icon_1":
-            return "\uf1ff";
+            return "\udb81\ude6f";
         case "nextcloud":
-            return "\uf233";
+            return "\udb81\udc8b";
         case "steam":
-            return "\uf1b6";
+            return "\udb81\udcd3";
         case "spotify-client":
             return "\uf1bc";
         case "obs":
             return "\ueba7";
         case "tray-icon tray app main":
-            return "\uf015";
+            return "\udb80\udedc";
         case "teams-for-linux_status_icon_1":
             return "\udb80\udebb";
         default:

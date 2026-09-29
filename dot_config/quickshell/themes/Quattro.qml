@@ -65,8 +65,6 @@ Scope {
                     background: "transparent"
                     accent: Themes.shade
                 }
-
-                TrayWidget {}
             }
 
             TimeWidget {
@@ -84,6 +82,8 @@ Scope {
                 anchors.right: parent.right
                 anchors.rightMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
+
+                TrayWidget {}
 
                 UpdateWidget {
                     background: "transparent"
