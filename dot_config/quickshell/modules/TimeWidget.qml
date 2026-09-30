@@ -12,11 +12,18 @@ Widget {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        onHoveredChanged: delayTooltip.start()
     }
 
     Tooltip {
+        id: tooltip
         target: root
         text: Time.fullTime
-        available: Themes.iconMode && mouseArea.containsMouse
+    }
+
+    Timer {
+        id: delayTooltip
+        interval: 150
+        onTriggered: tooltip.available = mouseArea.containsMouse
     }
 }

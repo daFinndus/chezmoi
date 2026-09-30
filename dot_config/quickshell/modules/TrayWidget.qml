@@ -44,6 +44,10 @@ Item {
                     anchors.fill: parent
 
                     hoverEnabled: true
+                    onHoveredChanged: if (Themes.iconMode) {
+                        delayTooltip.start();
+                    }
+
                     cursorShape: Qt.PointingHandCursor
 
                     acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
@@ -69,11 +73,15 @@ Item {
                 }
 
                 Tooltip {
+                    id: tooltip
                     target: root
-
-                    available: Themes.iconMode && mouseArea.containsMouse && modelData.title != ""
-
                     text: modelData.title
+                }
+
+                Timer {
+                    id: delayTooltip
+                    interval: 150
+                    onTriggered: tooltip.available = mouseArea.containsMouse
                 }
             }
         }

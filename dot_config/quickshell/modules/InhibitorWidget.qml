@@ -14,14 +14,24 @@ Widget {
         anchors.fill: parent
 
         hoverEnabled: true
+        onHoveredChanged: if (Themes.iconMode) {
+            delayTooltip.start();
+        }
+
         cursorShape: Qt.PointingHandCursor
 
         onClicked: Inhibitor.inhibited = !Inhibitor.inhibited
     }
 
     Tooltip {
+        id: tooltip
         target: root
         text: Inhibitor.getText(true)
-        available: Themes.iconMode && mouseArea.containsMouse
+    }
+
+    Timer {
+        id: delayTooltip
+        interval: 150
+        onTriggered: tooltip.available = mouseArea.containsMouse
     }
 }

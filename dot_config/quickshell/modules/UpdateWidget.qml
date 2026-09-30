@@ -20,12 +20,22 @@ Widget {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: Updates.runUpdateScript()
-        onHoveredChanged: Updates.widgetHovered = !Updates.widgetHovered
+        onHoveredChanged: if (Themes.iconMode) {
+            delayTooltip.start();
+        } else {
+            Updates.widgetHovered = mouseArea.containsMouse;
+        }
     }
 
     Tooltip {
+        id: tooltip
         target: root
         text: `${Updates.updateCount} Updates`
-        available: Themes.iconMode && mouseArea.containsMouse
+    }
+
+    Timer {
+        id: delayTooltip
+        interval: 150
+        onTriggered: tooltip.available = mouseArea.containsMouse
     }
 }

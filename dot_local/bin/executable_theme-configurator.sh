@@ -128,7 +128,7 @@ generate_configs() {
   case "$application" in
 	system) apply_system_properties ;;
   hyprland) generate_hyprland_config ;;
-  dunst) generate_dunst_config ;;
+	dunst) generate_dunst_config ;;
   kitty) generate_kitty_config ;;
   rofi) generate_rofi_config ;;
   *)
@@ -208,6 +208,15 @@ generate_hyprland_config() {
     $'\t'"decorate = $decorate," \
     $'\t'"no_border = $no_border," \
     "})" >"$file"
+
+	local file="$XDG_CONFIG_HOME/hypr/theming.conf"
+
+	log "Going to create $file"
+
+	local fontFamily=$(jq -r '.fontFamily' "$ACTIVEFILE")
+
+	printf '%s\n' \
+		"\$font = $fontFamily" >$file
 }
 
 generate_dunst_config() {
