@@ -19,12 +19,17 @@ Rectangle {
         }
     }
 
-    property int textSize: Themes.fontSize * 0.8
+    property int textSize: Themes.fontSize * 0.75
 
     // Shall the button close the corresponding popup
     property bool onClickClosePopup: false
 
-    required property string text
+    // Either pass a text which will be centered in the button
+    property string text: ""
+
+    // Or pass a whole component which will takeup the button space
+    default property alias content: container.data
+
     property bool active: false
 
     // This only needs to be done, if an active value is provided
@@ -39,7 +44,7 @@ Rectangle {
     height: text.height + Themes.paddingSize
 
     // Border color is darker than text color
-    border.color: Qt.rgba(root.shade.r, root.shade.g, root.shade.b, 0.25)
+    border.color: Globals.withAlpha(root.shade, 0.25)
     border.width: 1
 
     radius: Themes.borderRadius
@@ -53,8 +58,19 @@ Rectangle {
         }
     }
 
+    Item {
+        id: container
+
+        visible: children.length > 0
+
+        anchors.fill: parent
+        anchors.centerIn: parent
+    }
+
     Text {
         id: text
+
+        visible: container.children.length === 0
 
         font.family: Themes.fontFamily
         font.pixelSize: root.textSize

@@ -23,7 +23,6 @@ Singleton {
     property real ramTotal: 32703
     property real ramUsed: 7440
 
-    property int swapLoad: 0
     property real swapTotal: 4294
     property real swapUsed: 0
 
@@ -38,96 +37,39 @@ Singleton {
     property real homeUsed: 498841
 
     Process {
-        id: fetchCPU
+        id: fetchHardware
 
-        command: [`${Globals.basePath}/scripts/hardware.sh`, "cpu"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const parsed = JSON.parse(this.text.trim());
-
-                root.cpuUsage = parseInt(parsed.usage) || 5;
-                root.cpuTemp = parseInt(parsed.temp) || 62;
-                root.cpuLoad = parsed.load || "1.15, 1.10, 1.09";
-
-                root.cpuCores = parsed.cores || [];
-            }
-        }
-    }
-
-    Process {
-        id: fetchGPU
-
-        command: [`${Globals.basePath}/scripts/hardware.sh`, "gpu"]
+        command: [`${Globals.basePath}/scripts/hardware.sh`, "all"]
 
         stdout: StdioCollector {
             onStreamFinished: {
                 const parsed = JSON.parse(this.text.trim());
 
-                root.gpuLoad = parseInt(parsed.load) || 15;
-                root.gpuTemp = parseInt(parsed.temp) || 46;
-            }
-        }
-    }
+                root.cpuUsage = Globals.numberOr(parsed.cpu.usage, 5);
+                root.cpuTemp = Globals.numberOr(parsed.cpu.temp, 62);
+                root.cpuLoad = parsed.cpu.load || "1.15, 1.10, 1.09";
+                root.cpuCores = parsed.cpu.cores || [];
 
-    Process {
-        id: fetchRAM
+                root.gpuLoad = Globals.numberOr(parsed.gpu.load, 15);
+                root.gpuTemp = Globals.numberOr(parsed.gpu.temp, 46);
+                root.ramLoad = Globals.numberOr(parsed.ram.load, 23);
+                root.ramTotal = Globals.numberOr(parsed.ram.total, 32703);
+                root.ramUsed = Globals.numberOr(parsed.ram.used, 7440);
+                root.swapTotal = Globals.numberOr(parsed.swap.total, 4294);
+                root.swapUsed = Globals.numberOr(parsed.swap.used, 0);
 
-        command: [`${Globals.basePath}/scripts/hardware.sh`, "ram"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const parsed = JSON.parse(this.text.trim());
-
-                root.ramLoad = parseInt(parsed.load) || 23;
-                root.ramTotal = parseInt(parsed.total) || 32703;
-                root.ramUsed = parseInt(parsed.used) || 7440;
-            }
-        }
-    }
-
-    Process {
-        id: fetchSwap
-
-        command: [`${Globals.basePath}/scripts/hardware.sh`, "swap"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const parsed = JSON.parse(this.text.trim());
-
-                root.swapLoad = parseInt(parsed.load) || 0;
-                root.swapTotal = parseInt(parsed.total) || 4294;
-                root.swapUsed = parseInt(parsed.used) || 0;
-            }
-        }
-    }
-
-    Process {
-        id: fetchDisk
-
-        command: [`${Globals.basePath}/scripts/hardware.sh`, "disk"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const parsed = JSON.parse(this.text.trim());
-
-                root.rootTotal = parseInt(parsed.rootTotal) || 195723;
-                root.rootUsed = parseInt(parsed.rootUsed) || 98523;
-                root.rootLoad = parseInt(parsed.rootLoad) || 54;
-
-                root.homeTotal = parseInt(parsed.homeTotal) || 1460248;
-                root.homeUsed = parseInt(parsed.homeUsed) || 498841;
-                root.homeLoad = parseInt(parsed.homeLoad) || 36;
+                root.rootTotal = Globals.numberOr(parsed.disk.rootTotal, 195723);
+                root.rootUsed = Globals.numberOr(parsed.disk.rootUsed, 98523);
+                root.rootLoad = Globals.numberOr(parsed.disk.rootLoad, 54);
+                root.homeTotal = Globals.numberOr(parsed.disk.homeTotal, 1460248);
+                root.homeUsed = Globals.numberOr(parsed.disk.homeUsed, 498841);
+                root.homeLoad = Globals.numberOr(parsed.disk.homeLoad, 36);
             }
         }
     }
 
     function updateHardware(): void {
-        fetchCPU.running = true;
-        fetchGPU.running = true;
-        fetchRAM.running = true;
-        fetchSwap.running = true;
-        fetchDisk.running = true;
+        fetchHardware.running = true;
     }
 
     Timer {

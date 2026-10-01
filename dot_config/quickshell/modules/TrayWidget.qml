@@ -1,7 +1,6 @@
 import QtQuick
 import Quickshell
 import Quickshell.Widgets
-import Qt5Compat.GraphicalEffects
 import Quickshell.Services.SystemTray
 
 import qs.singletons
@@ -81,7 +80,7 @@ Item {
                 Timer {
                     id: delayTooltip
                     interval: 150
-                    onTriggered: tooltip.available = mouseArea.containsMouse & modelData.title != ""
+                    onTriggered: tooltip.available = mouseArea.containsMouse && modelData.title !== ""
                 }
             }
         }

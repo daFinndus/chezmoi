@@ -20,6 +20,6 @@ Item {
         width: parent.width
         height: 1
 
-        color: Qt.rgba(root.shade.r, root.shade.g, root.shade.b, 0.15)
+        color: Globals.withAlpha(root.shade, 0.15)
     }
 }

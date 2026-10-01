@@ -73,7 +73,7 @@ Scope {
                     background: Themes.background
                 }
 
-                VolumeWidget {
+                AudioWidget {
                     background: Themes.background
                 }
 

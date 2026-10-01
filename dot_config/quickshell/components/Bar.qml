@@ -23,7 +23,7 @@ Item {
     Rectangle {
         anchors.fill: parent
 
-        color: Qt.rgba(root.shade.r, root.shade.g, root.shade.b, 0.15)
+        color: Globals.withAlpha(root.shade, 0.15)
 
         radius: root.height / 2
     }
@@ -31,7 +31,10 @@ Item {
     Rectangle {
         id: overlay
 
-        property double calculatedPercentage: Math.min(1, ((root.actualValue - root.minimumValue) / (root.maximumValue - root.minimumValue)))
+        property double calculatedPercentage: {
+            const range = root.maximumValue - root.minimumValue;
+            return range > 0 ? Math.max(0, Math.min(1, (root.actualValue - root.minimumValue) / range)) : 0;
+        }
 
         width: Math.max(height, parent.width * overlay.calculatedPercentage)
         height: parent.height
@@ -39,7 +42,7 @@ Item {
         radius: height / 2
 
         function getDangerColor() {
-            return Qt.rgba(root.shade.r, root.shade.g, root.shade.b, Math.max(0.15, 1 - overlay.calculatedPercentage));
+            return Globals.withAlpha(root.shade, Math.max(0.15, 1 - overlay.calculatedPercentage));
         }
 
         color: showDanger ? getDangerColor() : root.shade

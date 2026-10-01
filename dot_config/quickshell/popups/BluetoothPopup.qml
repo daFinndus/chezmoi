@@ -39,7 +39,7 @@ Popup {
             font.pixelSize: Themes.fontSize * 0.7
             font.capitalization: Font.AllUppercase
 
-            color: Qt.rgba(Themes.shade.r, Themes.shade.b, Themes.shade.g, 0.25)
+            color: Globals.withAlpha(Themes.shade, 0.25)
 
             topPadding: 2
             bottomPadding: 2
@@ -52,7 +52,7 @@ Popup {
             font.pixelSize: Themes.fontSize * 0.7
             font.capitalization: Font.AllUppercase
 
-            color: Qt.rgba(Themes.shade.r, Themes.shade.b, Themes.shade.g, 0.25)
+            color: Globals.withAlpha(Themes.shade, 0.25)
 
             topPadding: 2
             bottomPadding: 2
@@ -65,7 +65,7 @@ Popup {
             font.pixelSize: Themes.fontSize * 0.7
             font.capitalization: Font.AllUppercase
 
-            color: Qt.rgba(Themes.shade.r, Themes.shade.b, Themes.shade.g, 0.25)
+            color: Globals.withAlpha(Themes.shade, 0.25)
 
             topPadding: 2
             bottomPadding: 2
@@ -125,81 +125,16 @@ Popup {
                 id: repeater
 
                 model: section.object
-                delegate: Device {
+                delegate: Button {
                     required property var modelData
 
+                    width: rootColumn.width
+                    height: 32
+
                     text: modelData.name
+                    active: modelData.connected
+
                     onClick: () => Bluetooth.connectDevice(modelData.address)
-
-                    connected: modelData.connected
-                }
-            }
-        }
-    }
-
-    component Device: Rectangle {
-        id: device
-
-        required property string text
-        required property var onClick
-
-        property color background: "transparent"
-        property color shade: Themes.shade
-
-        // This has to be done, so if the background values change
-        // E.g. through file parsing, the values in the components are updated
-        Connections {
-            target: Themes
-
-            function onShadeChanged() {
-                Globals.setColor(device, device.active, mouseArea.containsMouse);
-            }
-        }
-
-        required property bool connected
-
-        onConnectedChanged: Globals.setColor(device, device.connected, mouseArea.containsMouse)
-
-        width: rootColumn.width
-        height: 32
-
-        color: device.background
-
-        border.color: Qt.rgba(device.shade.r, device.shade.g, device.shade.b, 0.25)
-        border.width: device.connected ? 0 : 1
-
-        Behavior on color {
-            ColorAnimation {
-                duration: Themes.animationDuration
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        MouseArea {
-            id: mouseArea
-
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-
-            hoverEnabled: true
-            onHoveredChanged: Globals.setColor(device, device.connected, mouseArea.containsMouse)
-
-            onClicked: device.onClick()
-        }
-
-        Text {
-            font.family: Themes.fontFamily
-            font.pixelSize: Themes.fontSize * 0.7
-
-            text: device.text
-            color: device.shade
-
-            anchors.centerIn: parent
-
-            Behavior on color {
-                ColorAnimation {
-                    duration: Themes.animationDuration
-                    easing.type: Easing.OutCubic
                 }
             }
         }

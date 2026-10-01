@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Themes.iconMode ? "\udb80\udcaf" : (mouseArea.containsMouse ? Bluetooth.getText() : "Bluetooth: " + (root.enabled ? "Active" : "Disabled"))
+    text: Themes.iconMode ? "\udb80\udcaf" : (mouseArea.containsMouse ? Bluetooth.getText() : "Bluetooth: " + (Bluetooth.adapterEnabled ? "Active" : "Disabled"))
 
     MouseArea {
         id: mouseArea
@@ -31,10 +31,6 @@ Widget {
                 Bluetooth.deviceIndex = (Bluetooth.deviceIndex + 1) % Bluetooth.devices.length;
             }
         }
-    }
-
-    function togglePanel(): void {
-        popup.available = !popup.available;
     }
 
     BluetoothPopup {

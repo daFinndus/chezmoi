@@ -34,7 +34,7 @@ Popup {
                 Text {
                     topPadding: 4
 
-                    color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.75)
+                    color: Globals.withAlpha(Themes.shade, 0.75)
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.7
@@ -106,7 +106,7 @@ Popup {
                 font.family: Themes.fontFamily
                 font.pixelSize: Themes.fontSize * 0.65
 
-                color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
+                color: Globals.withAlpha(Themes.shade, 0.5)
 
                 text: "Load: " + Hardware.cpuLoad
             }
@@ -136,7 +136,7 @@ Popup {
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.65
 
-                    color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
+                    color: Globals.withAlpha(Themes.shade, 0.5)
 
                     text: "Available: " + Globals.formatSizeUnit((Hardware.ramTotal - Hardware.ramUsed)) + " of " + Globals.formatSizeUnit(Hardware.ramTotal)
                 }
@@ -151,7 +151,7 @@ Popup {
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.65
 
-                    color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
+                    color: Globals.withAlpha(Themes.shade, 0.5)
 
                     text: "Swap: " + Globals.formatSizeUnit(Hardware.swapUsed) + " of " + Globals.formatSizeUnit(Hardware.swapTotal)
                 }
@@ -170,7 +170,7 @@ Popup {
                 font.family: Themes.fontFamily
                 font.pixelSize: Themes.fontSize * 0.65
 
-                color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
+                color: Globals.withAlpha(Themes.shade, 0.5)
 
                 text: Globals.formatSizeUnit(Hardware.rootUsed) + " / " + Globals.formatSizeUnit(Hardware.rootTotal)
             }
@@ -188,7 +188,7 @@ Popup {
                 font.family: Themes.fontFamily
                 font.pixelSize: Themes.fontSize * 0.65
 
-                color: Qt.rgba(Themes.shade.r, Themes.shade.g, Themes.shade.b, 0.5)
+                color: Globals.withAlpha(Themes.shade, 0.5)
 
                 text: Globals.formatSizeUnit(Hardware.homeUsed) + " / " + Globals.formatSizeUnit(Hardware.homeTotal)
             }
@@ -211,32 +211,9 @@ Popup {
 
         width: rootColumn.width
 
-        RowLayout {
-            id: rowLayout
-
-            width: parent.width
-
-            Text {
-                color: Themes.shade
-
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-
-                text: section.title
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Text {
-                color: Themes.shade
-
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-
-                text: section.temperature != "" ? section.percentage + "% at " + section.temperature + "°C" : section.percentage + "%"
-            }
+        KeyValueRow {
+            label: section.title
+            value: section.temperature != "" ? section.percentage + "% at " + section.temperature + "°C" : section.percentage + "%"
         }
 
         Bar {

@@ -53,7 +53,6 @@
     "command": "qs ipc call theme applyTheme quattro",
     "fontFamily": "Cascadia Code NF",
     "fontSize": 14,
-    "transparentBackground": true,
     "background": 0,
     "shade": 7,
     "barHeight": 36,

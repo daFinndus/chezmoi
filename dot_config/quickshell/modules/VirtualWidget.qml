@@ -39,10 +39,6 @@ Widget {
         onClicked: Themes.iconMode ? Globals.togglePopup(popup) : null
     }
 
-    function togglePanel(): void {
-        popup.available = !popup.available;
-    }
-
     VirtualPopup {
         id: popup
         target: root

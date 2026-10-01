@@ -12,9 +12,9 @@ Singleton {
     // Override icon is for getting text even though iconMode is enabled
     function getText(overrideIconMode = false): string {
         if (root.inhibited) {
-            return !overrideIconMode & Themes.iconMode ? "\udb80\ude08" : "Inhibitor: Active";
+            return !overrideIconMode && Themes.iconMode ? "\udb80\ude08" : "Inhibitor: Active";
         } else {
-            return !overrideIconMode & Themes.iconMode ? "\udb80\ude09" : "Inhibitor: Inactive";
+            return !overrideIconMode && Themes.iconMode ? "\udb80\ude09" : "Inhibitor: Inactive";
         }
     }
 

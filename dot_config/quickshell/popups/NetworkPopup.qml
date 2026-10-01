@@ -8,8 +8,12 @@ import qs.components
 Popup {
     id: root
 
-    onVisibleChanged: if (!root.visible) {
-        Network.stopWirelessNetworkScan();
+    onVisibleChanged: {
+        if (root.visible) {
+            Network.fetchMaximumSpeeds();
+        } else {
+            Network.stopWirelessNetworkScan();
+        }
     }
 
     contentComponent: Column {
@@ -20,13 +24,13 @@ Popup {
         width: 256
         spacing: Themes.paddingSize
 
-        OneLiner {
-            type: "Interface"
+        KeyValueRow {
+            label: "Interface"
             value: (Network.onlineState ? "Online: " : "Offline: ") + Network.interfaceTitle
         }
 
-        OneLiner {
-            type: "Type"
+        KeyValueRow {
+            label: "Type"
             value: Network.interfaceType
         }
 
@@ -38,18 +42,18 @@ Popup {
 
             Separator {}
 
-            OneLiner {
-                type: "IP Address"
+            KeyValueRow {
+                label: "IP Address"
                 value: Network.ipAddress
             }
 
-            OneLiner {
-                type: "Gateway"
+            KeyValueRow {
+                label: "Gateway"
                 value: Network.gatewayAddress
             }
 
-            OneLiner {
-                type: "DNS"
+            KeyValueRow {
+                label: "DNS"
                 value: Network.dnsAddress
             }
 
@@ -184,39 +188,6 @@ Popup {
         Component.onCompleted: Network.fetchWirelessNetworks()
     }
 
-    component OneLiner: RowLayout {
-        id: oneLiner
-
-        required property string type
-        required property string value
-
-        width: parent.width
-        visible: oneLiner.value != ""
-
-        Text {
-            font.family: Themes.fontFamily
-            font.pixelSize: Themes.fontSize * 0.7
-            font.capitalization: Font.AllUppercase
-
-            color: Themes.shade
-
-            text: oneLiner.type
-        }
-
-        Item {
-            Layout.fillWidth: true
-        }
-
-        Text {
-            font.family: Themes.fontFamily
-            font.pixelSize: Themes.fontSize * 0.7
-
-            color: Themes.shade
-
-            text: oneLiner.value
-        }
-    }
-
     component SpeedSection: Column {
         id: speedSection
 
@@ -233,30 +204,9 @@ Popup {
 
         width: rootColumn.width
 
-        RowLayout {
-            width: parent.width
-
-            Text {
-                color: Themes.shade
-
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-
-                text: speedSection.title
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Text {
-                color: Themes.shade
-
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-
-                text: Globals.formatNetworkSpeed(speedSection.absoluteSpeed, rootColumn.displaySpeedInBits) + " of " + Globals.formatNetworkSpeed(speedSection.maximumSpeed, rootColumn.displaySpeedInBits)
-            }
+        KeyValueRow {
+            label: speedSection.title
+            value: Globals.formatNetworkSpeed(speedSection.absoluteSpeed, rootColumn.displaySpeedInBits) + " of " + Globals.formatNetworkSpeed(speedSection.maximumSpeed, rootColumn.displaySpeedInBits)
         }
 
         Bar {
@@ -280,99 +230,24 @@ Popup {
         onClick: () => Network.changeDNS(dnsButton.dnsAddress)
     }
 
-    component WiFiButton: Rectangle {
+    component WiFiButton: Button {
         id: wifiButton
 
         width: rootColumn.width
         height: 32
 
-        property color background: "transparent"
-        property color shade: Themes.shade
+        onClick: () => Network.connectWirelessNetwork(modelData.ssid.trim())
 
-        // This has to be done, so if the background values change
-        // E.g. through file parsing, the values in the components are updated
-        Connections {
-            target: Themes
+        KeyValueRow {
+            width: parent.width - Themes.paddingSize * 2
+            anchors.centerIn: parent
 
-            function onShadeChanged() {
-                Globals.setColor(wifiButton, wifiButton.active, mouseArea.containsMouse);
-            }
-        }
+            shade: wifiButton.shade
 
-        property bool active: Network.activeWirelessNetwork === modelData.ssid.trim()
+            label: modelData.ssid.trim()
+            value: (modelData.strength.trim() / 100) + " dBm"
 
-        onActiveChanged: Globals.setColor(wifiButton, wifiButton.active, mouseArea.containsMouse)
-
-        // Border color is darker than text color
-        border.color: Qt.rgba(wifiButton.shade.r, wifiButton.shade.g, wifiButton.shade.b, 0.25)
-        border.width: 1
-
-        radius: Themes.borderRadius
-
-        color: wifiButton.background
-
-        Behavior on color {
-            ColorAnimation {
-                duration: Themes.animationDuration
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        RowLayout {
-            width: parent.width
-            height: 32
-
-            spacing: Themes.paddingSize
-
-            Text {
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-
-                text: modelData.ssid.trim()
-                color: wifiButton.shade
-
-                leftPadding: Themes.paddingSize
-
-                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-
-                Behavior on color {
-                    ColorAnimation {
-                        duration: Themes.animationDuration
-                        easing.type: Easing.OutCubic
-                    }
-                }
-            }
-
-            Text {
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-
-                text: (modelData.strength.trim() / 100) + " dBm"
-                color: wifiButton.shade
-
-                rightPadding: Themes.paddingSize
-
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-
-                Behavior on color {
-                    ColorAnimation {
-                        duration: Themes.animationDuration
-                        easing.type: Easing.OutCubic
-                    }
-                }
-            }
-        }
-
-        MouseArea {
-            id: mouseArea
-
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-
-            hoverEnabled: true
-            onHoveredChanged: Globals.setColor(wifiButton, wifiButton.active, mouseArea.containsMouse)
-
-            onClicked: () => Network.connectWirelessNetwork(modelData.ssid.trim())
+            description: "Security: " + modelData.security
         }
     }
 }

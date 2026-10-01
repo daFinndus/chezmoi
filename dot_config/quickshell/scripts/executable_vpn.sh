@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # This script will fetch all running VPNs
-
 fetch_vpn() {
     local -a connections=()
     declare -A seen
@@ -13,13 +12,6 @@ fetch_vpn() {
         seen[$key]=1
         connections+=("$json")
     }
-
-    # WireGuard — interface-centric
-    while read -r iface; do
-        add_connection "wg:$iface" \
-            "{\"type\":\"WireGuard: $profile\"}"
-    done < <(ip link show type wireguard 2>/dev/null |
-        awk '/^[0-9]+:/ && /UP/ {gsub(/:/,"",$2); print $2}')
 
     # OpenVPN — process-centric
     while read -r cfg; do

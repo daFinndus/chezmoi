@@ -26,7 +26,7 @@ Slider {
         width: parent.width
         height: 6
 
-        color: Qt.rgba(root.shade.r, root.shade.g, root.shade.b, 0.15)
+        color: Globals.withAlpha(root.shade, 0.15)
 
         radius: height / 2
 

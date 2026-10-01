@@ -21,40 +21,29 @@ Singleton {
     }
 
     function syncMetadatas(metadatas): void {
+        const parsedMetadatas = metadatas.map(metadata => {
+            const parts = metadata.split("/divider/");
+
+            return parts.length >= 5 ? {
+                id: parts[0].trim(),
+                status: parts[1].trim(),
+                name: parts[2].trim(),
+                interpret: parts[3].trim(),
+                title: parts[4].trim(),
+                url: parts[5]?.trim() || ""
+            } : null;
+        }).filter(metadata => metadata !== null);
+
         // This will remove any applications that are no longer playing
         for (let i = applications.count - 1; i >= 0; i--) {
-            var found = false;
-
-            for (let j = 0; j < metadatas.length; j++) {
-                const parts = metadatas[j].split("/divider/");
-
-                if (parts[0].trim() === applications.get(i).id) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
+            if (!parsedMetadatas.some(metadata => metadata.id === applications.get(i).id)) {
                 applications.remove(i);
-                i--;
             }
         }
 
         // This will add any new applications that are playing
-        for (let i = 0; i < metadatas.length; i++) {
-            const parts = metadatas[i].split("/divider/");
-
-            if (parts.length < 5)
-                continue;
-
-            const id = parts[0].trim();
-            const status = parts[1].trim();
-            const name = parts[2].trim();
-            const interpret = parts[3].trim();
-            const title = parts[4].trim();
-            const url = parts[5].trim();
-
-            addApplication(id, status, name, interpret, title, url);
+        for (const metadata of parsedMetadatas) {
+            addApplication(metadata.id, metadata.status, metadata.name, metadata.interpret, metadata.title, metadata.url);
         }
     }
 
@@ -103,6 +92,8 @@ Singleton {
 
     // This will change the current playing interpret based on status
     function updateText(): void {
+        root.current = "No players found";
+
         for (let i = 0; i < applications.count; i++) {
             if (applications.get(i).status === "Playing") {
                 if (applications.get(i).interpret != "") {
@@ -112,12 +103,8 @@ Singleton {
                 }
 
                 break;
-            } else if (applications.get(i).id === "No players found" || applications.count == 0) {
-                root.opacity = 0;
             }
         }
-
-        root.current = "No players found";
     }
 
     function nextTrack(): void {

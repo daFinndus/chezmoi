@@ -4,7 +4,6 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
-import Qt5Compat.GraphicalEffects
 
 import qs.themes
 import qs.modules

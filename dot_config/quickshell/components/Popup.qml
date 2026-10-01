@@ -16,7 +16,7 @@ PopupWindow {
 
     visible: root.available
 
-    color: Qt.rgba(Themes.background.r, Themes.background.g, Themes.background.b, Themes.transparency)
+    color: Globals.withAlpha(Themes.background, Themes.transparency)
 
     anchor.item: target
 

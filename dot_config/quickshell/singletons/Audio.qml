@@ -19,9 +19,6 @@ Singleton {
     property bool sourceMuted: false
     property string defaultSource: ""
 
-    // This will store running applications
-    property var applications: []
-
     // This is only used in non-icon based themes
     function getText(): string {
         if (root.sinkVolume === 0 || root.sinkMuted) {
@@ -161,41 +158,6 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.sinkMuted = this.text.trim() === "yes";
-            }
-        }
-    }
-
-    // =================== Applications ====================
-    //
-    // This is not really functional currently
-    // The changing object isn't working for a Repeater
-    // Basically resulting in a laggy Slider
-    function fetchPlayingApps() {
-        fetchPlayingApplications.running = true;
-    }
-
-    Process {
-        id: fetchPlayingApplications
-        command: [`${Globals.basePath}/scripts/audio.sh`, "applications"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.applications = JSON.parse(this.text.trim());
-            }
-        }
-    }
-
-    function setApplicationVolume(id: int, volume: int): void {
-        setApplicationVolume.command = ["pactl", "set-sink-input-volume", id, `${volume}%`];
-        setApplicationVolume.running = true;
-    }
-
-    Process {
-        id: setApplicationVolume
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.fetchPlayingApps();
             }
         }
     }
@@ -356,7 +318,7 @@ Singleton {
         id: initialFetching
 
         running: false
-        repeat: root.defaultSink == "" && root.defaultSource == "t"
+        repeat: root.defaultSink === "" || root.defaultSource === ""
 
         interval: 3000
 
@@ -365,8 +327,6 @@ Singleton {
             getDefaultSource.running = true;
 
             root.refreshVolume();
-            root.fetchPlayingApps();
-
             root.refreshSinks();
             root.refreshSources();
         }

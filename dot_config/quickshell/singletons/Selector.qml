@@ -10,7 +10,7 @@ Singleton {
     property string type: "wallpaper"
 
     property var object: Wallpaper.wallpapers
-    property string active: Wallpaper.activeWallpaperIndex
+    property int active: Wallpaper.activeWallpaperIndex
 
     property bool widgetVisible: false
 

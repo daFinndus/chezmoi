@@ -22,7 +22,7 @@ Widget {
             root.systemIndex = (root.systemIndex + 1) % Wlogout.systemFunctions.length;
             break;
         case Qt.Key_Return:
-            Wlogout.startSystemfunction(Wlogout.systemFunctions[root.systemIndex].command);
+            Wlogout.startSystemFunction(Wlogout.systemFunctions[root.systemIndex].command);
             break;
         }
     }

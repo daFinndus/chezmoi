@@ -47,7 +47,7 @@ Popup {
                 }
 
                 Text {
-                    color: Qt.rgba(Themes.shade.r, Themes.shade.b, Themes.shade.g, 0.5)
+                    color: Globals.withAlpha(Themes.shade, 0.5)
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.85
@@ -58,7 +58,7 @@ Popup {
                 }
 
                 Text {
-                    color: Qt.rgba(Themes.shade.r, Themes.shade.b, Themes.shade.g, 0.5)
+                    color: Globals.withAlpha(Themes.shade, 0.5)
 
                     font.family: Themes.fontFamily
                     font.pixelSize: Themes.fontSize * 0.85

@@ -7,8 +7,6 @@ Singleton {
     id: root
 
     readonly property string basePath: Qt.resolvedUrl("../.").toString().replace("file://", "")
-    readonly property string barsPath: Qt.resolvedUrl("../bars").toString().replace("file://", "")
-    readonly property string selectorPath: Qt.resolvedUrl("../selector").toString().replace("file://", "")
 
     readonly property string fullTime: "d. MMMM 'on a' dddd - hh:mm AP"
     readonly property string shortTime: "hh:mm AP"
@@ -27,6 +25,15 @@ Singleton {
     // Only used for the Quattro bar currently
     function clamp(minimumValue: double, maximumValue: double, currentValue: double): double {
         return Math.min(maximumValue, Math.max(minimumValue, currentValue));
+    }
+
+    function withAlpha(value: color, alpha: real): color {
+        return Qt.rgba(value.r, value.g, value.b, alpha);
+    }
+
+    function numberOr(value: var, fallback: real): real {
+        const number = Number(value);
+        return Number.isFinite(number) ? number : fallback;
     }
 
     // This is for giving color based on active state and (mostly) hover
@@ -107,7 +114,7 @@ Singleton {
     //
     //
     //
-    property int verbosity: 3
+    property int verbosity: 2
 
     function logError(message): void {
         if (root.verbosity >= 1) {
@@ -116,23 +123,15 @@ Singleton {
         }
     }
 
-    function logInfo(message): void {
-        if (root.verbosity >= 2) {
-            const date = new Date();
-
-            console.warn(`${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}: ${message}`);
-        }
-    }
-
     function logDebug(message): void {
-        if (root.verbosity >= 3) {
+        if (root.verbosity >= 2) {
             const date = new Date();
             console.log(`${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}: ${message}`);
         }
     }
 
     function logEverything(message): void {
-        if (root.verbosity >= 4) {
+        if (root.verbosity >= 3) {
             const date = new Date();
             console.log(`${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}: ${message}`);
         }

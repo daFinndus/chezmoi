@@ -8,15 +8,19 @@ Singleton {
     id: root
 
     property var adapters: []
-    property bool adapterScanning: false
-    property bool adapterEnabled: root.adapter != null ? root.adapter.enabled : false
+    readonly property bool adapterEnabled: root.adapters.length > 0 && root.adapters[0].powered === true
 
     property int deviceIndex: 0
     property var devices: []
 
     // This is only used in non-icon themes
     function getText(): string {
-        return root.devices.length <= 0 ? "No devices" : root.devices[root.deviceIndex].name + ": " + root.devices[root.deviceIndex].battery;
+        if (root.devices.length === 0) {
+            return "No devices";
+        }
+
+        const index = Math.min(root.deviceIndex, root.devices.length - 1);
+        return root.devices[index].name + ": " + root.devices[index].battery;
     }
 
     // Universal bluetooth function handler
@@ -44,11 +48,6 @@ Singleton {
         getAdapters.running = true;
     }
 
-    function setAdapterProperty(property: string, value: string): void {
-        bluetoothAction.command = ["bluetoothctl", property, value];
-        bluetoothAction.running = true;
-    }
-
     Process {
         id: getAdapters
 
@@ -57,7 +56,12 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                root.adapters = JSON.parse(this.text.trim());
+                try {
+                    root.adapters = JSON.parse(this.text.trim());
+                } catch (error) {
+                    Globals.logError("Bluetooth adapter parsing failed: " + error);
+                    root.adapters = [];
+                }
             }
         }
     }
@@ -77,7 +81,12 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                root.devices = JSON.parse(this.text.trim());
+                try {
+                    root.devices = JSON.parse(this.text.trim());
+                } catch (error) {
+                    Globals.logError("Bluetooth device parsing failed: " + error);
+                    root.devices = [];
+                }
             }
         }
     }

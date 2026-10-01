@@ -21,8 +21,6 @@ Singleton {
         command: [`${Quickshell.env("XDG_DATA_HOME")}/../bin/theme-configurator.sh`, "generate_configs", "all"]
     }
 
-    signal colorReloadRequested
-
     // Index is based on the color object
     // The higher the index, the brighter the color... typically
     function getColor(index: int): color {
@@ -38,10 +36,6 @@ Singleton {
         colorManager.reloadColors();
     }
 
-    onColorReloadRequested: {
-        colorManager.reloadColors();
-    }
-
     Component.onCompleted: {
         colorManager.reloadColors();
     }
@@ -49,7 +43,6 @@ Singleton {
     QtObject {
         id: colorManager
 
-        property var parsed: ({})
         property FileView file: FileView {
             path: Qt.resolvedUrl(`${Globals.basePath}/assets/files/colors.json`)
             preload: true

@@ -121,11 +121,31 @@ fetch_disk() {
     printf '{"rootTotal":%s, "rootUsed":%s, "rootLoad":%s, "homeTotal":%s, "homeUsed":%s, "homeLoad":%s}\n' "${rootTotal:-0}" "${rootUsed:-0}" "${rootLoad:-0}" "${homeTotal:-0}" "${homeUsed:-0}" "${homeLoad:-0}"
 }
 
+fetch_all() {
+    local cpu ram swap gpu disk
+    cpu=$(fetch_cpu)
+    ram=$(fetch_ram)
+    swap=$(fetch_swap)
+    gpu=$(fetch_gpu)
+    disk=$(fetch_disk)
+
+    swap=${swap:-'{"total":0,"used":0}'}
+    gpu=${gpu:-'{"load":0,"temp":0}'}
+
+    jq -n \
+        --argjson cpu "$cpu" \
+        --argjson ram "$ram" \
+        --argjson swap "$swap" \
+        --argjson gpu "$gpu" \
+        --argjson disk "$disk" \
+        '{cpu: $cpu, ram: $ram, swap: $swap, gpu: $gpu, disk: $disk}'
+}
+
 case "$1" in
+all) fetch_all ;;
 cpu) fetch_cpu ;;
 ram) fetch_ram ;;
 swap) fetch_swap ;;
 gpu) fetch_gpu ;;
 disk) fetch_disk ;;
-net) fetch_net "$2" ;;
 esac

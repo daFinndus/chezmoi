@@ -66,11 +66,11 @@ Widget {
 
         text: Media.current.length > 0 ? Media.current : "No players found"
 
-        property var colors: [Themes.shade, Colors.color2, Colors.color3, Colors.color4, Colors.color5, Colors.color6]
+        property var colors: [Themes.shade, Colors.getColor(2), Colors.getColor(3), Colors.getColor(4), Colors.getColor(5), Colors.getColor(6)]
 
         Behavior on color {
             ColorAnimation {
-                duration: Globals.animationDuration
+                duration: Themes.animationDuration
                 easing.type: Easing.OutCubic
             }
         }
@@ -84,11 +84,7 @@ Widget {
             repeat: true
 
             onTriggered: {
-                if ((text.index + 1) == parseInt(text.colors.length)) {
-                    text.index = 0;
-                } else {
-                    text.index = text.index + 1;
-                }
+                text.index = (text.index + 1) % text.colors.length;
 
                 text.color = text.colors[text.index];
                 root.border.color = text.colors[text.index];

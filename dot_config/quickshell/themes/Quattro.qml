@@ -3,8 +3,6 @@ import Quickshell
 import QtQuick.Layouts
 import Quickshell.Wayland
 
-import Qt5Compat.GraphicalEffects
-
 import qs.singletons
 import qs.modules
 import qs.components
@@ -29,27 +27,11 @@ Scope {
 
         anchors.top: true
 
-        implicitWidth: 1920
+        implicitWidth: Screen.width
         implicitHeight: Themes.barHeight
 
-        MouseArea {
-            id: mouseArea
-
-            anchors.fill: parent
-
-            onDoubleClicked: {
-                Themes.transparentBackground = !Themes.transparentBackground;
-                Themes.transparency = 0.5;
-            }
-
-            onWheel: event => {
-                Themes.transparency += (event.angleDelta.y / 120) / 20;
-                Themes.transparency = Globals.clamp(0, 1, Themes.transparency);
-            }
-        }
-
         Rectangle {
-            color: Qt.rgba(Themes.background.r, Themes.background.g, Themes.background.b, Themes.transparency)
+            color: Globals.withAlpha(Themes.background, Themes.transparency)
             anchors.fill: parent
 
             Row {
@@ -109,7 +91,7 @@ Scope {
                     background: "transparent"
                 }
 
-                VolumeWidget {
+                AudioWidget {
                     background: "transparent"
                 }
 

@@ -9,8 +9,6 @@ import qs.selector
 Singleton {
     id: root
 
-    property bool widgetVisible: false
-
     property bool loaded: false
 
     property var wallpapers: []

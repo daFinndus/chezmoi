@@ -54,7 +54,7 @@ Scope {
             visible: true
         },
         {
-            source: "VolumeWidget.qml",
+            source: "AudioWidget.qml",
             visible: true
         },
         {

@@ -35,7 +35,7 @@ PopupWindow {
 
         anchors.fill: parent
 
-        color: Qt.rgba(root.background.r, root.background.g, root.background.b, Themes.transparency)
+        color: Globals.withAlpha(root.background, Themes.transparency)
 
         border.color: root.shade
         border.width: 1

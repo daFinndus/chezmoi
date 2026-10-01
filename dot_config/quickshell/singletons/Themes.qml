@@ -30,8 +30,6 @@ Singleton {
     property double fontSize: 10
 
     // Color stuff
-    property bool transparentBackground: false
-
     property color background: "#ffffff"
     property color shade: "#000000"
 
@@ -61,6 +59,7 @@ Singleton {
 
     function applyTheme(): void {
         const theme = root.theme;
+        const quickshell = theme.quickshell ?? theme;
 
         Globals.logDebug("Setting theme: " + theme.name);
 
@@ -74,15 +73,15 @@ Singleton {
         root.background = Colors.getColor(theme.background) ?? root.background;
         root.shade = Colors.getColor(theme.shade) ?? root.shade;
 
-        root.barHeight = theme.quickshell.barHeight ?? root.barHeight;
-        root.borderWidth = theme.quickshell.borderWidth ?? root.borderWidth;
-        root.borderRadius = theme.quickshell.borderRadius ?? root.borderRadius;
-        root.paddingSize = theme.quickshell.paddingSize ?? root.paddingSize;
+        root.barHeight = quickshell.barHeight ?? root.barHeight;
+        root.borderWidth = quickshell.borderWidth ?? root.borderWidth;
+        root.borderRadius = quickshell.borderRadius ?? root.borderRadius;
+        root.paddingSize = quickshell.paddingSize ?? root.paddingSize;
         root.animationDuration = theme.animationDuration ?? root.animationDuration;
 
-        root.iconMode = theme.quickshell.iconMode ?? root.iconMode;
-        root.iconFont = theme.quickshell.iconFont ?? root.iconFont;
-        root.iconSize = theme.quickshell.iconSize ?? root.iconSize;
+        root.iconMode = quickshell.iconMode ?? root.iconMode;
+        root.iconFont = quickshell.iconFont ?? root.iconFont;
+        root.iconSize = quickshell.iconSize ?? root.iconSize;
 
         // Lastly look where the active theme is in all themes
         root.activeThemeIndex = Globals.findIndex(root.themes, root.theme.name);
