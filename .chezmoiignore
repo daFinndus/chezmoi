@@ -2,6 +2,7 @@
 
 .config/quickshell/assets/files/wallpapers.json
 .config/quickshell/assets/states/
+.config/quickshell/.github
 
 .config/themes/active.json
 

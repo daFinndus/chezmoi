@@ -101,6 +101,10 @@ Scope {
                     background: "transparent"
                 }
 
+                VirtualWidget {
+                    background: "transparent"
+                }
+
                 NetworkWidget {
                     background: "transparent"
                 }

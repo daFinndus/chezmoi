@@ -81,7 +81,7 @@ Item {
                 Timer {
                     id: delayTooltip
                     interval: 150
-                    onTriggered: tooltip.available = mouseArea.containsMouse
+                    onTriggered: tooltip.available = mouseArea.containsMouse & modelData.title != ""
                 }
             }
         }

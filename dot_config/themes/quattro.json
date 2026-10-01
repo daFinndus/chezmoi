@@ -25,7 +25,7 @@
     "rounding" : 0,
     "roundingPower" : 2,
     "gapsIn" : 4,
-    "gapsOut" : 12
+    "gapsOut" : 4
   },
   "dunst" : {
     "fontSize" : 10,
