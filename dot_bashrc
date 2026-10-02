@@ -21,26 +21,11 @@ alias lx='eza -lbhHigUmuSa@'
 alias lt='eza --tree'
 alias tree='eza --tree'
 
-alias metasploit='sudo /home/finn/.config/scripts/setup-metasploit.sh'
-
-alias thesis='firefox /home/finn/Nextcloud/Documents/LaTeX/Bachelor/main.pdf & disown'
-
-alias wallpaper='/home/finn/.config/scripts/wallpaper.sh'
-alias wireguard='/home/finn/.config/scripts/wireguard.sh'
-
-alias duplicati='/home/finn/.config/scripts/duplicati.sh'
-alias pihole='/home/finn/.config/scripts/pihole.sh'
-
-alias rmshit='python /home/finn/.config/scripts/rmshit.py'
-alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist'
-
 alias suspend='sudo systemctl suspend'
 alias shutdown='sudo shutdown now'
 alias reboot='sudo reboot'
 
 alias ssh='kitten ssh'
-
-alias vim='nvim'
 
 # This is for environment variables
 [[ -f ~/.config/shell/environment.sh ]] && source ~/.config/shell/environment.sh

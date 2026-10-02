@@ -37,8 +37,6 @@ alias pihole='$XDG_DATA_HOME/../bin/toggle-pihole.sh'
 alias rmshit='python $XDG_DATA_HOME/../bin/rmshit.py'
 alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist'
 
-alias bash='kitty --config ~/.config/kitty/clean.conf bash & disown'
-
 alias binds='bat -p ~/.config/hypr/binds.conf'
 
 alias shfmt-alias='shfmt -i 2 -w -s'

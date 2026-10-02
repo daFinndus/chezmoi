@@ -9,14 +9,11 @@ Singleton {
 
     property bool vpnActive: false
     property var vpnConnections: []
-    property string lastConnection: "Tailscale: down"
 
     // Check if anything's running, return if so, otherwise nothing
     function getText(index: int): string {
         if (root.vpnConnections != undefined && root.vpnConnections.length > 0) {
             return root.vpnConnections[index].type;
-        } else {
-            return root.lastConnection;
         }
     }
 
@@ -37,20 +34,6 @@ Singleton {
 
                     root.vpnConnections = parsed.connections;
                     root.vpnActive = parsed.active;
-
-                    if (root.vpnActive) {
-                        Globals.logDebug("Got " + root.vpnConnections.length + " VPNs!");
-
-                        for (var connection in root.vpnConnections) {
-                            Globals.logDebug("Connection: " + root.vpnConnections[connection].type);
-                        }
-
-                        root.lastConnection = root.vpnConnections[0].type;
-                    }
-
-                    Globals.logEverything("vpnActive is now: " + root.vpnActive);
-                    Globals.logEverything("lastConnection is now: " + root.lastConnection);
-                    Globals.logEverything("vpnConnections is now: " + root.vpnConnections);
                 } catch (e) {
                     if (this.text.trim() != "") {
                         Globals.logError("VPN parse failed: " + e);
@@ -58,6 +41,21 @@ Singleton {
                         Globals.logDebug("No VPN active, so parser failed.");
                     }
                 }
+            }
+        }
+    }
+
+    function killVPN(provider: string, network: string): void {
+        killVPN.command = ["bash", "-c", `pkexec /usr/sbin/pgrep -fi \"${provider}.*${network}\" | xargs -n 1 kill`];
+        killVPN.running = true;
+    }
+
+    Process {
+        id: killVPN
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.fetchVPN();
             }
         }
     }

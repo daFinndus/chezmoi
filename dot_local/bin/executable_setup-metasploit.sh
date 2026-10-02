@@ -124,7 +124,7 @@ init_msfdb() {
     sed -i 's/5432,5432/5432/' "$db_yml"
     log_success "Fixed database.yml configuration."
   fi
-  
+
   log_success "Metasploit database initialized."
 }
 

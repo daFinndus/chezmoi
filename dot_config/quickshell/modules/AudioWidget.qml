@@ -67,7 +67,7 @@ Widget {
         }
     }
 
-    VolumePopup {
+    AudioPopup {
         id: popup
         target: root
     }

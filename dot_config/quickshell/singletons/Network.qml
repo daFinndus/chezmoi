@@ -114,7 +114,7 @@ Singleton {
                 if (data.match(/^\d+:/)) {
                     root.refreshNetworkState();
 
-                    if (data.includes("tun0")) {
+                    if (data.includes("tun")) {
                         VPN.fetchVPN();
                     }
                 }

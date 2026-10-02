@@ -18,29 +18,36 @@ Singleton {
         }
     }
 
+    property string who: "quickshell"
+    property string what: "idle"
+    property string why: "Quickshell inhibitor widget for ignoring hypridle"
+
+    function getInhibitProcess(): void {
+        getInhibitProcess.running = true;
+    }
+
     Process {
-        id: inhibitProcess
+        id: getInhibitProcess
+        command: ["bash", "-c", `systemd-inhibit --list | grep ${what}`]
+        running: true
 
-        readonly property string who: "--who=quickshell"
-        readonly property string what: "--what=idle"
-        readonly property string why: "--why=Quickshell inhibitor"
-
-        command: {
-            if (!root.inhibited) {
-                return ["true"];
-            }
-
-            return ["systemd-inhibit", what, who, why, "sleep", "infinity"];
-        }
-
-        running: root.inhibited
-
-        onExited: function (exitCode): void {
-            console.log("Inhibitor process exited!");
-
-            if (Globals.inhibited && exitCode !== 0) {
-                Globals.inhibited = false;
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (this.text.trim() != "") {
+                    root.inhibited = true;
+                } else {
+                    root.inhibited = false;
+                }
             }
         }
     }
+
+    Process {
+        id: startInhibitProcess
+        command: ["systemd-inhibit", "--who", who, "--what", what, "--why", why, "sleep", "infinity"]
+        running: root.inhibited
+    }
+
+    // This is a convenience thing
+    Component.onCompleted: root.inhibited = true
 }
