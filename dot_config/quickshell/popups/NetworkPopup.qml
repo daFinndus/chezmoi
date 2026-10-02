@@ -1,6 +1,4 @@
 import QtQuick
-import Quickshell
-import QtQuick.Layouts
 
 import qs.singletons
 import qs.components
@@ -235,6 +233,8 @@ Popup {
 
         width: rootColumn.width
         height: 32
+
+        active: modelData.ssid.trim() === Network.activeWirelessNetwork
 
         onClick: () => Network.connectWirelessNetwork(modelData.ssid.trim())
 

@@ -39,6 +39,10 @@ Scope {
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
 
+                BatteryWidget {
+                    background: "transparent"
+                }
+
                 SystemWidget {
                     background: "transparent"
                 }

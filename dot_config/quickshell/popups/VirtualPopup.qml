@@ -39,7 +39,7 @@ Popup {
                         shade: vpnButton.shade
 
                         label: modelData.title
-                        value: modelData.address
+                        value: modelData.address != undefined ? modelData.address : ""
                         description: modelData.network
                     }
                 }

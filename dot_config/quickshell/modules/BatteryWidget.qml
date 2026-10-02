@@ -1,13 +1,13 @@
 import QtQuick
 
+import qs.popups
 import qs.singletons
 import qs.components
 
 Widget {
     id: root
 
-    text: Battery.getText()
-
+    text: Themes.iconMode ? Battery.getIcon() : Battery.getText()
     visible: Battery.available
 
     MouseArea {
@@ -19,23 +19,36 @@ Widget {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: {
-            if (Battery.loading) {
-                if (root.text == Battery.getEstimate()) {
-                    root.text = Battery.battery + " at: " + Battery.percentage + "%";
-                } else {
-                    root.text = Battery.getEstimate();
+            if (Themes.iconMode) {
+                Globals.togglePopup(popup);
+            } else {
+                if (Battery.loading) {
+                    if (root.text == Battery.getEstimate()) {
+                        root.text = Battery.battery + " at: " + Battery.percentage + "%";
+                    } else {
+                        root.text = Battery.getEstimate();
+                    }
                 }
             }
         }
 
-        onEntered: {
-            if (Battery.loading) {
-                root.text = Battery.battery + " at: " + Battery.percentage + "%";
-            } else {
-                root.text = Battery.getEstimate();
+        onHoveredChanged: {
+            if (!Themes.iconMode) {
+                if (mouseArea.containsMouse) {
+                    if (Battery.loading) {
+                        root.text = Battery.battery + " at: " + Battery.percentage + "%";
+                    } else {
+                        root.text = Battery.getEstimate();
+                    }
+                } else {
+                    root.text = Battery.getText();
+                }
             }
         }
+    }
 
-        onExited: root.text = Battery.getText()
+    BatteryPopup {
+        id: popup
+        target: root
     }
 }

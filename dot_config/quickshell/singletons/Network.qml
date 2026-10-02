@@ -162,6 +162,7 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
+                Globals.logDebug("Found wireless network: " + this.text);
                 root.activeWirelessNetwork = this.text.trim();
             }
         }
@@ -216,7 +217,7 @@ Singleton {
     // Address fetching is prolly not precised
     Process {
         id: getAddress
-        command: ["hostname", "-i"]
+        command: ["bash", "-c", `hostname -i | awk '{print $1}'`]
 
         stdout: StdioCollector {
             onStreamFinished: {

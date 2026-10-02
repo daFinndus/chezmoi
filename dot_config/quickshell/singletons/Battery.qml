@@ -39,6 +39,32 @@ Singleton {
         }
     }
 
+    function getIcon(): string {
+        if (root.percentage >= 100) {
+            return "\udb80\udc79";
+        } else if (root.percentage >= 90) {
+            return "\udb80\udc82";
+        } else if (root.percentage >= 80) {
+            return "\udb80\udc81";
+        } else if (root.percentage >= 70) {
+            return "\udb80\udc80";
+        } else if (root.percentage >= 60) {
+            return "\udb80\udc7f";
+        } else if (root.percentage >= 50) {
+            return "\udb80\udc7e";
+        } else if (root.percentage >= 40) {
+            return "\udb80\udc7d";
+        } else if (root.percentage >= 30) {
+            return "\udb80\udc7c";
+        } else if (root.percentage >= 20) {
+            return "\udb80\udc7b";
+        } else if (root.percentage >= 10) {
+            return "\udb80\udc7a";
+        } else if (root.percentage == 0) {
+            return "\udb80\udc8e";
+        }
+    }
+
     function refreshBattery(): void {
         getData.running = true;
     }
