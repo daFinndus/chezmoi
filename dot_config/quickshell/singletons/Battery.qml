@@ -9,7 +9,7 @@ Singleton {
 
     // The available check is for widgets
     // The hasBattery is for keep checking for battery or nah
-    property bool hasBattery: true
+    property bool hasBattery: false
 
     property int percentage: 0
     property string battery: ""
@@ -94,7 +94,7 @@ Singleton {
                     }
                 } else {
                     Globals.logDebug("No battery detected.");
-                    // root.hasBattery = false;
+                    root.hasBattery = false;
                 }
             }
         }
