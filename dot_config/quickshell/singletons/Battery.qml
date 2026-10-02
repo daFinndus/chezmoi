@@ -9,7 +9,6 @@ Singleton {
 
     // The available check is for widgets
     // The hasBattery is for keep checking for battery or nah
-    property bool available: false
     property bool hasBattery: true
 
     property int percentage: 0
@@ -86,7 +85,8 @@ Singleton {
 
                 if (root.percentage != 0) {
                     Globals.logDebug("Battery detected!");
-                    root.available = true;
+                    root.hasBattery = true;
+
                     if (root.status == "Charging" || root.status == "Full") {
                         root.loading = true;
                     } else {
@@ -94,7 +94,7 @@ Singleton {
                     }
                 } else {
                     Globals.logDebug("No battery detected.");
-                    root.hasBattery = false;
+                    // root.hasBattery = false;
                 }
             }
         }
