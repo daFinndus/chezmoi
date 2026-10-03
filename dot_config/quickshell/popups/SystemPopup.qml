@@ -13,7 +13,7 @@ Popup {
         RowLayout {
             id: headerRow
 
-            property int minimumWidth: 312
+            property int minimumWidth: 396
 
             width: Math.max(headerRow.minimumWidth, rootColumn.width)
 
