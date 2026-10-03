@@ -262,6 +262,7 @@ PanelWindow {
                         color: "#ffffff"
 
                         font.pixelSize: 12
+                        font.family: Themes.fontFamily
 
                         Behavior on color {
                             ColorAnimation {
