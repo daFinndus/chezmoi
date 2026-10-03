@@ -1,6 +1,5 @@
 {
   "name" : "prototype",
-  "path" : "/home/finn/Pictures/Wallpaper/cherryblossom.jpeg",
   "fontFamily" : "JetBrainsMono Nerd Font",
   "fontSize" : 12,
   "transparency" : 1,
@@ -23,7 +22,7 @@
     "rounding" : 4,
     "roundingPower" : 2,
     "gapsIn" : 4,
-    "gapsOut" : 2
+    "gapsOut" : 3
   },
   "dunst" : {
     "fontSize" : 10,

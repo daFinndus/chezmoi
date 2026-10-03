@@ -29,10 +29,11 @@ get_theme() {
 fetch_themes() {
   local themes=()
   local bin="$XDG_DATA_HOME/../bin/theme-configurator.sh"
+  local pictures="$XDG_CONFIG_HOME/quickshell/assets/pictures/"
 
   for file in "$THEMESDIR"/*.json; do
     [[ "$(basename "$file")" == "active.json" ]] && continue
-    themes+=("$(jq -c --arg bin "$bin" '{name, path, command: ($bin + " set_theme " + .name)}' "$file")")
+    themes+=("$(jq -c --arg pictures "$pictures" --arg bin "$bin" '{name, path: ($pictures + .name + ".png"), command: ($bin + " set_theme " + .name)}' "$file")")
   done
 
   jq -s '.' <<<"$(printf '%s\n' "${themes[@]}")"

@@ -52,14 +52,14 @@ Singleton {
     IpcHandler {
         target: "theme"
 
-        function applyTheme(theme: string): void {
-            root.applyTheme(theme);
+        function applyTheme(): void {
+            root.applyTheme();
         }
     }
 
     function applyTheme(): void {
         const theme = root.theme;
-        const quickshell = theme.quickshell ?? theme;
+        const quickshell = theme.quickshell;
 
         Globals.logDebug("Setting theme: " + theme.name);
 
