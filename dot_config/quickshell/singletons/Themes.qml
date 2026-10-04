@@ -52,6 +52,7 @@ Singleton {
     IpcHandler {
         target: "theme"
 
+        // This is still used for wallpaper changing stuff
         function applyTheme(): void {
             root.applyTheme();
         }

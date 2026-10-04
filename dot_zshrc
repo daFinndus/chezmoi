@@ -25,7 +25,8 @@ alias tree='eza --tree $eza_params'
 
 alias metasploit='sudo $XDG_DATA_HOME/../bin/setup-metasploit.sh'
 
-alias wallpaper='$XDG_DATA_HOME/../bin/set-wallpaper.sh'
+alias set-wallpaper='$XDG_DATA_HOME/../bin/set-wallpaper.sh'
+alias vpn-manager='$XDG_DATA_HOME/../bin/vpn-manager.sh'
 alias theme-configurator='$XDG_DATA_HOME/../bin/theme-configurator.sh'
 
 alias delamain='cd ~/Coding/delamain && uv run python main.py'

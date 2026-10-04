@@ -346,8 +346,8 @@ def rmshit() -> None:
 
     if yesno("Run paccache cleanup too?", default="n"):
         freed += run_cleanup_command(
-            "paccache -r",
-            ["sudo", "paccache", "-r"],
+            "yes | sudo pacman -Scc --noconfirm",
+            ["sudo", "pacman", "-Scc", "--noconfirm"],
             Path("/var/cache/pacman/pkg"),
         )
 
