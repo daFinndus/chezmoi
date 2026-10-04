@@ -22,6 +22,8 @@ PanelWindow {
 
     aboveWindows: true
 
+    WlrLayershell.namespace: "quickshell-selector"
+
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.exclusiveZone: -1
@@ -34,11 +36,11 @@ PanelWindow {
     implicitWidth: Screen.width
     implicitHeight: Screen.height
 
-    property int cardAmount: 7
+    property int cardAmount: 5
 
     property int slant: 96
-    property int cardWidth: 1920 / Math.floor((7 / 2))
-    property int cardHeight: 1080 / 4
+    property int cardWidth: 1920 / Math.floor((cardAmount / 2))
+    property int cardHeight: 1080 / 2
 
     // Background overlay
     Rectangle {
@@ -69,8 +71,25 @@ PanelWindow {
                     root.currentIndex = (root.currentIndex + 1) % Selector.object.length;
                     break;
                 case Qt.Key_Return:
-                    Selector.runCommand(Selector.object[root.currentIndex].name, Selector.object[root.currentIndex].command);
+                    switch (Selector.type) {
+                    case "wallpaper":
+                        Wallpaper.setWallpaper(Selector.object[root.currentIndex].path);
+                        break;
+                    case "theme":
+                        Themes.setTheme(Selector.object[root.currentIndex].name);
+                        break;
+                    }
+
                     Selector.widgetVisible = false;
+                    break;
+                case Qt.Key_Delete:
+                    if (Selector.type === "wallpaper") {
+                        Globals.logDebug("Going to delete " + Selector.object[root.currentIndex].path);
+                        Wallpaper.removeWallpaper(root.currentIndex);
+                    } else {
+                        Globals.logDebug("Not going to delete, wrong menu type.");
+                    }
+
                     break;
                 case Qt.Key_Escape:
                     Selector.widgetVisible = false;

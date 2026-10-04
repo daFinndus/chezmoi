@@ -23,10 +23,9 @@ Singleton {
 
     Process {
         id: activeWallpaper
+        command: ["bash", "-c", `basename $(cat ${Globals.basePath}/assets/states/wallpaper) | sed 's/\\.[^.]*$//'`]
 
         running: true
-
-        command: ["bash", "-c", `basename $(cat ${Globals.basePath}/assets/states/wallpaper) | sed 's/\\.[^.]*$//'`]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -40,10 +39,9 @@ Singleton {
 
     Process {
         id: watchWallpaperState
+        command: ["inotifywait", "-m", "-e", "modify", `${Globals.basePath}/assets/states/wallpaper`]
 
         running: true
-
-        command: ["inotifywait", "-m", "-e", "modify", `${Globals.basePath}/assets/states/wallpaper`]
 
         stdout: SplitParser {
             onRead: data => {
@@ -55,12 +53,11 @@ Singleton {
     // Will get wallpapers and store them into wallpaper.json
     function fetchWallpapers(): void {
         Globals.logDebug("Re-fetching wallpapers from directory.");
-        getWallpapers.running = true;
+        fetchWallpapers.running = true;
     }
 
     Process {
-        id: getWallpapers
-
+        id: fetchWallpapers
         command: [`${Globals.basePath}/scripts/wallpaper.sh`]
 
         stdout: StdioCollector {
@@ -70,12 +67,50 @@ Singleton {
         }
     }
 
+    function setWallpaper(path: string) {
+        setWallpaper.command = [`${Quickshell.env("XDG_DATA_HOME")}/../bin/set-wallpaper.sh`, path];
+        setWallpaper.running = true;
+    }
+
+    Process {
+        id: setWallpaper
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.fetchActive();
+            }
+        }
+    }
+
+    function removeWallpaper(index: int) {
+        if (root.activeWallpaperIndex === index) {
+            Globals.logDebug("Active wallpaper is being deleted!");
+
+            let next = (index + 1) % Selector.object.length;
+
+            root.setWallpaper(Selector.object[next].path);
+        }
+
+        removeWallpaper.command = ["rm", Selector.object[index].path];
+        removeWallpaper.running = true;
+    }
+
+    Process {
+        id: removeWallpaper
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                Globals.logDebug("Deleted wallpaper via: " + removeWallpaper.command);
+                Globals.sendNotification("Deleted wallpaper. Changes will apply after re-opening the menu.");
+            }
+        }
+    }
+
     Process {
         id: watchDirectory
+        command: ["inotifywait", "-m", "-e", "create,delete,move", Quickshell.env("HOME") + "/Pictures/Wallpaper/"]
 
         running: true
-
-        command: ["inotifywait", "-m", "-e", "create,delete,move", Quickshell.env("HOME") + "/Pictures/Wallpaper/"]
 
         stdout: SplitParser {
             onRead: data => {

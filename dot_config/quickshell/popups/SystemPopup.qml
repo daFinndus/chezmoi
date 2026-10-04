@@ -10,14 +10,12 @@ Popup {
     contentComponent: Column {
         id: rootColumn
 
+        width: Math.max(headerRow.width, coreGrid.width)
+
         RowLayout {
             id: headerRow
 
-            property int minimumWidth: 396
-
-            width: Math.max(headerRow.minimumWidth, rootColumn.width)
-
-            spacing: 32
+            spacing: 96
 
             Column {
                 Text {
@@ -45,11 +43,9 @@ Popup {
                 }
             }
 
-            Item {
-                Layout.fillWidth: true  // pushes button to the right
-            }
-
             Button {
+                Layout.alignment: Qt.AlignRight
+
                 onClickClosePopup: true
 
                 width: 72
@@ -81,8 +77,6 @@ Popup {
                 columnSpacing: coreGrid.margin
                 rowSpacing: Themes.paddingSize
 
-                onWidthChanged: rootColumn.width = Math.max(headerRow.width, coreGrid.width)
-
                 Repeater {
                     model: Hardware.cpuCores
                     delegate: Section {
@@ -92,7 +86,7 @@ Popup {
                         // barMargin will set margin of the bar
                         margin: coreGrid.margin
 
-                        width: Math.max((headerRow.minimumWidth / (Hardware.cpuCores.length / coreGrid.coreLines)), 56)
+                        width: Math.max((headerRow.width / (Hardware.cpuCores.length / coreGrid.coreLines)), 56)
 
                         title: `C${modelData.core + 1}`
                         percentage: modelData.usage

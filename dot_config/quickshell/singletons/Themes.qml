@@ -89,6 +89,15 @@ Singleton {
         Globals.logDebug("Background is now: " + root.background);
     }
 
+    function setTheme(name: string) {
+        setTheme.command = [`${Quickshell.env("XDG_DATA_HOME")}/../bin/theme-configurator.sh`, "set_theme", name];
+        setTheme.running = true;
+    }
+
+    Process {
+        id: setTheme
+    }
+
     // This is for all available theme-json files
     property var themes: ({})
     property int activeThemeIndex: 0

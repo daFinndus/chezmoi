@@ -2,6 +2,7 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
 Singleton {
     id: root
@@ -135,5 +136,14 @@ Singleton {
             const date = new Date();
             console.log(`${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}: ${message}`);
         }
+    }
+
+    function sendNotification(body: string, head = "Quickshell", urgency = "low") {
+        sendNotification.command = ["notify-send", "-u", urgency, head, body];
+        sendNotification.running = true;
+    }
+
+    Process {
+        id: sendNotification
     }
 }
