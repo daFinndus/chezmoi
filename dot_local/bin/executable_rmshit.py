@@ -11,6 +11,8 @@ import os
 import shutil
 import subprocess
 import sys
+from collections.abc import Callable
+from glob import glob
 from pathlib import Path
 
 import yaml
@@ -139,7 +141,6 @@ RED = "\033[38;2;220;50;50m"
 YELLOW = "\033[38;2;220;180;0m"
 GREEN = "\033[38;2;50;200;50m"
 BLUE = "\033[38;2;50;120;220m"
-CYAN = "\033[38;2;0;180;180m"
 RESET = "\033[0m"
 
 
@@ -159,8 +160,9 @@ def log_error(message: str) -> None:
     print(f"{RED}[-]{RESET} {message}")
 
 
-CONFIG_PATH = (Path(os.getenv("XDG_CACHE_HOME"), "rmshit") / "rmshit.yaml")
-CONFIG_PATH.parent.mkdir(parents = True, exist_ok = True)
+XDG_CACHE_HOME = Path(os.getenv("XDG_CACHE_HOME", Path.home() / ".cache"))
+CONFIG_PATH = XDG_CACHE_HOME / "rmshit" / "rmshit.yaml"
+CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 
 # Convert a byte count to a human-readable binary unit string.
@@ -186,28 +188,50 @@ def get_dir_size(path: Path) -> int:
                     total += entry.stat().st_size
             except (OSError, FileNotFoundError):
                 continue
-    except Exception:
+    except OSError:
         pass
 
     return total
+
+
+def get_free_space(path: Path) -> int:
+    """Return free bytes on the filesystem containing path."""
+    try:
+        return shutil.disk_usage(path).free
+    except OSError:
+        return 0
 
 
 # Load cleanup paths from YAML config, creating default config if missing.
 def load_config() -> list[Path]:
     if not CONFIG_PATH.exists():
         CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
-        CONFIG_PATH.write_text(DEFAULT_CONFIG.strip() + "\n")
+        try:
+            CONFIG_PATH.write_text(DEFAULT_CONFIG.strip() + "\n")
+        except OSError as e:
+            sys.exit(f"Unable to create {CONFIG_PATH}: {e}")
 
     try:
         raw = yaml.safe_load(CONFIG_PATH.read_text()) or []
+    except OSError as e:
+        sys.exit(f"Unable to read {CONFIG_PATH}: {e}")
     except yaml.YAMLError as e:
         sys.exit(f"YAML parse error in {CONFIG_PATH}: {e}")
 
-    return [Path(os.path.expanduser(str(p))) for p in raw]
+    if not isinstance(raw, list):
+        sys.exit(f"Expected a list of paths in {CONFIG_PATH}.")
+
+    paths: list[Path] = []
+    for entry in raw:
+        if not isinstance(entry, str) or not entry.strip():
+            sys.exit(f"Every entry in {CONFIG_PATH} must be a non-empty path.")
+        paths.append(Path(os.path.expanduser(entry)))
+
+    return paths
 
 
 # Ask a yes/no question and return True when the answer starts with 'y'.
-def yesno(question: str, default="n") -> bool:
+def yesno(question: str, default: str = "n") -> bool:
     prompt = f"\n{question} (y/[n]) " if default == "n" else f"{question} ([y]/n) "
     ans = input(prompt).strip().lower()
 
@@ -218,23 +242,35 @@ def yesno(question: str, default="n") -> bool:
 
 
 def run_cleanup_command(
-    name: str, command: list[str], path_to_measure: Path | None = None
+    name: str,
+    command: list[str],
+    path_to_measure: Path | None = None,
+    show_output: bool = False,
 ) -> int:
-    # Run an external cleanup command and estimate reclaimed size.
-    before = get_dir_size(path_to_measure) if path_to_measure else 0
+    before = get_free_space(path_to_measure) if path_to_measure else 0
 
     log_step(f"Running {name}...")
-    result = subprocess.run(command, capture_output=True, text=True)
-
-    if result.returncode != 0:
-        log_error(f"Failed to run {name}.")
-
-        if result.stderr.strip():
-            log_error(result.stderr.strip())
-
+    if show_output:
+        print()
+    try:
+        # Keep stderr attached so sudo can show its password prompt and errors.
+        result = subprocess.run(
+            command,
+            stdout=None if show_output else subprocess.DEVNULL,
+            text=True,
+        )
+    except OSError as e:
+        log_error(f"Unable to run {name}: {e}")
         return 0
 
-    after = get_dir_size(path_to_measure) if path_to_measure else 0
+    if show_output:
+        print()
+
+    if result.returncode != 0:
+        log_error(f"{name} failed with exit code {result.returncode}.")
+        return 0
+
+    after = get_free_space(path_to_measure) if path_to_measure else 0
     freed = max(0, before - after)
 
     log_success(f"{name} freed {format_size(freed)}.")
@@ -243,9 +279,9 @@ def run_cleanup_command(
 
 
 def expand_glob(path: Path) -> list[Path]:
-    if "*" not in path.name:
+    if not any(char in str(path) for char in "*?["):
         return [path]
-    return list(sorted(path.parent.glob(path.name)))
+    return sorted(Path(match) for match in glob(str(path)))
 
 
 def scan_junk_paths(junk_paths: list[Path]) -> list[tuple[Path, int]]:
@@ -264,29 +300,57 @@ def scan_junk_paths(junk_paths: list[Path]) -> list[tuple[Path, int]]:
 def delete_paths(found: list[tuple[Path, int]]) -> int:
     freed = 0
 
-    for path, size in found:
+    for path, _ in found:
+        before = get_free_space(path)
         try:
             if path.is_file() or path.is_symlink():
                 path.unlink(missing_ok=True)
             else:
-                shutil.rmtree(path, ignore_errors=True)
-            freed += size
-        except Exception as e:
+                shutil.rmtree(path)
+            freed += max(0, get_free_space(path.parent) - before)
+        except PermissionError:
+            log_warn(f"Insufficient permissions for {path}; retrying with sudo.")
+            result = subprocess.run(
+                ["sudo", "rm", "-rf", "--", str(path)],
+                check=False,
+            )
+            if result.returncode == 0 and not path.exists():
+                freed += max(0, get_free_space(path.parent) - before)
+            else:
+                log_error(f"Failed to delete {path}.")
+        except OSError as e:
             log_error(f"Failed to delete {path}: {e}")
 
     return freed
 
 
-def remove_orphaned_packages() -> None:
-    command = "pacman -Qtdq | sudo pacman -Rns --noconfirm -"
-    result = subprocess.run(command, shell=True,
-                            capture_output=True, text=True)
+def remove_orphaned_packages() -> int:
+    try:
+        result = subprocess.run(
+            ["pacman", "-Qtdq"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError as e:
+        log_error(f"Unable to query orphaned packages: {e}")
+        return 0
 
-    if result.returncode != 0:
-        log_error(f"Failed to run {command}.")
+    packages = result.stdout.split()
+    if not packages:
+        if result.returncode not in (0, 1):
+            log_error("Failed to query orphaned packages.")
+            if result.stderr.strip():
+                log_error(result.stderr.strip())
+        else:
+            log_success("No orphaned packages found.")
+        return 0
 
-    if result.stderr.strip():
-        log_error(result.stderr.strip())
+    log_step(f"Removing {len(packages)} orphaned package(s)...")
+    return run_cleanup_command(
+        "orphaned package removal",
+        ["sudo", "pacman", "-Rns", "--noconfirm", *packages],
+    )
 
 
 def wait_for_keypress(prompt: str = "Press any key to exit...") -> None:
@@ -320,50 +384,55 @@ def rmshit() -> None:
     log_step("Scanning for junk files...")
     found = scan_junk_paths(junk_paths)
 
-    if not found:
+    if found:
+        log_step("Found junk files/directories:")
+
+        for path, size in found:
+            print(f"  {path}  ({format_size(size)})")
+            total_size += size
+
+        log_step(f"Total size: {format_size(total_size)}")
+
+        if yesno("Remove all?", default="n"):
+            total_size = delete_paths(found)
+        else:
+            log_warn("No file removed.")
+    else:
         log_warn("No junk found.")
-        return
 
-    log_step("Found junk files/directories:")
+    cleanup_actions: list[tuple[str, Callable[[], int]]] = [
+        ("Remove orphaned packages?", remove_orphaned_packages),
+        (
+            "Remove all pacman package caches?",
+            lambda: run_cleanup_command(
+                "pacman cache cleanup",
+                ["sudo", "pacman", "-Scc", "--noconfirm"],
+                Path("/var/cache/pacman/pkg"),
+            ),
+        ),
+        (
+            "Remove uninstalled pacman packages from the cache?",
+            lambda: run_cleanup_command(
+                "paccache cleanup",
+                ["sudo", "paccache", "-r", "-u", "-k", "0"],
+                Path("/var/cache/pacman/pkg"),
+            ),
+        ),
+        (
+            "Vacuum journal logs older than 7 days?",
+            lambda: run_cleanup_command(
+                "journal cleanup",
+                ["sudo", "journalctl", "--vacuum-time=7d"],
+                Path("/var/log/journal"),
+                show_output=True,
+            ),
+        ),
+    ]
 
-    for path, size in found:
-        print(f"  {path}  ({format_size(size)})")
-        total_size += size
-
-    log_step(f"Total size: {format_size(total_size)}")
-
-    if not yesno("Remove all?", default="n"):
-        log_warn("No file removed.")
-        return
-
-    freed = delete_paths(found)
-
-    log_step("Deinstalling orphaned packages with pacman.")
-    if yesno("Remove orphaned packages?", default="n"):
-        remove_orphaned_packages()
-
-    log_step("Now clearing pacman caches.")
-
-    if yesno("Run paccache cleanup too?", default="n"):
-        freed += run_cleanup_command(
-            "yes | sudo pacman -Scc --noconfirm",
-            ["sudo", "pacman", "-Scc", "--noconfirm"],
-            Path("/var/cache/pacman/pkg"),
-        )
-
-    if yesno("Remove uninstalled pacman cache too?", default="n"):
-        freed += run_cleanup_command(
-            "paccache -ruk0",
-            ["sudo", "paccache", "-ruk0"],
-            Path("/var/cache/pacman/pkg"),
-        )
-
-    if yesno("Vacuum journal logs older than 7 days?", default="n"):
-        freed += run_cleanup_command(
-            "journalctl --vacuum-time=7d",
-            ["sudo", "journalctl", "--vacuum-time=7d"],
-            Path("/var/log/journal"),
-        )
+    freed = total_size
+    for question, cleanup in cleanup_actions:
+        if yesno(question):
+            freed += cleanup()
 
     log_step("Finished cleanup.")
     log_success(f"Total freed overall: {format_size(freed)}")
