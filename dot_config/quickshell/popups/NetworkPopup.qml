@@ -8,7 +8,11 @@ Popup {
 
     onVisibleChanged: {
         if (root.visible) {
-            Network.fetchMaximumSpeeds();
+            // Only fetch maximum speeds when not already fetched
+            // Otherwise they have to be triggered actively
+            if (!Network.fetchedISP) {
+                Network.fetchMaximumSpeeds();
+            }
         } else {
             Network.stopWirelessNetworkScan();
         }
@@ -24,7 +28,7 @@ Popup {
 
         KeyValueRow {
             label: "Interface"
-            value: (Network.onlineState ? "Online: " : "Offline: ") + Network.interfaceTitle
+            value: Network.onlineState ? "Online: " + Network.interfaceTitle : "Offline"
         }
 
         KeyValueRow {

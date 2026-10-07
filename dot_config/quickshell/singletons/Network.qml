@@ -11,6 +11,7 @@ Singleton {
     property string interfaceTitle: ""
 
     property bool onlineState: false
+    property bool fetchedISP: false
 
     property int downloadSpeed: 0
     property int maximumDownloadSpeed: 0
@@ -282,6 +283,8 @@ Singleton {
 
                 root.maximumDownloadSpeed = parsed.download;
                 root.maximumUploadSpeed = parsed.upload;
+
+                root.fetchedISP = true;
             }
         }
     }
