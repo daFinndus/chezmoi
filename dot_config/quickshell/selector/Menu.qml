@@ -33,14 +33,14 @@ PanelWindow {
     visible: Selector.widgetVisible
     onVisibleChanged: root.currentIndex = Selector.active
 
-    implicitWidth: Screen.width
-    implicitHeight: Screen.height
+    implicitWidth: root.screen.width
+    implicitHeight: root.screen.height
 
     property int cardAmount: 5
 
     property int slant: 96
-    property int cardWidth: 1920 / Math.floor((cardAmount / 2))
-    property int cardHeight: 1080 / 2
+    property int cardWidth: root.screen.width / Math.floor((cardAmount / 2))
+    property int cardHeight: root.screen.height / 2
 
     // Background overlay
     Rectangle {
