@@ -1,19 +1,23 @@
 #!/bin/bash
 
+CACHEFILE="/tmp/update-count"
+
 get_updates() {
   local command=$(
     checkupdates 2>/dev/null
     yay -Qu 2>/dev/null
   )
+
   local updates=$(echo -n "$command" 2>/dev/null | sort -u | wc -l)
 
+  echo "$updates" >"$CACHEFILE"
+
   printf "$updates"
-  return "$updates"
 }
 
 do_updates() {
   # Save old package amount
-  count=$(get_updates)
+  count=$(cat "$CACHEFILE")
 
   # Proceed doing the update itself
   kitty -o window_margin_width=8 --title updater -e zsh -c '

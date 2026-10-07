@@ -9,15 +9,11 @@ Singleton {
 
     property bool widgetHovered: false
 
-    property bool updatesLoaded: false
     property int updateCount: 0
+    property bool updatesLoaded: false
 
     function refreshUpdates(): void {
         checkUpdates.running = true;
-    }
-
-    function runUpdateScript(): void {
-        runUpdateScript.running = true;
     }
 
     Process {
@@ -33,6 +29,10 @@ Singleton {
                 root.updateCount = parseInt(this.text);
             }
         }
+    }
+
+    function runUpdateScript(): void {
+        runUpdateScript.running = true;
     }
 
     Process {

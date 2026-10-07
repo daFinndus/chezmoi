@@ -23,6 +23,8 @@ alias lx='eza -lbhHigUmuSa@'
 alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
+alias uni='cd ~/Nextcloud/Documents/Uni/Master/'
+
 alias metasploit='sudo $XDG_DATA_HOME/../bin/setup-metasploit.sh'
 
 alias set-wallpaper='$XDG_DATA_HOME/../bin/set-wallpaper.sh'
