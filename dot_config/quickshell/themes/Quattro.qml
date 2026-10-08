@@ -27,7 +27,7 @@ Scope {
 
         anchors.top: true
 
-        implicitWidth: Screen.width
+        implicitWidth: panel.screen.width
         implicitHeight: Themes.barHeight
 
         Rectangle {

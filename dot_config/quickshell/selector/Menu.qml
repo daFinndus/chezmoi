@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import QtQuick.Shapes
+import QtQuick.Layouts
 import Quickshell.Wayland
 import Qt5Compat.GraphicalEffects
 
@@ -210,6 +211,8 @@ PanelWindow {
                     }
 
                     AnimatedImage {
+                        id: image
+
                         anchors.fill: parent
                         fillMode: Image.PreserveAspectCrop
 
@@ -277,7 +280,7 @@ PanelWindow {
                         x: 36
                         y: card.height - card.height / 10
 
-                        text: loader.displayName
+                        text: loader.displayName + " @ " + image.sourceSize.width + " x " + image.sourceSize.height
                         color: "#ffffff"
 
                         font.pixelSize: 12

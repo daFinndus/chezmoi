@@ -24,7 +24,7 @@ Scope {
         margins.top: 2
         anchors.top: true
 
-        implicitWidth: 1920 - margin * 2
+        implicitWidth: Screen.width - margin * 2
         implicitHeight: Themes.barHeight
 
         Item {
