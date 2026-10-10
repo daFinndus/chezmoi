@@ -24,6 +24,7 @@ alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
 alias uni='cd ~/Nextcloud/Documents/Uni/Master/'
+alias mariadb-mittweida='sudo mariadb -h maria.hs-mittweida.de -u $MW_MARIADB_USER -p$MW_MARIADB_PASSWORD'
 
 alias metasploit='sudo $XDG_DATA_HOME/../bin/setup-metasploit.sh'
 
