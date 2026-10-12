@@ -39,7 +39,9 @@ Singleton {
     }
 
     function getIcon(): string {
-        if (root.percentage >= 100) {
+        if (root.status === "Charging") {
+            return "\udb80\udc84";
+        } else if (root.percentage >= 100) {
             return "\udb80\udc79";
         } else if (root.percentage >= 90) {
             return "\udb80\udc82";

@@ -112,6 +112,7 @@ do_backups() {
 
   for ((i = 0; i < ${#IDS[@]}; i++)); do
     if [[ ${NAMES[i]} != *"Local"* && $HOSTNAME != "bartmoss" ]]; then
+      echo ""
       log_warn "Skipping backup ${NAMES[i]} since it is not a local backup and we are not on bartmoss.\n"
       continue
     fi
