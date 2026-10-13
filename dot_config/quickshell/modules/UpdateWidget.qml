@@ -6,7 +6,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Themes.iconMode ? "\udb81\udeb0" : `${Updates.updateCount} Updates`
+    text: Themes.iconMode ? "\udb80\udfd4" : `${Updates.updateCount} Updates`
 
     opacity: Updates.updateCount > 0 ? 1 : 0
     visible: root.opacity > 0
