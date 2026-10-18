@@ -15,6 +15,10 @@
 .local/bin/uv
 .local/bin/uvx
 .local/bin/env
+.local/bin/autopep8
+.local/bin/pycodestyle
+.local/bin/pyflakes
+.local/bin/sagelsp
 
 */*/*.zed
 */*/*.vscode

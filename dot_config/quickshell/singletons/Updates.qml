@@ -19,7 +19,7 @@ Singleton {
     Process {
         id: checkUpdates
 
-        command: [`${Globals.basePath}/scripts/updater.sh`, "get_updates"]
+        command: [`${Quickshell.env("XDG_DATA_HOME")}/../bin/update-manager.sh`, "get_updates"]
 
         stdout: StdioCollector {
             waitForEnd: true
@@ -38,7 +38,7 @@ Singleton {
     Process {
         id: runUpdateScript
 
-        command: [`${Globals.basePath}/scripts/updater.sh`, "do_updates"]
+        command: [`${Quickshell.env("XDG_DATA_HOME")}/../bin/update-manager.sh`, "do_updates"]
 
         onExited: exitCode => {
             if (exitCode === 0) {
