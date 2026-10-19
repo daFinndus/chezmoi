@@ -32,7 +32,7 @@ Popup {
                     width: 256
                     height: 32
 
-                    onClick: modelData.active ? () => VPN.killVPN(modelData.provider, modelData.config) : () => VPN.connectVPN(modelData.provider, modelData.config)
+                    onClick: () => modelData.active ? VPN.killVPN(modelData.provider, modelData.config) : VPN.connectVPN(modelData.provider, modelData.config)
 
                     KeyValueRow {
                         width: parent.width - Themes.paddingSize * 2

@@ -41,13 +41,15 @@ Singleton {
         }
     }
 
-    function connectVPN(provider: string, network: string): void {
-        vpnManager.command = ["bash", "-c", `pkexec ${Globals.basePath}/scripts/vpn.sh`, "connect_vpn", provider, network];
-        vpnManager.command = true;
+    function connectVPN(provider: string, config: string): void {
+        Globals.logDebug("Connecting " + config + " via " + provider + ".");
+        vpnManager.command = ["pkexec", `${Globals.basePath}/scripts/vpn.sh`, "connect_vpn", provider, config];
+        vpnManager.running = true;
     }
 
-    function killVPN(provider: string, network: string): void {
-        vpnManager.command = ["bash", "-c", `pkexec ${Globals.basePath}/scripts/vpn.sh`, "disconnect_vpn", provider, network];
+    function killVPN(provider: string, config: string): void {
+        Globals.logDebug("Disconnecting " + config + " via " + provider + ".");
+        vpnManager.command = ["pkexec", `${Globals.basePath}/scripts/vpn.sh`, "disconnect_vpn", provider, config];
         vpnManager.running = true;
     }
 

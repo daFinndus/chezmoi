@@ -86,7 +86,7 @@ connect_vpn() {
 
     case "$provider" in
     openvpn)
-        $XDG_DATA_HOME/../bin/vpn-manager.sh openvpn "$config"
+        bash /home/finn/.local/bin/vpn-manager.sh openvpn "$config"
         ;;
     tailscale)
         $XDG_DATA_HOME/../bin/vpn-manager.sh tailscale
