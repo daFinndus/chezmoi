@@ -29,8 +29,9 @@ alias mariadb-mittweida='sudo mariadb -h maria.hs-mittweida.de -u $MW_MARIADB_US
 alias metasploit='sudo $XDG_DATA_HOME/../bin/setup-metasploit.sh'
 
 alias set-wallpaper='$XDG_DATA_HOME/../bin/set-wallpaper.sh'
-alias vpn-manager='$XDG_DATA_HOME/../bin/vpn-manager.sh'
 alias theme-configurator='$XDG_DATA_HOME/../bin/theme-configurator.sh'
+alias update-manager='$XDG_DATA_HOME/../bin/update-manager.sh'
+alias vpn-manager='$XDG_DATA_HOME/../bin/vpn-manager.sh'
 
 alias delamain='cd ~/Coding/delamain && uv run python main.py'
 alias poke-calc='cd ~/Coding/poke-calc && uv run python main.py'
