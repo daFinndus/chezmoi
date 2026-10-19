@@ -9,7 +9,7 @@ Widget {
 
     text: Themes.iconMode ? "\udb85\uddfc" : VPN.getText(index)
 
-    opacity: VPN.vpnActive ? 1 : 0
+    opacity: 1
     visible: root.opacity > 0
 
     property int index: 0

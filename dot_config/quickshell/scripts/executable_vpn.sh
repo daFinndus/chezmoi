@@ -1,53 +1,124 @@
 #!/bin/bash
 
-# This script will fetch all running VPNs
+OVPN_DIR="$HOME/Nextcloud/VPNs"
+
 fetch_vpn() {
-  local -a connections=()
-  declare -A seen
+    local -a connections=()
+    declare -A seen
 
-  add_connection() {
-    local key=$1
-    local json=$2
+    add_connection() {
+        local key=$1
+        local json=$2
 
-    # If it's in the seen array, skip it
-    [[ -z ${seen[$key]} ]] || return
+        [[ -z ${seen[$key]} ]] || return
 
-    # Otherwise add it to connections and seen
-    seen[$key]=1
-    connections+=("$json")
-  }
+        seen[$key]=1
+        connections+=("$json")
+    }
 
-  # OpenVPN — process-centric
-  while read -r cfg; do
-    local network
-    network=$(basename "$cfg" .ovpn)
+    # OpenVPN — known configs from VPN directory (always shown, active or not)
+    while read -r cfg; do
+        local network
+        network=$(basename "$cfg" .ovpn)
 
-    # Necessary so the log file has the right permissions
-    sleep 1
+        local process
+        process=$(ps -eo args | awk '/openvpn/ && !/awk/ {print $NF}' | grep -F "$cfg")
 
-    local address=$(cat /tmp/"$network".ovpn.log | grep net_addr_v4_add | awk '{print $4}')
+        local active="false"
+        local address=""
 
-    add_connection "openvpn:$network" "{\"provider\": \"openvpn\", \"title\": \"OpenVPN\", \"network\": \"$network\", \"address\": \"$address\"}"
-  done < <(ps -eo args | awk '/openvpn/ && !/awk/ {print $NF}' | sort -u)
+        if [[ -n "$process" ]]; then
+            active="true"
+            local logfile="/tmp/${network}.ovpn.log"
+            if [[ -f "$logfile" ]]; then
+                address=$(grep "net_addr_v4_add" "$logfile" | awk '{print $4}' | tail -n1)
+            fi
+        fi
 
-  # Tailscale
-  while read -r iface; do
-    add_connection "tailscale:$iface" '{"provider": "tailscale", "title": "Tailscale", "network": "up"}'
-  done < <(ip link show type tun 2>/dev/null | awk '/^[0-9]+:/ && /UP/ {gsub(/:/,"",$2); print $2}' | grep '^tailscale')
+        add_connection "openvpn:$network" "{\"provider\": \"openvpn\", \"network\": \"$network\", \"address\": \"${address:-}\", \"active\": $active, \"config\": \"$cfg\"}"
+    done < <(find "$OVPN_DIR" -name "*.ovpn" -type f | sort)
 
-  # EduVPN
-  while read -r iface; do
-    add_connection "eduvpn" '{"provider": "eduvpn", "title": "EduVPN", "network": "up"}'
-  done < <(ip link show eduvpn 2>/dev/null | awk '/^[0-9]+:/ && /UNKNOWN/ {gsub(/:/,"",$2); print $2}')
+    # OpenVPN — running but not in known directory
+    while read -r cfg; do
+        local network
+        network=$(basename "$cfg" .ovpn)
 
-  if [[ ${#connections[@]} -gt 0 ]]; then
+        # Skip if already added from known directory
+        [[ -n ${seen["openvpn:$network"]} ]] && continue
+        [[ "$cfg" == "$OVPN_DIR"* ]] && continue
+
+        local address=""
+        local logfile="/tmp/${network}.ovpn.log"
+        if [[ -f "$logfile" ]]; then
+            address=$(grep "net_addr_v4_add" "$logfile" | awk '{print $4}' | tail -n1)
+        fi
+
+        add_connection "openvpn:$network" "{\"provider\": \"openvpn\", \"title\": \"$network\", \"network\": \"$network\", \"address\": \"${address:-}\", \"active\": true, \"config\": \"$cfg\"}"
+    done < <(ps -eo args | awk '/openvpn/ && !/awk/ {print $NF}' | sort -u)
+
+    # Tailscale
+    local tailscale_state
+    tailscale_state=$(ip link show type tun 2>/dev/null | awk '/^[0-9]+:/ && /UP/ {gsub(/:/,"",$2); print $2}' | grep '^tailscale')
+
+    local tailscale_active="false"
+    [[ -n "$tailscale_state" ]] && tailscale_active="true"
+
+    add_connection "tailscale" "{\"provider\": \"tailscale\", \"network\": \"tailscale\", \"address\": \"\", \"active\": $tailscale_active, \"config\": \"\"}"
+
+    # EduVPN
+    local eduvpn_state
+    eduvpn_state=$(ip link show eduvpn 2>/dev/null | awk '/^[0-9]+:/ && /UNKNOWN/ {gsub(/:/,"",$2); print $2}')
+
+    local eduvpn_active="false"
+    [[ -n "$eduvpn_state" ]] && eduvpn_active="true"
+
+    add_connection "eduvpn" "{\"provider\": \"eduvpn\", \"network\": \"eduvpn\", \"address\": \"\", \"active\": $eduvpn_active, \"config\": \"\"}"
+
     local arr
     arr=$(printf '%s,' "${connections[@]}")
 
-    printf '{"active": true, "connections": [%s]}\n' "${arr%,}"
-  else
-    printf '{"active": false, "connections": []}\n'
-  fi
+    printf '[%s]\n' "${arr%,}"
 }
 
-fetch_vpn
+connect_vpn() {
+    local provider="$1"
+    local config="$2"
+
+    case "$provider" in
+    openvpn)
+        $XDG_DATA_HOME/../bin/vpn-manager.sh openvpn "$config"
+        ;;
+    tailscale)
+        $XDG_DATA_HOME/../bin/vpn-manager.sh tailscale
+        ;;
+    eduvpn)
+        sudo networkctl up eduvpn
+        ;;
+    esac
+}
+
+disconnect_vpn() {
+    local provider="$1"
+    local config="$2"
+
+    case "$provider" in
+    openvpn)
+        local network
+        network=$(basename "$config" .ovpn)
+        local pid=$(ps -eo pid,args | awk '/openvpn/ && !/awk/ && /'"$network"'/ {print $1}' | head -n1)
+        [[ -n "$pid" ]] && sudo kill "$pid"
+        ;;
+    tailscale)
+        sudo tailscale down
+        ;;
+    eduvpn)
+        sudo networkctl down eduvpn
+        ;;
+    esac
+}
+
+case "$1" in
+fetch_vpn) fetch_vpn ;;
+connect_vpn) connect_vpn "$2" "$3" ;;
+disconnect_vpn) disconnect_vpn "$2" "$3" ;;
+esac
