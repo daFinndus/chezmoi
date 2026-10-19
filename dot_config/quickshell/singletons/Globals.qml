@@ -32,6 +32,10 @@ Singleton {
         return Qt.rgba(value.r, value.g, value.b, alpha);
     }
 
+    function brightenColor(value: color, amount: real): color {
+        return Qt.hsla(value.hslHue, value.hslSaturation, Math.min(1.0, value.hslLightness + amount), value.a);
+    }
+
     function numberOr(value: var, fallback: real): real {
         const number = Number(value);
         return Number.isFinite(number) ? number : fallback;

@@ -106,7 +106,8 @@ PanelWindow {
         Timer {
             id: unlockKeys
 
-            interval: Themes.animationDuration / 4
+            // I think 50 might be sufficient here
+            interval: 50
 
             onTriggered: item.keysLocked = false
         }
@@ -219,6 +220,10 @@ PanelWindow {
                         // Only load the 3 images to the right and left, one middle
                         source: loader.active ? loader.modelData.path : ""
                         cache: false
+
+                        // Scale down everything that might just be too big
+                        sourceSize.width: 1920
+                        sourceSize.height: 1080
 
                         visible: loader.active
                         playing: loader.isActive

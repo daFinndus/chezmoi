@@ -72,7 +72,7 @@ Singleton {
         // First fetch the color it-self, then apply transparency
         // This is necessary because otherwise it would only be the color index
         root.background = Colors.getColor(theme.background) ?? root.background;
-        root.shade = Colors.getColor(theme.shade) ?? root.shade;
+        root.shade = Globals.brightenColor(Colors.getColor(theme.shade), 0.15) ?? root.shade;
 
         root.barHeight = quickshell.barHeight ?? root.barHeight;
         root.borderWidth = quickshell.borderWidth ?? root.borderWidth;
