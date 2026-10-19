@@ -221,10 +221,6 @@ PanelWindow {
                         source: loader.active ? loader.modelData.path : ""
                         cache: false
 
-                        // Scale down everything that might just be too big
-                        sourceSize.width: 1920
-                        sourceSize.height: 1080
-
                         visible: loader.active
                         playing: loader.isActive
                     }
