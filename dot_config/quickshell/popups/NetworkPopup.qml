@@ -36,6 +36,15 @@ Popup {
             value: Network.interfaceType
         }
 
+        Button {
+            id: refreshNetwork
+
+            visible: !Network.onlineState
+            text: "Refresh Network"
+
+            onClick: () => Network.refreshNetwork()
+        }
+
         Column {
             width: rootColumn.width
             visible: Network.onlineState
