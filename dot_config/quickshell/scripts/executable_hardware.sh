@@ -29,7 +29,7 @@ fetch_cpu() {
 
   local temp=0
   if [[ $HOSTNAME == "bartmoss" ]]; then
-    temp=$(sensors 2>/dev/null | awk '/Tctl/ {gsub(/[+°C]/,"",$2); print int($2); exit}')
+    temp=$(sensors 2>/dev/null | awk '/Tccd1/ {gsub(/[+°C]/,"",$2); print int($2); exit}')
   elif [[ $HOSTNAME == "kabuki" ]]; then
     temp=$(sensors 2>/dev/null | awk '/Package id 0/ {gsub(/[+°C]/,"",$4); print int($4); exit}')
   fi
