@@ -39,6 +39,9 @@ Popup {
         Button {
             id: refreshNetwork
 
+            width: rootColumn.width - Themes.paddingSize * 2
+            height: 32
+
             visible: !Network.onlineState
             text: "Refresh Network"
 
