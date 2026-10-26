@@ -154,7 +154,7 @@ Popup {
                 Flickable {
                     id: flickableArea
 
-                    property int visibleNetworks: 6
+                    property int visibleNetworks: Math.min(Network.wirelessNetworks.length, 6)
 
                     width: rootColumn.width
                     height: ((32 + Themes.paddingSize) * flickableArea.visibleNetworks)
