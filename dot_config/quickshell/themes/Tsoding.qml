@@ -113,7 +113,7 @@ Scope {
             right: true
         }
 
-        implicitWidth: 1920
+        implicitWidth: panel.screen.width
         implicitHeight: Themes.barHeight
 
         Item {

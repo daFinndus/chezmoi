@@ -15,9 +15,6 @@ Scope {
 
         WlrLayershell.aboveWindows: false
 
-        // This is needed so widgets can be focused for the keyboard
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
-
         // This is for blur maybe
         WlrLayershell.namespace: "quattro-taskbar"
 

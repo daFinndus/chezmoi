@@ -17,6 +17,7 @@ Widget {
 
     Tooltip {
         id: tooltip
+
         target: root
         text: Time.fullTime
     }

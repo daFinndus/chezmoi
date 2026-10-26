@@ -15,7 +15,7 @@ PopupWindow {
 
     property bool available: false
 
-    visible: rect.opacity > 0
+    visible: Themes.iconMode && rect.opacity > 0
 
     color: "transparent"
 

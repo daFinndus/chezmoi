@@ -124,7 +124,12 @@ PanelWindow {
                 required property var modelData
                 required property int index
 
-                property int distance: loader.index - root.currentIndex
+                property int distance: {
+                    const count = Selector.object.length;
+                    const raw = loader.index - root.currentIndex;
+
+                    return ((raw + Math.floor(count / 2)) % count + count) % count - Math.floor(count / 2);
+                }
 
                 property string displayName: Selector.convertText(loader.modelData.name.toString())
 
@@ -133,7 +138,7 @@ PanelWindow {
                 // Distance from modeldata index to currently active card
                 property real scaleFactor: Math.max(0.2, 1.0 - Math.abs(loader.distance) * 0.1)
 
-                active: Math.abs(loader.distance) <= Math.floor(root.cardAmount / 2)
+                active: Math.abs(loader.distance) <= 17
 
                 width: root.cardWidth * loader.scaleFactor
                 height: root.cardHeight * loader.scaleFactor
@@ -211,7 +216,7 @@ PanelWindow {
                         }
                     }
 
-                    AnimatedImage {
+                    Image {
                         id: image
 
                         anchors.fill: parent
@@ -219,10 +224,7 @@ PanelWindow {
 
                         // Only load the 3 images to the right and left, one middle
                         source: loader.active ? loader.modelData.path : ""
-                        cache: false
-
                         visible: loader.active
-                        playing: loader.isActive
                     }
 
                     // Cover right triangle

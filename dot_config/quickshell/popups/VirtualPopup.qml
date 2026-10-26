@@ -41,7 +41,7 @@ Popup {
                         shade: vpnButton.shade
 
                         label: modelData.provider
-                        value: modelData.active ? modelData.address : "down"
+                        value: modelData.active ? (modelData.address != "" ? modelData.address : "up") : "down"
                         description: modelData.network
                     }
                 }
