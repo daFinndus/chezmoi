@@ -48,5 +48,6 @@ ShellRoot {
         }
     }
 
-    Menu {}
+    ThemeSelector {}
+    WallpaperSelector {}
 }

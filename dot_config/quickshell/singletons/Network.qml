@@ -163,7 +163,6 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                Globals.logDebug("Found wireless network: " + this.text);
                 root.activeWirelessNetwork = this.text.trim();
             }
         }

@@ -11,9 +11,6 @@ import qs.singletons
 PanelWindow {
     id: root
 
-    // Current index says where the picker currently resides
-    property int currentIndex: Selector.active
-
     anchors {
         top: true
         bottom: true
@@ -31,11 +28,13 @@ PanelWindow {
 
     color: "transparent"
 
-    visible: Selector.widgetVisible
-    onVisibleChanged: root.currentIndex = Selector.active
+    visible: Themes.menuVisible
+    onVisibleChanged: root.currentIndex = Themes.activeThemeIndex
 
     implicitWidth: root.screen.width
     implicitHeight: root.screen.height
+
+    property int currentIndex: Themes.activeThemeIndex
 
     property int cardAmount: 5
 
@@ -66,34 +65,19 @@ PanelWindow {
             if (!keysLocked) {
                 switch (event.key) {
                 case Qt.Key_Left:
-                    root.currentIndex = (root.currentIndex - 1 + Selector.object.length) % Selector.object.length;
+                    root.currentIndex = (root.currentIndex - 1 + Themes.themes.length) % Themes.themes.length;
                     break;
                 case Qt.Key_Right:
-                    root.currentIndex = (root.currentIndex + 1) % Selector.object.length;
+                    root.currentIndex = (root.currentIndex + 1) % Themes.themes.length;
                     break;
                 case Qt.Key_Return:
-                    switch (Selector.type) {
-                    case "wallpaper":
-                        Wallpaper.setWallpaper(Selector.object[root.currentIndex].path);
-                        break;
-                    case "theme":
-                        Themes.setTheme(Selector.object[root.currentIndex].name);
-                        break;
-                    }
-
-                    Selector.widgetVisible = false;
+                    Themes.setTheme(Themes.theme[root.currentIndex].name);
                     break;
-                case Qt.Key_Delete:
-                    if (Selector.type === "wallpaper") {
-                        Globals.logDebug("Going to delete " + Selector.object[root.currentIndex].path);
-                        Wallpaper.removeWallpaper(root.currentIndex);
-                    } else {
-                        Globals.logDebug("Not going to delete, wrong menu type.");
-                    }
 
+                    Themes.menuVisible = false;
                     break;
                 case Qt.Key_Escape:
-                    Selector.widgetVisible = false;
+                    Themes.menuVisible = false;
                     break;
                 }
 
@@ -115,7 +99,7 @@ PanelWindow {
         Repeater {
             id: repeater
 
-            model: Selector.object
+            model: Themes.themes
 
             delegate: Loader {
                 id: loader
@@ -125,14 +109,13 @@ PanelWindow {
                 required property int index
 
                 property int distance: {
-                    const count = Selector.object.length;
+                    const count = Themes.themes.length;
                     const raw = loader.index - root.currentIndex;
 
                     return ((raw + Math.floor(count / 2)) % count + count) % count - Math.floor(count / 2);
                 }
 
                 property string displayName: Selector.convertText(loader.modelData.name.toString())
-
                 property bool isActive: loader.index === root.currentIndex
 
                 // Distance from modeldata index to currently active card
@@ -153,7 +136,7 @@ PanelWindow {
                     enabled: loader.active
 
                     NumberAnimation {
-                        duration: Themes.animationDuration
+                        duration: Themes.animationDuration / 2
                         easing.type: Easing.OutCubic
                     }
                 }
@@ -162,7 +145,7 @@ PanelWindow {
                     enabled: loader.active
 
                     NumberAnimation {
-                        duration: Themes.animationDuration
+                        duration: Themes.animationDuration / 2
                     }
                 }
 
@@ -170,7 +153,7 @@ PanelWindow {
                     enabled: loader.active
 
                     NumberAnimation {
-                        duration: Themes.animationDuration
+                        duration: Themes.animationDuration / 2
                     }
                 }
 
@@ -339,17 +322,6 @@ PanelWindow {
                     }
                 }
             }
-        }
-    }
-
-    MouseArea {
-        id: mouseArea
-
-        anchors.fill: parent
-
-        onClicked: {
-            Globals.logDebug("Clicked inside Menu Area!");
-            Selector.toggleMenu(Selector.type);
         }
     }
 }

@@ -9,6 +9,9 @@ Singleton {
 
     // This basically only holds the current theme properties
     property var theme: ({})
+    property int activeThemeIndex: 0
+
+    property bool menuVisible: false
 
     property FileView file: FileView {
         path: Qt.resolvedUrl(`${Quickshell.env("XDG_CONFIG_HOME")}/themes/active.json`)
@@ -101,7 +104,6 @@ Singleton {
 
     // This is for all available theme-json files
     property var themes: ({})
-    property int activeThemeIndex: 0
 
     Process {
         id: getThemes

@@ -4,12 +4,11 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-import qs.selector
-
 Singleton {
     id: root
 
     property bool loaded: false
+    property bool menuVisible: false
 
     property var wallpapers: []
     property string activeWallpaper: ""
@@ -86,12 +85,12 @@ Singleton {
         if (root.activeWallpaperIndex === index) {
             Globals.logDebug("Active wallpaper is being deleted!");
 
-            let next = (index + 1) % Selector.object.length;
+            let next = (index + 1) % root.wallpaper.length;
 
-            root.setWallpaper(Selector.object[next].path);
+            root.setWallpaper(root.wallpapers[next].path);
         }
 
-        removeWallpaper.command = ["rm", Selector.object[index].path];
+        removeWallpaper.command = ["rm", root.wallpapers[index].path];
         removeWallpaper.running = true;
     }
 

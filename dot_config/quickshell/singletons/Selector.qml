@@ -28,22 +28,10 @@ Singleton {
         if (Wallpaper.loaded) {
             switch (type) {
             case "wallpaper":
-                root.type = "wallpaper";
-                root.object = Wallpaper.wallpapers;
-                root.active = Wallpaper.activeWallpaperIndex;
-
-                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length}.`);
-
-                root.widgetVisible = !root.widgetVisible;
+                Wallpaper.menuVisible = !Wallpaper.menuVisible;
                 break;
             case "theme":
-                root.type = "theme";
-                root.object = Themes.themes;
-                root.active = Themes.activeThemeIndex;
-
-                Globals.logDebug(`Opening ${root.type} menu, object with ${root.object.length}.`);
-
-                root.widgetVisible = !root.widgetVisible;
+                Themes.menuVisible = !Themes.menuVisible;
                 break;
             }
         }
