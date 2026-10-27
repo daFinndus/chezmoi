@@ -10,8 +10,8 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(filemanager))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd(btop))
 
 -- Quickshell
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("qs ipc call menu toggleMenu wallpaper"))
-hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("qs ipc call menu toggleMenu theme"))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("qs ipc call wallpapers toggleMenu"))
+hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("qs ipc call themes toggleMenu"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("pkill qs; qs"))
 
 -- Misc
