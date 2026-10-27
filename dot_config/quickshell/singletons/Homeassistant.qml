@@ -13,50 +13,39 @@ Singleton {
     property string humidity: "62.3"
 
     Process {
-        id: fetchTemperature
+        id: fetchStates
 
-        command: [`${Globals.basePath}/scripts/homeassistant.sh`, "temp"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var text = this.text.trim();
-
-                if (isNaN(Number(text))) {
-                    root.available = false;
-                } else {
-                    root.temperature = this.text.trim();
-                    root.available = true;
-                }
-            }
-        }
-    }
-
-    Process {
-        id: fetchHumidity
-
-        command: [`${Globals.basePath}/scripts/homeassistant.sh`, "humi"]
+        command: [`${Globals.basePath}/scripts/homeassistant.sh`, "all"]
 
         stdout: StdioCollector {
             onStreamFinished: {
-                var text = this.text.trim();
+                try {
+                    const states = JSON.parse(this.text.trim());
+                    const temperature = Number(states.temperature);
+                    const humidity = Number(states.humidity);
 
-                if (isNaN(Number(text))) {
-                    root.available = false;
-                } else {
-                    root.humidity = this.text.trim();
+                    if (!Number.isFinite(temperature) || !Number.isFinite(humidity)) {
+                        root.available = false;
+                        return;
+                    }
+
+                    root.temperature = temperature.toFixed(1);
+                    root.humidity = humidity.toFixed(1);
                     root.available = true;
+                } catch (e) {
+                    root.available = false;
+                    Globals.logError("Home Assistant parse failed: " + e);
                 }
             }
         }
     }
 
     function updateStates(): void {
-        fetchTemperature.running = true;
-        fetchHumidity.running = true;
+        fetchStates.running = true;
     }
 
     Timer {
-        interval: 3000
+        interval: 5000
 
         running: true
         repeat: true

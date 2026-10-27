@@ -41,6 +41,13 @@ Singleton {
         return Number.isFinite(number) ? number : fallback;
     }
 
+    // This is currently used in the selectors
+    // Only replaces underscores with whitespaces
+    function convertText(text: string): string {
+        // Replace all underscores
+        return text.replace(/_/g, " ");
+    }
+
     // This is for giving color based on active state and (mostly) hover
     // Used a lot in different popups
     function setColor(component: var, active: bool, inverted: bool): void {

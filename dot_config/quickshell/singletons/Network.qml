@@ -31,7 +31,7 @@ Singleton {
         }
     }
 
-    property string formattedSpeed: "down: " + Globals.formatNetworkSpeed(Network.downloadSpeed) + " up: " + Globals.formatNetworkSpeed(Network.uploadSpeed)
+    property string formattedSpeed: "down: " + Globals.formatNetworkSpeed(root.downloadSpeed) + " up: " + Globals.formatNetworkSpeed(root.uploadSpeed)
 
     property string ipAddress: ""
     property string gatewayAddress: ""

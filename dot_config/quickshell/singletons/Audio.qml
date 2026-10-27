@@ -29,10 +29,8 @@ Singleton {
     }
 
     function refreshVolume(): void {
-        getSinkVolume.running = true;
-        getSourceVolume.running = true;
-        getSinkMuteState.running = true;
-        getSourceMuteState.running = true;
+        root.refreshSinks();
+        root.refreshSources();
     }
 
     function startPavucontrol(): void {
@@ -65,7 +63,14 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                root.sinks = JSON.parse(this.text);
+                const devices = JSON.parse(this.text);
+                root.sinks = devices;
+
+                const device = devices.find(item => item.name === root.defaultSink);
+                if (device) {
+                    root.sinkVolume = parseInt(device.volume?.["front-left"]?.value_percent) || 0;
+                    root.sinkMuted = device.mute;
+                }
             }
         }
     }
@@ -87,7 +92,6 @@ Singleton {
                 getDefaultSink.running = true;
 
                 root.refreshSinks();
-                root.refreshVolume();
             }
         }
     }
@@ -121,18 +125,6 @@ Singleton {
         changeVolume.running = true;
     }
 
-    Process {
-        id: getSinkVolume
-
-        command: ["bash", "-c", `pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d "%"`]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.sinkVolume = parseInt(this.text.trim());
-            }
-        }
-    }
-
     function setSinkMute(mute: bool) {
         Globals.logEverything("Setting sink mute to: " + mute);
 
@@ -145,19 +137,7 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                getSinkMuteState.running = true;
-            }
-        }
-    }
-
-    Process {
-        id: getSinkMuteState
-
-        command: ["bash", "-c", `pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}'`]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.sinkMuted = this.text.trim() === "yes";
+                root.refreshSinks();
             }
         }
     }
@@ -175,7 +155,14 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 // Filter out monitor sources
-                root.sources = JSON.parse(this.text).filter(source => !source.name.endsWith(".monitor"));
+                const devices = JSON.parse(this.text);
+                root.sources = devices.filter(source => !source.name.endsWith(".monitor"));
+
+                const device = devices.find(item => item.name === root.defaultSource);
+                if (device) {
+                    root.sourceVolume = parseInt(device.volume?.["front-left"]?.value_percent) || 0;
+                    root.sourceMuted = device.mute;
+                }
             }
         }
     }
@@ -197,7 +184,6 @@ Singleton {
                 getDefaultSource.running = true;
 
                 root.refreshSources();
-                root.refreshVolume();
             }
         }
     }
@@ -231,18 +217,6 @@ Singleton {
         changeVolume.running = true;
     }
 
-    Process {
-        id: getSourceVolume
-
-        command: ["bash", "-c", `pactl get-source-volume @DEFAULT_SOURCE@ | awk '{print $5}' | tr -d "%"`]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.sourceVolume = parseInt(this.text.trim());
-            }
-        }
-    }
-
     function setSourceMute(mute: bool) {
         Globals.logEverything("Setting source mute to: " + mute);
 
@@ -255,19 +229,7 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                getSourceMuteState.running = true;
-            }
-        }
-    }
-
-    Process {
-        id: getSourceMuteState
-
-        command: ["bash", "-c", `pactl get-source-mute @DEFAULT_SOURCE@ | awk '{print $2}'`]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.sourceMuted = this.text.trim() === "yes";
+                root.refreshSources();
             }
         }
     }
@@ -299,10 +261,8 @@ Singleton {
 
                 if (data.includes("sink")) {
                     root.refreshSinks();
-                    root.refreshVolume();
                 } else if (data.includes("source")) {
                     root.refreshSources();
-                    root.refreshVolume();
                 }
             }
         }
@@ -326,7 +286,6 @@ Singleton {
             getDefaultSink.running = true;
             getDefaultSource.running = true;
 
-            root.refreshVolume();
             root.refreshSinks();
             root.refreshSources();
         }

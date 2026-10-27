@@ -25,8 +25,6 @@ ShellRoot {
 
         active: false
         source: root.themes[Themes.theme.name] ?? Qt.resolvedUrl("themes/Tsoding.qml")
-
-        WallpaperArea {}
     }
 
     Connections {
@@ -48,6 +46,6 @@ ShellRoot {
         }
     }
 
-    ThemeSelector {}
-    WallpaperSelector {}
+    ThemeMenu {}
+    WallpaperMenu {}
 }

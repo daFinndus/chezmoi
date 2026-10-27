@@ -11,7 +11,27 @@ Singleton {
     property var theme: ({})
     property int activeThemeIndex: 0
 
+    property bool loaded: false
     property bool menuVisible: false
+
+    IpcHandler {
+        target: "themes"
+
+        function toggleMenu(): void {
+            root.toggleMenu();
+        }
+
+        // This is still used for wallpaper changing stuff
+        function applyTheme(): void {
+            root.applyTheme();
+        }
+    }
+
+    function toggleMenu(): void {
+        if (root.loaded) {
+            root.menuVisible = !root.menuVisible;
+        }
+    }
 
     property FileView file: FileView {
         path: Qt.resolvedUrl(`${Quickshell.env("XDG_CONFIG_HOME")}/themes/active.json`)
@@ -51,15 +71,6 @@ Singleton {
 
     // Animations and so on
     property int animationDuration: 250
-
-    IpcHandler {
-        target: "theme"
-
-        // This is still used for wallpaper changing stuff
-        function applyTheme(): void {
-            root.applyTheme();
-        }
-    }
 
     function applyTheme(): void {
         const theme = root.theme;
@@ -113,6 +124,7 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.themes = JSON.parse(this.text.trim());
+                root.loaded = true;
             }
         }
     }
