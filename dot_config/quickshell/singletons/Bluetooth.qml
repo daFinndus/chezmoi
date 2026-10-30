@@ -77,7 +77,7 @@ Singleton {
 
     Process {
         id: getDevices
-        command: ["bash", "-c", `${Globals.basePath}/scripts/bluetooth.sh`]
+        command: [`${Globals.basePath}/scripts/bluetooth.sh`, "fetch"]
 
         stdout: StdioCollector {
             onStreamFinished: {

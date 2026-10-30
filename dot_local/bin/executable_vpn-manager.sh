@@ -41,6 +41,7 @@ connect_openvpn() {
   sleep 1
 
   if [[ -f $log ]]; then
+    log "Changing owner of logfile."
     sudo chown "$(whoami)":"$(whoami)" "$log"
   fi
 }

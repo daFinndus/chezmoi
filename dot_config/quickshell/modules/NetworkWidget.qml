@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Network.getText()
+    text: "\udb80\udc02"
 
     MouseArea {
         id: mouseArea

@@ -16,6 +16,7 @@
 ## Network
 
 - Add a network QR-code view and captive-portal support.
+- Add ability to enter passwords when click on not-known network buttons.
 - Show saved Wi-Fi passwords only after explicit confirmation.
 - Add a richer VPN popup with interface, address, endpoint, and rates.
 

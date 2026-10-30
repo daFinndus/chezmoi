@@ -126,7 +126,7 @@ Singleton {
     //
     //
     //
-    property int verbosity: 2
+    property int verbosity: 3
 
     function logError(message): void {
         if (root.verbosity >= 1) {

@@ -24,8 +24,8 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	name = "float-iwctl",
-	match = { title = "iwctl" },
+	name = "float-nmcli",
+	match = { title = "nmcli" },
 	size = { 1200, 800 },
 	center = true,
 	float = true,

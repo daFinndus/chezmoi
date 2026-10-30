@@ -72,8 +72,6 @@ PanelWindow {
                     break;
                 case Qt.Key_Return:
                     Themes.setTheme(Themes.theme[root.currentIndex].name);
-                    break;
-
                     Themes.menuVisible = false;
                     break;
                 case Qt.Key_Escape:
@@ -81,7 +79,6 @@ PanelWindow {
                     break;
                 }
 
-                // Add a debounce timer of Themes.animationDuration
                 item.keysLocked = true;
                 unlockKeys.start();
             }

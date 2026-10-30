@@ -46,7 +46,7 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         color: "#000000"
-        opacity: 0.9
+        opacity: 0.75
     }
 
     Item {
@@ -72,8 +72,6 @@ PanelWindow {
                     break;
                 case Qt.Key_Return:
                     Wallpapers.setWallpaper(Wallpapers.wallpapers[root.currentIndex].path);
-                    break;
-
                     Wallpapers.menuVisible = false;
                     break;
                 case Qt.Key_Delete:
@@ -86,7 +84,6 @@ PanelWindow {
                     break;
                 }
 
-                // Add a debounce timer of Themes.animationDuration
                 item.keysLocked = true;
                 unlockKeys.start();
             }

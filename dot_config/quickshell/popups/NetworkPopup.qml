@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 
 import qs.singletons
 import qs.components
@@ -7,14 +8,10 @@ Popup {
     id: root
 
     onVisibleChanged: {
-        if (root.visible) {
+        if (root.visible && !Network.fetchedISP) {
             // Only fetch maximum speeds when not already fetched
             // Otherwise they have to be triggered actively
-            if (!Network.fetchedISP) {
-                Network.fetchMaximumSpeeds();
-            }
-        } else {
-            Network.stopWirelessNetworkScan();
+            Network.fetchMaximumSpeeds();
         }
     }
 
@@ -26,14 +23,21 @@ Popup {
         width: 256
         spacing: Themes.paddingSize
 
-        KeyValueRow {
-            label: "Interface"
-            value: Network.onlineState ? "Online: " + Network.interfaceTitle : "Offline"
-        }
+        Column {
+            width: rootColumn.width
+            spacing: Themes.paddingSize
 
-        KeyValueRow {
-            label: "Type"
-            value: Network.interfaceType
+            visible: Network.interfaces.length > 0
+
+            KeyValueRow {
+                label: "Interface"
+                value: Network.interfaces.length > 0 ? Network.interfaces[0]?.device : "offline"
+            }
+
+            KeyValueRow {
+                label: "Type"
+                value: Network.interfaces.length > 0 ? Network.interfaces[0]?.type : "null"
+            }
         }
 
         Button {
@@ -42,7 +46,7 @@ Popup {
             width: rootColumn.width
             height: 32
 
-            visible: !Network.onlineState
+            visible: Network.interfaces.length == 0
             text: "Refresh Network"
 
             onClick: () => Network.refreshNetwork()
@@ -50,7 +54,7 @@ Popup {
 
         Column {
             width: rootColumn.width
-            visible: Network.onlineState
+            visible: Network.interfaces.length > 0
 
             spacing: Themes.paddingSize
 
@@ -58,17 +62,17 @@ Popup {
 
             KeyValueRow {
                 label: "IP Address"
-                value: Network.ipAddress
+                value: Network.interfaces.length > 0 ? Network.interfaces[0]?.address : "null"
             }
 
             KeyValueRow {
                 label: "Gateway"
-                value: Network.gatewayAddress
+                value: Network.interfaces.length > 0 ? Network.interfaces[0]?.gateway : "null"
             }
 
             KeyValueRow {
                 label: "DNS"
-                value: Network.dnsAddress
+                value: Network.interfaces.length > 0 ? Network.interfaces[0]?.dns : "null"
             }
 
             Row {
@@ -146,10 +150,20 @@ Popup {
 
             Column {
                 visible: Network.wirelessNetworks.length > 0
-
                 width: rootColumn.width
 
                 Separator {}
+
+                Button {
+                    id: fetchWirelessNetworks
+
+                    width: rootColumn.width
+                    height: 32
+
+                    text: "Fetch WiFi's"
+
+                    onClick: () => Network.fetchWirelessNetworks()
+                }
 
                 Flickable {
                     id: flickableArea
@@ -190,7 +204,7 @@ Popup {
         }
 
         Timer {
-            id: fetchWirelessNetworks
+            id: fetchWirelessNetworksTimer
 
             running: root.visible
             repeat: true
@@ -250,9 +264,9 @@ Popup {
         width: rootColumn.width
         height: 32
 
-        active: modelData.ssid.trim() === Network.activeWirelessNetwork
+        active: modelData.active
 
-        onClick: () => Network.connectWirelessNetwork(modelData.ssid.trim())
+        // onClick: modelData.active ? () => Network.disconnectWirelessNetwork(Network.interfaces.find(object => object.type === "wifi").device) : () => Network.connectWirelessNetwork(modelData.ssid.trim())
 
         KeyValueRow {
             width: parent.width - Themes.paddingSize * 2
@@ -260,10 +274,10 @@ Popup {
 
             shade: wifiButton.shade
 
-            label: modelData.ssid.trim()
-            value: (modelData.strength.trim() / 100) + " dBm"
+            label: modelData.ssid
+            value: modelData.strength + "%"
 
-            description: "Security: " + modelData.security
+            description: "Security: " + modelData.security + " (" + modelData.band + ")"
         }
     }
 }

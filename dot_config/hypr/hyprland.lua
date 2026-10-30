@@ -58,6 +58,10 @@ hl.config({
 			vibrancy = 0.1696,
 		},
 	},
+	-- Fix 0.57 hdr issues
+	render = {
+		cm_auto_hdr = 0,
+	},
 	dwindle = {
 		preserve_split = true,
 	},

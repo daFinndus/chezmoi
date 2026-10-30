@@ -7,10 +7,7 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    property string interfaceType: ""
-    property string interfaceTitle: ""
-
-    property bool onlineState: false
+    property var interfaces: []
     property bool fetchedISP: false
 
     property int downloadSpeed: 0
@@ -31,40 +28,7 @@ Singleton {
         }
     }
 
-    property string formattedSpeed: "down: " + Globals.formatNetworkSpeed(root.downloadSpeed) + " up: " + Globals.formatNetworkSpeed(root.uploadSpeed)
-
-    property string ipAddress: ""
-    property string gatewayAddress: ""
-    property string dnsAddress: ""
-
-    property string activeWirelessNetwork: ""
     property var wirelessNetworks: []
-
-    // This is used to toggle between display-states
-    property bool displayToggler: false
-
-    Timer {
-        id: toggleDisplayToggler
-
-        interval: root.displayToggler ? 10000 : 5000
-
-        running: true
-        repeat: true
-
-        onTriggered: root.displayToggler = !root.displayToggler
-    }
-
-    function getText(): string {
-        if (Themes.iconMode) {
-            return "\udb80\udc02";
-        } else {
-            if (root.interfaceType === "") {
-                return "No network";
-            } else {
-                return root.onlineState ? root.displayToggler ? root.formattedSpeed : "up: " + root.interfaceTitle : "down: network";
-            }
-        }
-    }
 
     // =================== General network ====================
     //
@@ -79,33 +43,20 @@ Singleton {
     Process {
         id: networkCheck
 
-        command: ["bash", "-c", "ip route show default | awk '{print $5}'"]
+        command: [`${Globals.basePath}/scripts/network.sh`, "interfaces"]
 
         stdout: StdioCollector {
-            onStreamFinished: data => {
-                root.interfaceTitle = this.text.trim();
+            onStreamFinished: {
+                root.interfaces = JSON.parse(this.text.trim());
 
-                Globals.logEverything("Detected network interface: " + root.interfaceTitle);
-
-                if (root.interfaceTitle.startsWith("wl")) {
-                    root.interfaceType = "wifi";
-                    root.onlineState = true;
-                } else if (root.interfaceTitle.startsWith("en")) {
-                    root.interfaceType = "ethernet";
-                    root.onlineState = true;
-                } else {
-                    root.interfaceType = "none";
-                    root.onlineState = false;
-                }
-
-                root.fetchNetworkInformation();
+                Globals.logEverything("Detected interfaces: " + root.interfaces.length);
             }
         }
     }
 
     Process {
         id: interfaceEvents
-        command: ["ip", "monitor", "link"]
+        command: ["nmcli", "connection", "monitor"]
         running: true
 
         stdout: SplitParser {
@@ -123,51 +74,11 @@ Singleton {
         }
     }
 
-    Process {
-        id: addressEvents
-        command: ["ip", "monitor", "address"]
-        running: true
-
-        stdout: SplitParser {
-            onRead: data => {
-                Globals.logEverything("Network address event detected: " + data);
-                getAddress.running = true;
-                getActiveWirelessNetwork.running = true;
-            }
-        }
-    }
-
-    function fetchNetworkInformation() {
-        getAddress.running = true;
-        getGateway.running = true;
-        getDNS.running = true;
-    }
-
-    function startIwctl(): void {
-        startIwctl.running = true;
-    }
-
-    Process {
-        id: startIwctl
-        command: ["kitty", "--title", "iwctl", "-e", "iwctl"]
-    }
-
     // =================== Wireless Networks ====================
     //
     //
     //
     // Fetching wireless networks, connect to wireless networks, stuff like that
-    Process {
-        id: getActiveWirelessNetwork
-        command: ["bash", "-c", "iwctl station wlan0 show | grep 'Connected network' | awk '{print substr($0, 35, 80)}'"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.activeWirelessNetwork = this.text.trim();
-            }
-        }
-    }
-
     function fetchWirelessNetworks() {
         getWirelessNetworks.running = true;
     }
@@ -180,32 +91,35 @@ Singleton {
             onStreamFinished: {
                 root.wirelessNetworks = JSON.parse(this.text.trim());
                 Globals.logEverything("Found " + root.wirelessNetworks.length + " wireless networks.");
-                getActiveWirelessNetwork.running = true;
             }
         }
     }
 
-    function stopWirelessNetworkScan() {
-        Globals.logEverything("Turning iwctl scan off.");
-        stopWirelessNetworkScan.running = true;
-    }
+    function disconnectWirelessNetwork(interface: string) {
+        Globals.logEverything("Disconnecting interface: " + interface);
 
-    Process {
-        id: stopWirelessNetworkScan
-        command: ["iwctl", "device", "wlan0", "set-property", "scanning", "off"]
+        changeWirelessNetwork.command = ["nmcli", "device", "disconnect", interface];
+        changeWirelessNetwork.running = true;
     }
 
     function connectWirelessNetwork(ssid: string) {
-        chooseWirelessNetwork.command = ["kitty", "--title", "iwctl", "-e", "iwctl", "station", "wlan0", "connect", ssid];
-        chooseWirelessNetwork.running = true;
+        changeWirelessNetwork.command = ["kitty", "--title", "nmcli", "-e", "nmcli", "device", "wifi", "connect", ssid, "--ask"];
+        changeWirelessNetwork.running = true;
     }
 
     Process {
-        id: chooseWirelessNetwork
+        id: changeWirelessNetwork
 
         stdout: StdioCollector {
             onStreamFinished: {
-                getActiveWirelessNetwork.running = true;
+                if (this.text.trim().includes("successfully")) {
+                    Globals.logDebug("Successfully changed wifi.");
+                    root.refreshNetworkState();
+                    root.fetchWirelessNetworks();
+                } else {
+                    Globals.logError("Error in changing wifi.");
+                    Globals.logError("Error: " + this.text.trim());
+                }
             }
         }
     }
@@ -215,41 +129,8 @@ Singleton {
     //
     //
     // Address fetching is prolly not precised
-    Process {
-        id: getAddress
-        command: ["bash", "-c", `hostname -i | awk '{print $1}'`]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.ipAddress = this.text.trim();
-            }
-        }
-    }
-
-    Process {
-        id: getGateway
-        command: ["bash", "-c", "ip route | grep default | awk '{print $3}'"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.gatewayAddress = this.text.trim();
-            }
-        }
-    }
-
-    Process {
-        id: getDNS
-        command: ["bash", "-c", `resolvectl dns ${root.interfaceTitle} | awk '{print $NF}'`]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.dnsAddress = this.text.trim();
-            }
-        }
-    }
-
     function changeDNS(dnsAddress: string) {
-        setDNS.command = ["bash", "-c", `resolvectl dns ${root.interfaceTitle} ${dnsAddress}`];
+        setDNS.command = ["nmcli", "connection", "modify", root.interfaces[0]?.device, "+ipv4.dns", dnsAddress];
         setDNS.running = true;
     }
 
@@ -290,7 +171,7 @@ Singleton {
 
     Process {
         id: fetchSpeed
-        command: [`${Globals.basePath}/scripts/network.sh`, "speed", root.interfaceTitle]
+        command: [`${Globals.basePath}/scripts/network.sh`, "speed", root.interfaces[0]?.device]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -309,7 +190,7 @@ Singleton {
     Timer {
         interval: 3000
 
-        running: root.onlineState
+        running: Network.interfaces.length > 0
         repeat: true
 
         onTriggered: fetchSpeed.running = true

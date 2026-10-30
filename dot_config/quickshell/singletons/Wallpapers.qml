@@ -36,7 +36,7 @@ Singleton {
 
     Process {
         id: activeWallpaper
-        command: ["bash", "-c", `basename $(cat ${Globals.basePath}/assets/states/wallpaper) | sed 's/\\.[^.]*$//'`]
+        command: ["sh", "-c", `basename "$(cat "$1")" | sed 's/\\.[^.]*$//'`, "active-wallpaper", `${Globals.basePath}/assets/states/wallpaper`]
 
         running: true
 

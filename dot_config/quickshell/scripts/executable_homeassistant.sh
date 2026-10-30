@@ -8,8 +8,8 @@ log() {
   echo "[HOMEASSISTANT] $1"
 }
 
-TEMP_URL="http://192.168.178.23/api/states/sensor.apartment_esphome_01_temperature"
-HUMI_URL="http://192.168.178.23/api/states/sensor.apartment_esphome_01_humidity"
+TEMP_URL="http://192.168.178.200/api/states/sensor.apartment_esphome_01_temperature"
+HUMI_URL="http://192.168.178.200/api/states/sensor.apartment_esphome_01_humidity"
 
 if [[ -z $HOMEASSISTANT_PASSWORD ]]; then
   log "Missing password, aborting."
@@ -27,7 +27,7 @@ get_temp() {
   local temp
   temp=$(fetch_state "$TEMP_URL")
 
-  if [[ $temp =~ ^[+-]?[0-9]*\.[0-9]+$ ]]; then
+  if [[ $temp =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]]; then
     printf "%.1f" "$temp"
   else
     log "TEMP variable is not a number."
@@ -38,7 +38,7 @@ get_humi() {
   local humidity
   humidity=$(fetch_state "$HUMI_URL")
 
-  if [[ $humidity =~ ^[+-]?[0-9]*\.[0-9]+$ ]]; then
+  if [[ $humidity =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]]; then
     printf "%.1f" "$humidity"
   else
     log "HUMI variable is not a number."
@@ -47,6 +47,7 @@ get_humi() {
 
 get_all() {
   local temperature humidity
+
   temperature=$(fetch_state "$TEMP_URL")
   humidity=$(fetch_state "$HUMI_URL")
 

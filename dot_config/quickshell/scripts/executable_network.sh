@@ -4,50 +4,83 @@ log() {
   echo "[NETWORK] $1"
 }
 
-# This will fetch networks from iwctl
-scan_networks() {
-  # Check if scan is in progress
-  local scanning="$(iwctl station wlan0 show | grep Scanning | awk '{print $3}')"
-
-  if [[ $scanning == "yes" ]]; then
-    iwctl station wlan0 scan off
-    sleep 5
-  fi
-
-  # Scan surrounding networks for 5 seconds
-  iwctl station wlan0 scan on
-  sleep 5
-  iwctl device wlan0 set-property scanning off
-
-  # Print fetched networks
-  iwctl station wlan0 get-networks rssi-dbms | tail -n +5 | sed -E 's/\x1B\[[0-9;]*[[:alpha:]]//g'
-}
-
-parse_network() {
-  local network="$1"
-
-  local ssid="$(echo "$network" | awk '{print substr($0, 1, 29)}')"
-  local security="$(echo "$network" | cut -c 30- | awk '{print $1}')"
-  local strength="$(echo "$network" | cut -c 30- | awk '{print $2}')"
-
-  jq -n \
-    --arg ssid "${ssid#>}" \
-    --arg security "$security" \
-    --arg strength "$strength" \
-    '{
-        ssid: $ssid,
-        security: $security,
-        strength: $strength
-    }'
-}
-
 # Get all available networks
 fetch_wireless_networks() {
+  # Get active and known ssid
+  declare -g active=$(nmcli --get-values 802-11-wireless.ssid connection show --active $(nmcli --fields NAME,TYPE connection show | awk '$2 == "wifi" {print $1}'))
+  mapfile -t remember < <(get_known_networks)
+
   scan_networks | while read -r network; do
     if [[ -n $network ]]; then
       parse_network "$network"
     fi
   done | jq -s "."
+}
+
+# This will fetch networks from nmcli
+scan_networks() {
+  # Check if scan is in progress
+  local networks="$(nmcli --wait 15 --get-values IN-USE,SSID,SIGNAL,SECURITY,BAND device wifi list)"
+
+  # Print fetched networks
+  if [[ -z "$networks" ]]; then
+    scan_networks
+  else
+    # Grepping discards the top line
+    echo "$networks"
+  fi
+}
+
+parse_network() {
+  local network="$1"
+
+  # Grep ssid, security and strength out of the iwctl line
+  local ssid strength security
+
+  [[ -n $(echo "$network" | cut -d ':' -f 1) ]] && active=true || active=false
+  ssid=$(echo "$network" | cut -d ':' -f 2)
+  strength=$(echo "$network" | cut -d ':' -f 3)
+  security=$(echo "$network" | cut -d ':' -f 4)
+  band=$(echo "$network" | cut -d ':' -f 5)
+  known=false
+
+  for wifi in "${remember[@]}"; do
+    if [[ "$ssid" == "$wifi" ]]; then
+      known=true
+      break
+    fi
+  done
+
+  if [[ $ssid =~ ^[[:alnum:]] ]]; then
+    jq -n \
+      --arg ssid "$ssid" \
+      --arg security "$security" \
+      --arg strength "$strength" \
+      --arg band "$band" \
+      --argjson active "$active" \
+      --argjson known "$known" \
+      '{
+        ssid: $ssid,
+        security: $security,
+        strength: $strength,
+        band: $band,
+        active: $active,
+        known: $known
+       }'
+  fi
+}
+
+get_known_networks() {
+  local uuid type ssid
+
+  while IFS=: read -r uuid type; do
+    [[ "$type" == "802-11-wireless" ]] || continue
+
+    network=$(nmcli --get-values 802-11-wireless.ssid,connection.timestamp connection show uuid "$uuid")
+
+    [[ $(echo "$network" | tail -n 1) == 0 ]] && continue
+    [[ -n $(echo "$network" | head -n 1) ]] && printf '%s\n' "$(echo "$network" | head -n 1)"
+  done < <(nmcli --get-values UUID,TYPE connection show)
 }
 
 # Fetch network speed out of /proc/net/dev
@@ -65,51 +98,47 @@ fetch_network_speed() {
   rx2=$(awk -v i="${iface}:" '$1==i {print $2}' /proc/net/dev)
   tx2=$(awk -v i="${iface}:" '$1==i {print $10}' /proc/net/dev)
 
+  [[ $rx1 =~ ^[0-9]+$ && $tx1 =~ ^[0-9]+$ && $rx2 =~ ^[0-9]+$ && $tx2 =~ ^[0-9]+$ ]] ||
+    {
+      printf '{"rx":"0","tx":"0"}\n'
+      return
+    }
+
   printf '{"rx":"%s","tx":"%s"}\n' \
     "$(((rx2 - rx1) * 8))" \
     "$(((tx2 - tx1) * 8))"
 }
 
-# This will fetch bandwidth per process via nethogs
-fetch_process_bandwidth() {
-  local getcap=$(which nethogs | xargs -n1 getcap)
+get_interfaces() {
+  local interfaces=$(nmcli --get-values TYPE,DEVICE,STATE device status)
 
-  if [[ -z $getcap ]]; then
-    log "Cap not set for nethogs."
-    notify-send "NETWORK" "Please set nethog caps by executing script manually."
-    sudo setcap "cap_net_admin,cap_net_raw,cap_dac_read_search,cap_sys_ptrace+pe" /usr/sbin/nethogs
-  fi
+  echo "$interfaces" | while read -r interface; do
+    if [[ -n "$interface" ]]; then
+      type=$(echo "$interface" | cut -d ":" -f 1)
+      device=$(echo "$interface" | cut -d ":" -f 2)
+      [[ $(echo "$interface" | cut -d ":" -f 3) == "connected"* ]] && active=true || active=false
 
-  # Retrieve bandwidth in bits
-  local nethogs=$(nethogs -t -d 1 -c 2 -v 2 | tail -n +7)
+      information=$(nmcli --get-values IP4.ADDRESS,IP4.GATEWAY,IP4.DNS device show $device)
 
-  echo "$nethogs" | while IFS= read -r line; do
-    if [[ -n $line && $line != *"Refreshing"* && $line != *"Unknown connection"* ]]; then
-      local pid=$(echo "$line" | awk -F '/' '{print $(NF-1)}')
-
-      if [[ $pid -eq 0 ]]; then
-        continue
-      fi
-
-      local process=$(cat /proc/$pid/comm)
-      local sent=$(echo "$line" | awk '{print $(NF-1)}')
-      local received=$(echo "$line" | awk '{print $NF}')
-
-      if [[ -z $process || -z $sent || -z $received ]]; then
-        continue
-      fi
+      address=$(echo "$information" | head -n 1)
+      gateway=$(echo "$information" | sed -n 2p)
+      dns=$(echo "$information" | tail -n 1)
 
       jq -n \
-        --argjson pid "$pid" \
-        --arg process "$process" \
-        --argjson sent "$sent" \
-        --argjson received "$received" \
+        --arg type "$type" \
+        --arg device "$device" \
+        --argjson active "$active" \
+        --arg address "$address" \
+        --arg gateway "$gateway" \
+        --arg dns "$dns" \
         '{
-	    pid: $pid,
-            process: $process,
-            sent: $sent,
-            received: $received,
-         }'
+            type: $type,
+            device: $device,
+            active: $active,
+            address: $address,
+            gateway: $gateway,
+            dns: $dns
+        }'
     fi
   done | jq -s "."
 }
@@ -117,5 +146,5 @@ fetch_process_bandwidth() {
 case "$1" in
 wifi) fetch_wireless_networks ;;
 speed) fetch_network_speed "$2" ;;
-processes) fetch_process_bandwidth ;;
+interfaces) get_interfaces ;;
 esac

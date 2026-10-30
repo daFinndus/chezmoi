@@ -48,4 +48,3 @@ case "$1" in
 get_updates) get_updates ;;
 do_updates) do_updates ;;
 esac
-
