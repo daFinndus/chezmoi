@@ -15,6 +15,7 @@
 
 ## Network
 
+- Make VPN compatible / depend on NetworkManager.
 - Add a network QR-code view and captive-portal support.
 - Add ability to enter passwords when click on not-known network buttons.
 - Show saved Wi-Fi passwords only after explicit confirmation.

@@ -25,12 +25,12 @@ Singleton {
             return "\ueba7";
         case "tray-icon tray app main":
             return "\udb80\udedc";
-        case "teams-for-linux_status_icon_1":
+        case "teams for linux_status_icon_1":
             return "\udb80\udebb";
         case "alarm-clock":
             return "\udb80\udc20";
         default:
-            return id;
+            return id.toLowerCase();
         }
     }
 }
