@@ -2,22 +2,6 @@
 
 WALLPAPER_FILE="$HOME/.config/quickshell/assets/states/wallpaper"
 
-wait_for_hyprpaper() {
-  SOCKET="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.hyprpaper.sock"
-  echo "[WALLPAPER] Waiting for hyprpaper socket: $SOCKET"
-
-  for i in {1..50}; do
-    if [ -S "$SOCKET" ]; then
-      echo "[WALLPAPER] hyprpaper socket is ready."
-      return 0
-    fi
-    sleep 0.1
-
-  done
-  echo "[WALLPAPER] ERROR: hyprpaper socket did not appear!" >&2
-  return 1
-}
-
 change() {
   echo "[WALLPAPER] Executing script at $(date)"
   WALLPAPER_PATH="$1"
@@ -39,7 +23,7 @@ change() {
 
   echo "[WALLPAPER] Applying wallpaper: $WALLPAPER_PATH"
   echo "[WALLPAPER] Updating wallpaper..."
-  awww img $WALLPAPER_PATH --transition-type grow --transition-duration 0.75
+  awww img $WALLPAPER_PATH --transition-type grow --transition-duration 0.5 --transition-fps 60
 
   echo "[PYWAL] Applying pywal colorscheme..."
   wal -i "$WALLPAPER_PATH"

@@ -203,7 +203,7 @@ PanelWindow {
                         }
                     }
 
-                    Image {
+                    AnimatedImage {
                         id: image
 
                         // I believe this in combination with caching
@@ -216,6 +216,8 @@ PanelWindow {
                         // Only load the 3 images to the right and left, one middle
                         source: loader.active ? loader.modelData.path : ""
                         visible: loader.active
+
+                        playing: loader.visible
                     }
 
                     // Cover right triangle
