@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Themes.iconMode ? "\uefcf" : Audio.getText()
+    text: Themes.iconMode ? "\uefcf" : ""
 
     Keys.enabled: !Themes.iconMode
     Keys.onPressed: event => {

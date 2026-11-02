@@ -19,36 +19,9 @@ Singleton {
     property bool sourceMuted: false
     property string defaultSource: ""
 
-    // This is only used in non-icon based themes
-    function getText(): string {
-        if (root.sinkVolume === 0 || root.sinkMuted) {
-            return `Volume muted`;
-        } else {
-            return `Volume at ${root.sinkVolume}%`;
-        }
-    }
-
     function refreshVolume(): void {
         root.refreshSinks();
         root.refreshSources();
-    }
-
-    function startPavucontrol(): void {
-        startPavucontrol.running = true;
-    }
-
-    function toggleDevice(): void {
-        toggleDevice.running = true;
-    }
-
-    Process {
-        id: startPavucontrol
-        command: ["pavucontrol"]
-    }
-
-    Process {
-        id: toggleDevice
-        command: [`${Globals.basePath}/scripts/audio.sh`, "toggle"]
     }
 
     // ==================== Sink / Output ====================
