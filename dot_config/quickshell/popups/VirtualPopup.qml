@@ -32,7 +32,7 @@ Popup {
                     width: 256
                     height: 32
 
-                    onClick: () => modelData.active ? VPN.killVPN(modelData.provider, modelData.config) : VPN.connectVPN(modelData.provider, modelData.config)
+                    onClick: () => VPN.toggleVPN(modelData.name)
 
                     KeyValueRow {
                         width: parent.width - Themes.paddingSize * 2
@@ -40,9 +40,9 @@ Popup {
 
                         shade: vpnButton.shade
 
-                        label: modelData.provider
-                        value: modelData.active ? (modelData.address != "" ? modelData.address : "up") : "down"
-                        description: modelData.network
+                        label: modelData.name
+                        value: modelData.active ? "up" : "down"
+                        description: modelData.type
                     }
                 }
             }

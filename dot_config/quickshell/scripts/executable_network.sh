@@ -14,7 +14,7 @@ fetch_wireless_networks() {
     if [[ -n $network ]]; then
       parse_network "$network"
     fi
-  done | jq -s "."
+  done | jq -s 'sort_by(.band != "5 GHz")'
 }
 
 # This will fetch networks from nmcli
@@ -23,10 +23,10 @@ scan_networks() {
   local networks="$(nmcli --wait 15 --get-values IN-USE,SSID,SIGNAL,SECURITY,BAND device wifi list)"
 
   # Print fetched networks
+  # Haven't noticed any infinit recursive calls yet
   if [[ -z "$networks" ]]; then
     scan_networks
   else
-    # Grepping discards the top line
     echo "$networks"
   fi
 }
