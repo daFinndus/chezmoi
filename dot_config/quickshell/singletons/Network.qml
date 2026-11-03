@@ -130,7 +130,7 @@ Singleton {
     //
     // Address fetching is prolly not precised
     function changeDNS(dnsAddress: string) {
-        setDNS.command = ["nmcli", "connection", "modify", root.interfaces[0]?.device, "+ipv4.dns", dnsAddress];
+        setDNS.command = ["nmcli", "connection", "modify", root.interfaces[0]?.device, "ipv4.dns", dnsAddress];
         setDNS.running = true;
     }
 
@@ -139,7 +139,7 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                getDNS.running = true;
+                root.refreshNetworkState();
             }
         }
     }

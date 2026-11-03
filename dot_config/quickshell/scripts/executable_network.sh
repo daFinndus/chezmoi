@@ -118,7 +118,7 @@ get_interfaces() {
       device=$(echo "$interface" | cut -d ":" -f 2)
       [[ $(echo "$interface" | cut -d ":" -f 3) == "connected"* ]] && active=true || active=false
 
-      information=$(nmcli --get-values IP4.ADDRESS,IP4.GATEWAY,IP4.DNS device show $device)
+      information=$(nmcli --get-values IPV4.ADDRESSES,IPV4.GATEWAY,IPV4.DNS connection show $device)
 
       address=$(echo "$information" | head -n 1)
       gateway=$(echo "$information" | sed -n 2p)
