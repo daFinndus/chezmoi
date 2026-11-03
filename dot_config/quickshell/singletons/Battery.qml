@@ -61,7 +61,7 @@ Singleton {
             return "\udb80\udc7b";
         } else if (root.percentage >= 10) {
             return "\udb80\udc7a";
-        } else if (root.percentage == 0) {
+        } else if (root.percentage < 10) {
             return "\udb80\udc8e";
         }
     }
