@@ -37,3 +37,4 @@ util-linux
 inetutils
 ttf-jetbrains-mono-nerd
 ttf-minecraftia
+ttf-cascadia-code
