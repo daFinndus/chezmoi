@@ -1,5 +1,9 @@
 # TODO
 
+## Fixes
+
+- Detect gateway, etc. in Network Popup based on profile name, not interface, because interface not always the profile name
+
 ## Portability and capability detection
 
 - Detect commands and services (`pactl`, `playerctl`, `iwctl`, `bluetoothctl`, `acpi`, `inotifywait`, `jq`, and compositor tools).
