@@ -199,6 +199,7 @@ PanelWindow {
                     Image {
                         id: image
 
+                        asynchronous: true
                         anchors.fill: parent
                         fillMode: Image.PreserveAspectCrop
 

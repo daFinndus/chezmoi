@@ -95,7 +95,7 @@ Singleton {
         }
     }
 
-    function disconnectWirelessNetwork(interface: string) {
+    function disconnectWirelessNetwork(profile: string) {
         Globals.logEverything("Disconnecting interface: " + interface);
 
         changeWirelessNetwork.command = ["nmcli", "device", "disconnect", interface];
@@ -130,7 +130,7 @@ Singleton {
     //
     // Address fetching is prolly not precised
     function changeDNS(dnsAddress: string) {
-        setDNS.command = ["nmcli", "connection", "modify", root.interfaces[0]?.device, "ipv4.dns", dnsAddress];
+        setDNS.command = ["nmcli", "connection", "modify", root.interfaces[0]?.name, "ipv4.dns", dnsAddress];
         setDNS.running = true;
     }
 

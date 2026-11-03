@@ -134,6 +134,8 @@ Popup {
                     text: modelData.name
                     active: modelData.connected
 
+                    feedback: "Connecting..."
+
                     onClick: () => Bluetooth.connectDevice(modelData.address)
                 }
             }

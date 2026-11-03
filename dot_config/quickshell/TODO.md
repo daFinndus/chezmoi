@@ -2,7 +2,6 @@
 
 ## Fixes
 
-- Detect gateway, etc. in Network Popup based on profile name, not interface, because interface not always the profile name
 - Button feedback via Timer (Change text like 'Working!' after seconds back to original)
 
 ## Portability and capability detection

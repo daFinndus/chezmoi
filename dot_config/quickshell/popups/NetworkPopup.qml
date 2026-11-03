@@ -30,6 +30,11 @@ Popup {
             visible: Network.interfaces.length > 0
 
             KeyValueRow {
+                label: "Name"
+                value: Network.interfaces.length > 0 ? Network.interfaces[0]?.name : "null"
+            }
+
+            KeyValueRow {
                 label: "Interface"
                 value: Network.interfaces.length > 0 ? Network.interfaces[0]?.device : "offline"
             }
@@ -47,7 +52,9 @@ Popup {
             height: 32
 
             visible: Network.interfaces.length == 0
+
             text: "Refresh Network"
+            feedback: "Refreshing!"
 
             onClick: () => Network.refreshNetwork()
         }
@@ -130,6 +137,7 @@ Popup {
 
                     Button {
                         text: "Refetch ISP"
+                        feedback: "Fetching..."
 
                         width: (rootColumn.width - Themes.paddingSize) / 2
                         height: 32
@@ -161,6 +169,7 @@ Popup {
                     height: 32
 
                     text: "Fetch WiFi's"
+                    feedback: "Fetching..."
 
                     onClick: () => Network.fetchWirelessNetworks()
                 }
@@ -254,6 +263,8 @@ Popup {
         height: 32
 
         text: dnsButton.dnsTitle
+        feedback: "Changing!"
+
         active: Network.dnsAddress === dnsButton.dnsAddress
         onClick: () => Network.changeDNS(dnsButton.dnsAddress)
     }
@@ -266,7 +277,11 @@ Popup {
 
         active: modelData.active
 
-        // onClick: modelData.active ? () => Network.disconnectWirelessNetwork(Network.interfaces.find(object => object.type === "wifi").device) : () => Network.connectWirelessNetwork(modelData.ssid.trim())
+        feedback: modelData.active ? "Disconnecting!" : "Connecting..."
+
+        // This has to be fixed so it automatically get's the wifi profile and kills it
+        // Or it finds the appropiate ssid and kills it
+        // onClick: modelData.active ? () => Network.disconnectWirelessNetwork() : () => Network.connectWirelessNetwork()
 
         KeyValueRow {
             width: parent.width - Themes.paddingSize * 2

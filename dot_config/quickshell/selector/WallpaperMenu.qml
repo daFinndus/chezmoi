@@ -84,6 +84,7 @@ PanelWindow {
                     break;
                 }
 
+                Globals.logDebug("Now showing " + Wallpapers.wallpapers[root.currentIndex].name);
                 item.keysLocked = true;
                 unlockKeys.start();
             }
@@ -123,17 +124,7 @@ PanelWindow {
                 // Distance from modeldata index to currently active card
                 property real scaleFactor: Math.max(0.2, 1.0 - Math.abs(loader.distance) * 0.1)
 
-                active: false
-
-                Timer {
-                    id: delayActivity
-
-                    repeat: false
-                    running: true
-
-                    interval: 1500
-                    onTriggered: loader.active = Math.abs(loader.distance) <= 17
-                }
+                active: Math.abs(loader.distance) <= 13
 
                 width: root.cardWidth * loader.scaleFactor
                 height: root.cardHeight * loader.scaleFactor

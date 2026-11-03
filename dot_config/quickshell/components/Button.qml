@@ -26,6 +26,7 @@ Rectangle {
 
     // Either pass a text which will be centered in the button
     property string text: ""
+    property string feedback: ""
 
     // Or pass a whole component which will takeup the button space
     default property alias content: container.data
@@ -103,9 +104,29 @@ Rectangle {
                 Globals.closePopup();
                 debounceCommand.start();
             } else {
+                root.feedback !== "" ? root.showFeedback(root.feedback) : null;
                 root.runOnClick();
             }
         }
+    }
+
+    property string original: root.text
+
+    // This is used for buttons
+    // It will take the original message, show another, then goes back to the original
+    // Used to make button feedback
+    function showFeedback(feedback, interval = 500) {
+        original = text.text;
+        text.text = feedback;
+
+        feedbackTimer.interval = interval;
+        feedbackTimer.restart();
+    }
+
+    Timer {
+        id: feedbackTimer
+
+        onTriggered: text.text = root.original
     }
 
     function runOnClick() {
