@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOSTNAME=$(hostname)
+HOSTNAME=$(cat /etc/hostname)
 
 # This will fetch CPU load and temperature
 # It will also fetch load per CPU core

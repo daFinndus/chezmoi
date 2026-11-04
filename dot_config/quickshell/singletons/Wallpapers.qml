@@ -25,7 +25,6 @@ Singleton {
     }
 
     property var wallpapers: []
-    property string activeWallpaper: ""
     property int activeWallpaperIndex: 0
 
     // Returns the active wallpaper
@@ -36,16 +35,16 @@ Singleton {
 
     Process {
         id: activeWallpaper
-        command: ["sh", "-c", `basename "$(cat "$1")" | sed 's/\\.[^.]*$//'`, "active-wallpaper", `${Globals.basePath}/assets/states/wallpaper`]
+
+        // awww query retrieves the absolute linked path
+        command: ["sh", "-c", `awww query | awk '{print $9}'`]
 
         running: true
 
         stdout: StdioCollector {
             onStreamFinished: {
-                root.activeWallpaper = this.text.trim();
-                root.activeWallpaperIndex = Globals.findIndex(root.wallpapers, root.activeWallpaper);
-
-                Globals.logDebug("Active wallpaper is: " + root.activeWallpaper);
+                root.activeWallpaperIndex = root.wallpapers.findIndex(paper => paper.path === this.text.trim());
+                Globals.logDebug("Active wallpaper is: " + root.wallpapers[root.activeWallpaperIndex].name);
             }
         }
     }

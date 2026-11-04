@@ -1,3 +1,4 @@
+awww
 quickshell
 qt6-base
 qt6-declarative
@@ -38,3 +39,4 @@ inetutils
 ttf-jetbrains-mono
 ttf-jetbrains-mono-nerd
 ttf-cascadia-code
+tlp

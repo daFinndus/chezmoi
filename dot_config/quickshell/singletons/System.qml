@@ -33,7 +33,7 @@ Singleton {
 
         running: true
 
-        command: ["hostname"]
+        command: ["cat", "/etc/hostname"]
 
         stdout: StdioCollector {
             waitForEnd: true
