@@ -29,7 +29,9 @@ PanelWindow {
     color: "transparent"
 
     visible: Wallpapers.menuVisible
-    onVisibleChanged: root.currentIndex = Wallpapers.activeWallpaperIndex
+    onVisibleChanged: if (root.visible) {
+        root.currentIndex = Wallpapers.activeWallpaperIndex;
+    }
 
     implicitWidth: root.screen.width
     implicitHeight: root.screen.height
@@ -71,8 +73,8 @@ PanelWindow {
                     root.currentIndex = (root.currentIndex + 1) % Wallpapers.wallpapers.length;
                     break;
                 case Qt.Key_Return:
-                    Wallpapers.setWallpaper(Wallpapers.wallpapers[root.currentIndex].path);
                     Wallpapers.menuVisible = false;
+                    Wallpapers.setWallpaper(Wallpapers.wallpapers[root.currentIndex].path);
                     break;
                 case Qt.Key_Delete:
                     Globals.logDebug("Going to delete " + Wallpapers.wallpapers[root.currentIndex].path);

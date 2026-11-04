@@ -35,6 +35,6 @@ sed
 procps-ng
 util-linux
 inetutils
+ttf-jetbrains-mono
 ttf-jetbrains-mono-nerd
-ttf-minecraftia
 ttf-cascadia-code

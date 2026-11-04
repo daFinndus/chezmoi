@@ -29,7 +29,9 @@ PanelWindow {
     color: "transparent"
 
     visible: Themes.menuVisible
-    onVisibleChanged: root.currentIndex = Themes.activeThemeIndex
+    onVisibleChanged: if (root.visible) {
+        root.currentIndex = Themes.activeThemeIndex;
+    }
 
     implicitWidth: root.screen.width
     implicitHeight: root.screen.height
@@ -71,8 +73,8 @@ PanelWindow {
                     root.currentIndex = (root.currentIndex + 1) % Themes.themes.length;
                     break;
                 case Qt.Key_Return:
-                    Themes.setTheme(Themes.theme[root.currentIndex].name);
                     Themes.menuVisible = false;
+                    Themes.setTheme(Themes.theme[root.currentIndex].name);
                     break;
                 case Qt.Key_Escape:
                     Themes.menuVisible = false;

@@ -1,9 +1,5 @@
 # TODO
 
-## Fixes
-
-- Button feedback via Timer (Change text like 'Working!' after seconds back to original)
-
 ## Portability and capability detection
 
 - Detect commands and services (`pactl`, `playerctl`, `iwctl`, `bluetoothctl`, `acpi`, `inotifywait`, `jq`, and compositor tools).
