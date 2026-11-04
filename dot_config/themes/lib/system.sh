@@ -26,6 +26,18 @@ apply_system_properties() {
     'Net/ThemeName "Adwaita-dark"' \
     "Gtk/FontName \"$fontFamily 10\"" >"$XDG_CONFIG_HOME/xsettingsd/xsettingsd.conf"
 
+  mkdir -p "$XDG_CONFIG_HOME/xdg-desktop-portal"
+
+  printf '%s\n' \
+    '[preferred]' \
+    'default = hyprland' \
+    'org.freedesktop.impl.portal.Settings = gtk' >"$XDG_CONFIG_HOME/xdg-desktop-portal/hyprland-portals.conf"
+
+  dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+
+  # Restart potentially necessary services
+  systemctl --user restart xdg-desktop-portal xdg-desktp-portal-hyprland
+
   # True is necessary here, because it would basically stop the whole script otherwise
   pkill -HUP xsettingsd || true
 }
