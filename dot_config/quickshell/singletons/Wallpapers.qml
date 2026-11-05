@@ -37,7 +37,7 @@ Singleton {
         id: activeWallpaper
 
         // awww query retrieves the absolute linked path
-        command: ["sh", "-c", `awww query | awk '{print $9}'`]
+        command: ["sh", "-c", `awww query | awk '{print $9}' | head -n 1`]
 
         running: true
 
