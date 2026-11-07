@@ -265,7 +265,7 @@ Popup {
         text: dnsButton.dnsTitle
         feedback: "Changing!"
 
-        active: Network.interfaces[0].dns === dnsButton.dnsAddress
+        active: Network.interfaces[0]?.dns === dnsButton.dnsAddress
         onClick: () => Network.changeDNS(dnsButton.dnsAddress)
     }
 

@@ -22,6 +22,7 @@
 
 - Add an installation script for fresh devices.
 - Check dependencies and generate portable configuration paths.
+- Add needed sudoers rules.
 - Support dotfiles for all usernames and avoid machine-specific absolute paths.
 
 ## Security and threat monitoring

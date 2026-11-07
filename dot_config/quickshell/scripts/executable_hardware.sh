@@ -100,7 +100,6 @@ fetch_gpu() {
     fi
   elif [[ $HOSTNAME == "kabuki" ]]; then
     local load=$(sudo intel_gpu_top -J -s 100 -n 2 -o - | grep busy | head -n 1 | awk '{print int($2)}')
-
     printf '{"load":%s}\n' "${load:-0}"
   fi
 }
