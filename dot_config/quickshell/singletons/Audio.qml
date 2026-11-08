@@ -32,14 +32,15 @@ Singleton {
     Process {
         id: getSinks
 
-        command: ["pactl", "-f", "json", "list", "sinks"]
+        // Filter for not available sinks
+        command: ["sh", "-c", `pactl -f json list sinks | jq '.[] | select(.ports[0].availability != not available")'`]
 
         stdout: StdioCollector {
+
             onStreamFinished: {
-                const devices = JSON.parse(this.text);
+                const devices = JSON.parse(this.text.trim());
                 root.sinks = devices;
 
-                const device = devices.find(item => item.name === root.defaultSink);
                 if (device) {
                     root.sinkVolume = parseInt(device.volume?.["front-left"]?.value_percent) || 0;
                     root.sinkMuted = device.mute;
@@ -123,7 +124,7 @@ Singleton {
     Process {
         id: getSources
 
-        command: ["pactl", "-f", "json", "list", "sources"]
+        command: ["sh", "-c", `pactl -f json list sources | jq '[.[] | select(.ports[0].availability != not available")]'`]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -251,9 +252,9 @@ Singleton {
         id: initialFetching
 
         running: false
-        repeat: root.defaultSink === "" || root.defaultSource === ""
+        repeat: root.sinks.length < 1 || root.sources.length < 1
 
-        interval: 3000
+        interval: 1500
 
         onTriggered: {
             getDefaultSink.running = true;
