@@ -46,7 +46,7 @@ Popup {
         width: 96
         height: 32
 
-        active: Power.profile == profile.name
+        active: Power.profile === profile.name
         text: profile.display
 
         onClick: () => Power.setProfile(profile.name)

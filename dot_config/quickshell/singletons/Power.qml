@@ -13,16 +13,14 @@ Singleton {
         Globals.logDebug("Changing power profile to: " + profile);
         setProfile.command = ["tlpctl", "set", profile];
         setProfile.running = true;
+
+        // This is done without checking the real profile
+        // Cuz checking costs so much time
+        root.profile = profile;
     }
 
     Process {
         id: setProfile
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.getProfile();
-            }
-        }
     }
 
     function getProfile() {
@@ -37,7 +35,7 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                profile = this.text.trim();
+                root.profile = this.text.trim();
             }
         }
     }
