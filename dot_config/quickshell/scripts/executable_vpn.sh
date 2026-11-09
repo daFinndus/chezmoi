@@ -13,7 +13,7 @@ fetch_vpn() {
 
       # Filter for VPNs
       case "$type" in
-      vpn | wireguard | tailscale) add_profile "$name" "$type" "$active" ;;
+      vpn | tun | wireguard | tailscale) add_profile "$name" "$type" "$active" ;;
       *) continue ;;
       esac
     fi
