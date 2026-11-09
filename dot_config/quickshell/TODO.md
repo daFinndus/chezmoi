@@ -1,5 +1,10 @@
 # TODO
 
+## Important
+
+- Work through Audio singleton, everything's done so inefficient
+- Let widgets only update themselves when opened or visible from closed
+
 ## Portability and capability detection
 
 - Detect commands and services (`pactl`, `playerctl`, `iwctl`, `bluetoothctl`, `acpi`, `inotifywait`, `jq`, and compositor tools).

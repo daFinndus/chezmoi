@@ -21,18 +21,18 @@ Popup {
             spacing: Themes.paddingSize
 
             ProfileButton {
-                profileTitle: "Power Saver"
-                profileIndex: 0
+                display: "Power Saver"
+                name: "power-saver"
             }
 
             ProfileButton {
-                profileTitle: "Balanced"
-                profileIndex: 1
+                display: "Balanced"
+                name: "balanced"
             }
 
             ProfileButton {
-                profileTitle: "Performance"
-                profileIndex: 2
+                display: "Performance"
+                name: "performance"
             }
         }
     }
@@ -40,15 +40,15 @@ Popup {
     component ProfileButton: Button {
         id: profile
 
-        required property string profileTitle
-        required property int profileIndex
+        required property string display
+        required property string name
 
         width: 96
         height: 32
 
-        active: Power.powerProfileIndex === profile.profileIndex
-        text: profile.profileTitle
+        active: Power.profile == profile.name
+        text: profile.display
 
-        onClick: () => Power.setProfile(profile.profileIndex)
+        onClick: () => Power.setProfile(profile.name)
     }
 }

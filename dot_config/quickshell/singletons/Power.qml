@@ -2,37 +2,43 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
-import Quickshell.Services.UPower
+import Quickshell.Io
 
 Singleton {
     id: root
 
-    property int powerProfileIndex: PowerProfiles.profile
-    property string powerProfileName: root.getText()
+    property string profile: ""
 
-    onPowerProfileIndexChanged: Globals.logDebug("Profile changed to " + root.powerProfileIndex + "!")
+    function setProfile(profile: string): void {
+        Globals.logDebug("Changing power profile to: " + profile);
+        setProfile.command = ["tlpctl", "set", profile];
+        setProfile.running = true;
+    }
 
-    // Will return the profile as a human-readable string
-    function getText(): string {
-        switch (root.powerProfileIndex) {
-        case 0:
-            return "Power Saver";
-        case 1:
-            return "Balanced";
-        case 2:
-            return "Performance";
-        default:
-            return "Unknown";
+    Process {
+        id: setProfile
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.getProfile();
+            }
         }
     }
 
-    function setProfile(profileIndex: int): void {
-        Globals.logDebug("Changing profile to: " + profileIndex);
-
-        PowerProfiles.profile = profileIndex;
+    function getProfile() {
+        getProfile.running = true;
     }
 
-    function nextProfile() {
-        PowerProfiles.profile = (root.powerProfileIndex + 1) % 3;
+    Process {
+        id: getProfile
+        command: ["tlpctl", "get"]
+
+        running: true
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                profile = this.text.trim();
+            }
+        }
     }
 }

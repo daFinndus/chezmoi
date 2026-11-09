@@ -33,18 +33,12 @@ Singleton {
         id: getSinks
 
         // Filter for not available sinks
-        command: ["sh", "-c", `pactl -f json list sinks | jq '.[] | select(.ports[0].availability != not available")'`]
+        command: ["sh", "-c", `pactl -f json list sinks | jq '[.[] | select(.ports[0].availability != "not available")]'`]
 
         stdout: StdioCollector {
 
             onStreamFinished: {
-                const devices = JSON.parse(this.text.trim());
-                root.sinks = devices;
-
-                if (device) {
-                    root.sinkVolume = parseInt(device.volume?.["front-left"]?.value_percent) || 0;
-                    root.sinkMuted = device.mute;
-                }
+                root.sinks = JSON.parse(this.text.trim());
             }
         }
     }
@@ -91,12 +85,27 @@ Singleton {
             return;
         }
 
-        if (root.sinkMuted) {
+        if (root.sinkMuted && volume >= 0) {
             root.setSinkMute(false);
         }
 
         changeVolume.command = ["pactl", "set-sink-volume", "@DEFAULT_SINK@", `${volume}%`];
         changeVolume.running = true;
+    }
+
+    function getSinkVolume() {
+        getSinkVolume.running = true;
+    }
+
+    Process {
+        id: getSinkVolume
+        command: ["sh", "-c", "pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | tr -d %"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.sinkVolume = this.text.trim();
+            }
+        }
     }
 
     function setSinkMute(mute: bool) {
@@ -124,7 +133,7 @@ Singleton {
     Process {
         id: getSources
 
-        command: ["sh", "-c", `pactl -f json list sources | jq '[.[] | select(.ports[0].availability != not available")]'`]
+        command: ["sh", "-c", `pactl -f json list sources | jq '[.[] | select(.ports[0].availability != "not available")]'`]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -219,6 +228,7 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.refreshVolume();
+                root.getSinkVolume();
             }
         }
     }
@@ -262,6 +272,7 @@ Singleton {
 
             root.refreshSinks();
             root.refreshSources();
+            root.getSinkVolume();
         }
     }
 }
