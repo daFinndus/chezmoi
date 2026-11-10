@@ -36,7 +36,7 @@ apply_system_properties() {
   dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
 
   # Restart potentially necessary services
-  systemctl --user restart xdg-desktop-portal xdg-desktp-portal-hyprland
+  systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
 
   # True is necessary here, because it would basically stop the whole script otherwise
   pkill -HUP xsettingsd || true
