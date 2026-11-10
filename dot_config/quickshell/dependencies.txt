@@ -1,4 +1,7 @@
+hyprlock
+hypridle
 awww
+python-yaml
 quickshell
 qt6-base
 qt6-declarative

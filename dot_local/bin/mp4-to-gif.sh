@@ -5,17 +5,17 @@
 set -euo pipefail
 
 log() {
-	echo -e "[CONVERT] $1"
+  echo -e "[CONVERT] $1"
 }
 
 input="$1"
 
-if [[ -z "$input" ]]; then
-	log "Gotta provide a mp4, dude."
-	exit
+if [[ -z $input ]]; then
+  log "Gotta provide a mp4, dude."
+  exit
 fi
 
-if [[ ! -f "$input" ]]; then
+if [[ ! -f $input ]]; then
   log "File not found: $input"
   exit 1
 fi

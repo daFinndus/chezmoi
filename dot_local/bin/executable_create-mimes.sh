@@ -11,6 +11,9 @@ log() {
 if [[ -z $APP ]]; then
   log "A default has to be specified."
   exit 1
+elif [[ $APP =~ ^[A-Za-z0-9]+\.[A-Za-z0-9]+$ ]]; then
+  log "It seems the application is valid!"
+  echo ""
 fi
 
 MIMES=(
@@ -50,4 +53,5 @@ for MIME in "${MIMES[@]}"; do
   log "$MIME is now associated to $APP"
 done
 
+echo ""
 log "Set defaults to: $APP"

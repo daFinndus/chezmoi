@@ -38,8 +38,9 @@ fetch_information() {
 
 fetch_metadata() {
   metadata="$1"
+  value=$(echo "$data" | grep "$metadata" | cut -d = -f2- | sed 's/^[[:space:]]*//')
 
-  printf $(echo "$data" | grep "$1" | awk '{print $3}')
+  echo "$value"
 }
 
 case "$1" in
