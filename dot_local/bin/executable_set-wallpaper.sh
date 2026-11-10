@@ -23,7 +23,7 @@ change() {
 
   echo "[WALLPAPER] Applying wallpaper: $WALLPAPER_PATH"
   echo "[WALLPAPER] Updating wallpaper..."
-  awww img $WALLPAPER_PATH --transition-type grow --transition-duration 0.5 --transition-fps 60
+  awww img $WALLPAPER_PATH --resize crop --transition-type grow --transition-duration 0.5 --transition-fps 60
 
   echo "[PYWAL] Applying pywal colorscheme..."
   wal -i "$WALLPAPER_PATH"
