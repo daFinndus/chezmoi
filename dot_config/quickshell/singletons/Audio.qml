@@ -7,28 +7,18 @@ import Quickshell.Io
 Singleton {
     id: root
 
+    // ==================== Sink / Output ====================
+    //
+    //
+    //
+    // Here starts all the sink based stuff, also the application fetching
+
     // Sink based properties
     property var sinks: []
     property int sinkVolume: 0
     property bool sinkMuted: false
     property string defaultSink: ""
 
-    // Source based data
-    property var sources: []
-    property int sourceVolume: 0
-    property bool sourceMuted: false
-    property string defaultSource: ""
-
-    function refreshVolume(): void {
-        root.refreshSinks();
-        root.refreshSources();
-    }
-
-    // ==================== Sink / Output ====================
-    //
-    //
-    //
-    // Here starts all the sink based stuff, also the application fetching
     Process {
         id: getSinks
 
@@ -39,6 +29,19 @@ Singleton {
 
             onStreamFinished: {
                 root.sinks = JSON.parse(this.text.trim());
+                root.getSinkVolume();
+            }
+        }
+    }
+
+    Process {
+        id: getDefaultSink
+
+        command: ["pactl", "get-default-sink"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.defaultSink = this.text.trim();
             }
         }
     }
@@ -58,37 +61,12 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 getDefaultSink.running = true;
-
-                root.refreshSinks();
-            }
-        }
-    }
-
-    Process {
-        id: getDefaultSink
-
-        command: ["pactl", "get-default-sink"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.defaultSink = this.text.trim();
             }
         }
     }
 
     function setSinkVolume(volume: int): void {
         Globals.logEverything("Setting sink volume to: " + volume);
-
-        if (volume <= 0) {
-            root.setSinkMute(true);
-            root.sinkVolume = 0;
-            return;
-        }
-
-        if (root.sinkMuted && volume >= 0) {
-            root.setSinkMute(false);
-        }
-
         changeVolume.command = ["pactl", "set-sink-volume", "@DEFAULT_SINK@", `${volume}%`];
         changeVolume.running = true;
     }
@@ -110,7 +88,6 @@ Singleton {
 
     function setSinkMute(mute: bool) {
         Globals.logEverything("Setting sink mute to: " + mute);
-
         setSinkMuteState.command = ["pactl", "set-sink-mute", "@DEFAULT_SINK@", `${mute}`];
         setSinkMuteState.running = true;
     }
@@ -130,6 +107,13 @@ Singleton {
     //
     //
     // Here starts all the source based stuff
+
+    // Source based data
+    property var sources: []
+    property int sourceVolume: 0
+    property bool sourceMuted: false
+    property string defaultSource: ""
+
     Process {
         id: getSources
 
@@ -138,14 +122,20 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 // Filter out monitor sources
-                const devices = JSON.parse(this.text);
-                root.sources = devices.filter(source => !source.name.endsWith(".monitor"));
+                root.sources = JSON.parse(this.text).filter(source => !source.name.endsWith(".monitor"));
+                root.getSourceVolume();
+            }
+        }
+    }
 
-                const device = devices.find(item => item.name === root.defaultSource);
-                if (device) {
-                    root.sourceVolume = parseInt(device.volume?.["front-left"]?.value_percent) || 0;
-                    root.sourceMuted = device.mute;
-                }
+    Process {
+        id: getDefaultSource
+
+        command: ["pactl", "get-default-source"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.defaultSource = this.text.trim();
             }
         }
     }
@@ -165,44 +155,33 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 getDefaultSource.running = true;
-
-                root.refreshSources();
-            }
-        }
-    }
-
-    Process {
-        id: getDefaultSource
-
-        command: ["pactl", "get-default-source"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.defaultSource = this.text.trim();
             }
         }
     }
 
     function setSourceVolume(volume: int): void {
         Globals.logEverything("Setting source volume to: " + volume);
-
-        if (volume <= 0) {
-            root.setSourceMute(true);
-            root.sourceVolume = 0;
-            return;
-        }
-
-        if (root.sourceMuted) {
-            root.setSourceMute(false);
-        }
-
         changeVolume.command = ["pactl", "set-source-volume", "@DEFAULT_SOURCE@", `${volume}%`];
         changeVolume.running = true;
     }
 
+    function getSourceVolume() {
+        getSourceVolume.running = true;
+    }
+
+    Process {
+        id: getSourceVolume
+        command: ["sh", "-c", "pactl get-source-volume @DEFAULT_SOURCE@ | awk '{print $5}' | tr -d %"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.sourceVolume = this.text.trim();
+            }
+        }
+    }
+
     function setSourceMute(mute: bool) {
         Globals.logEverything("Setting source mute to: " + mute);
-
         setSourceMuteState.command = ["pactl", "set-source-mute", "@DEFAULT_SOURCE@", `${mute}`];
         setSourceMuteState.running = true;
     }
@@ -227,8 +206,14 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                root.refreshVolume();
-                root.getSinkVolume();
+                console.log(changeVolume.command[1]);
+                if (changeVolume.command[1].includes("set-sink-volume")) {
+                    root.getSinkVolume();
+                } else {
+                    root.getSourceVolume();
+
+                    Globals.logDebug("Source is muted? " + root.sourceMuted + ". And has volume: " + root.sourceVolume);
+                }
             }
         }
     }
@@ -272,7 +257,6 @@ Singleton {
 
             root.refreshSinks();
             root.refreshSources();
-            root.getSinkVolume();
         }
     }
 }

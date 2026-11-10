@@ -8,7 +8,7 @@ Widget {
     id: root
 
     text: Themes.iconMode ? Battery.getIcon() : Battery.getText()
-    visible: Battery.battery.length > 0
+    visible: Battery.batteryDetected
 
     MouseArea {
         id: mouseArea

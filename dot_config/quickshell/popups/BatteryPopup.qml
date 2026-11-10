@@ -14,36 +14,36 @@ Popup {
 
         KeyValueRow {
             label: "Battery"
-            value: Battery.battery[0].charge + "%"
+            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].charge + "%" : ""
         }
 
         KeyValueRow {
             label: "Status"
-            value: Battery.battery[0].status
+            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].status : ""
         }
 
         Separator {}
 
         KeyValueRow {
             label: "Cyclecount"
-            value: Battery.battery[0].cycle_count
+            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].cycle_count : ""
         }
 
         KeyValueRow {
             label: "Capacity"
-            value: Battery.battery[0].capacity + "%"
+            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].capacity + "%" : ""
         }
 
         Separator {}
 
         KeyValueRow {
             label: "Start treshold"
-            value: Battery.battery[0].start_thresh + "%"
+            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].start_thresh + "%" : ""
         }
 
         KeyValueRow {
             label: "End treshold"
-            value: Battery.battery[0].end_thresh + "%"
+            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].end_thresh + "%" : ""
         }
 
         Separator {}
@@ -51,7 +51,7 @@ Popup {
         KeyValueRow {
             label: "Available batteries"
             description: "Total amount"
-            value: Battery.battery.length
+            value: Battery.batteryDetected ? Battery.battery.length : ""
         }
     }
 }
