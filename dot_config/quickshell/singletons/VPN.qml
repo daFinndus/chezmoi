@@ -10,11 +10,6 @@ Singleton {
     property var vpnConnections: []
 
     readonly property string icon: "\udb85\uddfc"
-    readonly property string text: {
-        if (root.vpnConnections.length > 0) {
-            return root.vpnConnections[index].type;
-        }
-    }
 
     function fetchVPN(): void {
         Globals.logEverything("Fetching for VPN state...");

@@ -6,6 +6,12 @@ import qs.components
 Popup {
     id: root
 
+    onVisibleChanged: if (root.visible) {
+        Battery.fetchInterval = 3000;
+    } else {
+        Battery.fetchInterval = 1000 * 30;
+    }
+
     contentComponent: Column {
         id: rootColumn
 
@@ -14,36 +20,36 @@ Popup {
 
         KeyValueRow {
             label: "Battery"
-            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].charge + "%" : ""
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].charge + "%" : ""
         }
 
         KeyValueRow {
             label: "Status"
-            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].status : ""
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].status : ""
         }
 
         Separator {}
 
         KeyValueRow {
             label: "Cyclecount"
-            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].cycle_count : ""
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].cycle_count : ""
         }
 
         KeyValueRow {
             label: "Capacity"
-            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].capacity + "%" : ""
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].capacity + "%" : ""
         }
 
         Separator {}
 
         KeyValueRow {
             label: "Start treshold"
-            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].start_thresh + "%" : ""
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].start_thresh + "%" : ""
         }
 
         KeyValueRow {
             label: "End treshold"
-            value: Battery.batteryDetected ? Battery.battery[root.selectedBattery].end_thresh + "%" : ""
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].end_thresh + "%" : ""
         }
 
         Separator {}
@@ -51,7 +57,7 @@ Popup {
         KeyValueRow {
             label: "Available batteries"
             description: "Total amount"
-            value: Battery.batteryDetected ? Battery.battery.length : ""
+            value: Battery.batteryAvailable ? Battery.battery.length : ""
         }
     }
 }

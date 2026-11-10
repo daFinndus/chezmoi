@@ -10,20 +10,29 @@ Singleton {
     // The available check is for widgets
     // The hasBattery is for keep checking for battery or nah
     property var battery: []
+    onBatteryChanged: {
+        if (root.battery.length > 0) {
+            root.batteryAvailable = true;
+        } else {
+            root.batteryAvailable = false;
+        }
+    }
 
     property int selectedBattery: 0
-    property bool batteryAvailable: true
+    property bool batteryAvailable: false
 
     readonly property var batteryIcons: ["\udb80\udc8e", "\udb80\udc7a", "\udb80\udc7b", "\udb80\udc7c", "\udb80\udc7d", "\udb80\udc7e", "\udb80\udc7f", "\udb80\udc80", "\udb80\udc81", "\udb80\udc82", "\udb80\udc79"]
     readonly property string icon: {
-        if (!root.current) {
+        if (root.battery.length <= 0) {
             return "";
-        } else if (root.current.status === "Charging") {
+        } else if (root.battery[root.selectedBattery].status === "Charging") {
             return "\udb80\udc84";
         } else {
-            return root.batteryIcons[Math.min(10, Math.floor(root.current.charge / 10))];
+            return root.batteryIcons[Math.min(10, Math.floor(root.battery[root.selectedBattery].charge / 10))];
         }
     }
+
+    readonly property string text: `Battery at ${root.battery[root.selectedBattery].charge}%`
 
     function refreshBattery(): void {
         getData.running = true;
@@ -36,12 +45,8 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                if (this.text.length !== 0) {
-                    root.battery = JSON.parse(this.text.trim());
-                    Globals.logDebug("Battery length is now: " + root.battery.length);
-                } else {
-                    root.batteryAvailable = false;
-                }
+                root.battery = JSON.parse(this.text.trim());
+                Globals.logDebug("Battery length is now: " + root.battery.length);
             }
         }
     }
@@ -58,13 +63,15 @@ Singleton {
         }
     }
 
+    property int fetchInterval: 1000 * 30
+
     Timer {
         id: refreshBattery
 
         running: root.batteryAvailable
         repeat: true
 
-        interval: 1000 * 30
+        interval: root.fetchInterval
 
         onTriggered: root.refreshBattery()
     }
