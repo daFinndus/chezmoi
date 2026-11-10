@@ -10,7 +10,7 @@ Widget {
     property int systemIndex: 0
     onSystemIndexChanged: root.text = Wlogout.getText(root.systemIndex)
 
-    text: Themes.iconMode ? "\uf08b" : "System"
+    text: Wlogout.icon
 
     Keys.enabled: !Themes.iconMode
     Keys.onPressed: event => {

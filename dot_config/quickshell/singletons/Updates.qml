@@ -12,6 +12,9 @@ Singleton {
     property int updateCount: 0
     property bool updatesLoaded: false
 
+    readonly property string icon: "\udb80\udfd4"
+    readonly property string text: `${root.updateCount} Updates`
+
     function refreshUpdates(): void {
         checkUpdates.running = true;
     }

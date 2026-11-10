@@ -13,6 +13,8 @@ Singleton {
     property int deviceIndex: 0
     property var devices: []
 
+    readonly property string icon: "\udb80\udcaf"
+
     // This is only used in non-icon themes
     function getText(): string {
         if (root.devices.length === 0) {

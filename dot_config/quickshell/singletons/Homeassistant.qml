@@ -44,10 +44,12 @@ Singleton {
         fetchStates.running = true;
     }
 
+    property bool makeUpdates: false
+
     Timer {
         interval: 5000
 
-        running: true
+        running: root.makeUpdates
         repeat: true
 
         onTriggered: root.updateStates()

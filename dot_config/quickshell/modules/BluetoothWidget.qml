@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Themes.iconMode ? "\udb80\udcaf" : (mouseArea.containsMouse ? Bluetooth.getText() : "Bluetooth: " + (Bluetooth.adapterEnabled ? "Active" : "Disabled"))
+    text: Bluetooth.icon
 
     MouseArea {
         id: mouseArea

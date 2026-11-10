@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Themes.iconMode ? "\udb85\uddfc" : VPN.getText(index)
+    text: VPN.icon
 
     opacity: 1
     visible: root.opacity > 0

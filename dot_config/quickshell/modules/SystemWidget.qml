@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: "\udb82\udcc7"
+    text: System.icon
 
     MouseArea {
         id: mouseArea

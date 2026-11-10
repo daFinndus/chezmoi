@@ -10,6 +10,8 @@ Singleton {
     property var wlogoutSelected: root.systemFunctions[root.wlogoutIndex]
     property int wlogoutIndex: 0
 
+    readonly property string icon: "\uf08b"
+
     function startSystemFunction(command: string): void {
         runCommand.command = ["sh", "-c", `${command}`];
         runCommand.running = true;

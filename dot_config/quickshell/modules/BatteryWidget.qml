@@ -7,8 +7,8 @@ import qs.components
 Widget {
     id: root
 
-    text: Themes.iconMode ? Battery.getIcon() : Battery.getText()
-    visible: Battery.batteryDetected
+    text: Battery.icon
+    visible: Battery.batteryAvailable
 
     MouseArea {
         id: mouseArea
@@ -18,33 +18,7 @@ Widget {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: {
-            if (Themes.iconMode) {
-                Globals.togglePopup(popup);
-            } else {
-                if (Battery.loading) {
-                    if (root.text == Battery.getEstimate()) {
-                        root.text = Battery.battery + " at: " + Battery.percentage + "%";
-                    } else {
-                        root.text = Battery.getEstimate();
-                    }
-                }
-            }
-        }
-
-        onHoveredChanged: {
-            if (!Themes.iconMode) {
-                if (mouseArea.containsMouse) {
-                    if (Battery.loading) {
-                        root.text = Battery.battery + " at: " + Battery.percentage + "%";
-                    } else {
-                        root.text = Battery.getEstimate();
-                    }
-                } else {
-                    root.text = Battery.getText();
-                }
-            }
-        }
+        onClicked: Themes.iconMode ? Globals.togglePopup(popup) : null
     }
 
     BatteryPopup {

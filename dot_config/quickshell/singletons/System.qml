@@ -11,6 +11,7 @@ Singleton {
     property string hostname: ""
 
     property string uptime: ""
+    property string icon: "\udb82\udcc7"
 
     Process {
         id: getUsername

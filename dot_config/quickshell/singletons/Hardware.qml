@@ -70,12 +70,15 @@ Singleton {
 
     function updateHardware(): void {
         fetchHardware.running = true;
+        Globals.logDebug("Making hardware update!");
     }
 
-    Timer {
-        interval: 5000
+    property bool makeUpdates: false
 
-        running: true
+    Timer {
+        interval: 1500
+
+        running: root.makeUpdates
         repeat: true
 
         onTriggered: root.updateHardware()

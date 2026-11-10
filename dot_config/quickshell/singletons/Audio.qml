@@ -7,6 +7,8 @@ import Quickshell.Io
 Singleton {
     id: root
 
+    readonly property string icon: "\uefcf"
+
     // ==================== Sink / Output ====================
     //
     //
@@ -241,13 +243,12 @@ Singleton {
         initialFetching.start();
     }
 
-    // I think this might be necessary
-    // PipeWire might just need some time to initiate
+    // Fetch as long as neither a sink or a source is fetched
     Timer {
         id: initialFetching
 
         running: false
-        repeat: root.sinks.length < 1 || root.sources.length < 1
+        repeat: root.sinks.length < 1 && root.sources.length < 1
 
         interval: 1500
 

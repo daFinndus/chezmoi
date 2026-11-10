@@ -8,19 +8,19 @@ Singleton {
     id: root
 
     property bool inhibited: false
-
-    // Override icon is for getting text even though iconMode is enabled
-    function getText(overrideIconMode = false): string {
+    readonly property string icon: {
         if (root.inhibited) {
-            return !overrideIconMode && Themes.iconMode ? "\udb80\ude08" : "Inhibitor: Active";
+            return "\udb80\ude08";
         } else {
-            return !overrideIconMode && Themes.iconMode ? "\udb80\ude09" : "Inhibitor: Inactive";
+            return "\udb80\ude09";
         }
     }
 
-    property string who: "quickshell"
-    property string what: "idle"
-    property string why: "Quickshell inhibitor widget for ignoring hypridle"
+    readonly property string text: `Inhibitor is: ${root.inhibited}`
+
+    readonly property string who: "quickshell"
+    readonly property string what: "idle"
+    readonly property string why: "Quickshell inhibitor widget for ignoring hypridle"
 
     function getInhibitProcess(): void {
         getInhibitProcess.running = true;

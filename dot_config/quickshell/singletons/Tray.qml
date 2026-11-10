@@ -28,9 +28,9 @@ Singleton {
         case "teams for linux_status_icon_1":
             return "\udb80\udebb";
         case "alarm-clock":
-	    return "\udb80\udc20";
-	case "easyeffects":
-	    return "\uf001";
+            return "\udb80\udc20";
+        case "easyeffects":
+            return "\uf001";
         default:
             return id.toLowerCase();
         }

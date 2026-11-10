@@ -30,6 +30,8 @@ Singleton {
 
     property var wirelessNetworks: []
 
+    readonly property string icon: "\udb80\udc02"
+
     // =================== General network ====================
     //
     //

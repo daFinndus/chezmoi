@@ -9,9 +9,9 @@ Singleton {
 
     property var vpnConnections: []
 
-    // Check if anything's running, return if so, otherwise nothing
-    function getText(index: int): string {
-        if (root.vpnConnections != undefined && root.vpnConnections.length > 0) {
+    readonly property string icon: "\udb85\uddfc"
+    readonly property string text: {
+        if (root.vpnConnections.length > 0) {
             return root.vpnConnections[index].type;
         }
     }

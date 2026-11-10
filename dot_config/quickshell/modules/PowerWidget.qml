@@ -7,15 +7,30 @@ import qs.components
 Widget {
     id: root
 
-    text: Themes.iconMode ? "\ue7d5" : "Profile: " + Power.getText()
+    text: Power.icon
 
     MouseArea {
+        id: mouseArea
+
         anchors.fill: parent
 
         hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
+        onHoveredChanged: delayTooltip.start()
 
-        onClicked: Themes.iconMode ? Globals.togglePopup(popup) : Power.nextProfile()
+        cursorShape: Qt.PointingHandCursor
+        onClicked: Globals.togglePopup(popup)
+    }
+
+    Tooltip {
+        id: tooltip
+        target: root
+        text: Power.text
+    }
+
+    Timer {
+        id: delayTooltip
+        interval: 150
+        onTriggered: tooltip.available = mouseArea.containsMouse
     }
 
     PowerPopup {

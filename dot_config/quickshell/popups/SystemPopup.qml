@@ -7,6 +7,8 @@ import qs.components
 Popup {
     id: root
 
+    onVisibleChanged: Hardware.makeUpdates = root.visible
+
     contentComponent: Column {
         id: rootColumn
 

@@ -9,6 +9,9 @@ Singleton {
 
     property string profile: ""
 
+    readonly property string icon: "\ue7d5"
+    readonly property string text: `Active profile: ${root.profile}`
+
     function setProfile(profile: string): void {
         Globals.logDebug("Changing power profile to: " + profile);
         setProfile.command = ["tlpctl", "set", profile];

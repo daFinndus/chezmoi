@@ -6,7 +6,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Inhibitor.getText()
+    text: Inhibitor.icon
 
     MouseArea {
         id: mouseArea
@@ -14,19 +14,16 @@ Widget {
         anchors.fill: parent
 
         hoverEnabled: true
-        onHoveredChanged: if (Themes.iconMode) {
-            delayTooltip.start();
-        }
+        onHoveredChanged: delayTooltip.start()
 
         cursorShape: Qt.PointingHandCursor
-
         onClicked: Inhibitor.inhibited = !Inhibitor.inhibited
     }
 
     Tooltip {
         id: tooltip
         target: root
-        text: Inhibitor.getText(true)
+        text: Inhibitor.text
     }
 
     Timer {
