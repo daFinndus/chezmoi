@@ -61,7 +61,6 @@ PopupWindow {
 
             font.family: Themes.fontFamily
             font.pixelSize: Themes.fontSize * 0.8
-            font.capitalization: Font.Capitalize
         }
     }
 }
