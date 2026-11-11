@@ -32,7 +32,7 @@ Singleton {
         }
     }
 
-    readonly property string text: `Battery at ${root.battery[root.selectedBattery].charge}%`
+    readonly property string text: root.batteryAvailable ? `Battery at ${root.battery[root.selectedBattery].charge}%` : ""
 
     function refreshBattery(): void {
         getData.running = true;
@@ -45,8 +45,10 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                root.battery = JSON.parse(this.text.trim());
-                Globals.logDebug("Battery length is now: " + root.battery.length);
+                if (this.text != "") {
+                    root.battery = JSON.parse(this.text.trim());
+                    Globals.logDebug("Battery length is now: " + root.battery.length);
+                }
             }
         }
     }

@@ -208,13 +208,10 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                console.log(changeVolume.command[1]);
                 if (changeVolume.command[1].includes("set-sink-volume")) {
                     root.getSinkVolume();
                 } else {
                     root.getSourceVolume();
-
-                    Globals.logDebug("Source is muted? " + root.sourceMuted + ". And has volume: " + root.sourceVolume);
                 }
             }
         }
