@@ -9,7 +9,7 @@ import qs.singletons
 Item {
     id: root
 
-    required property Component contentComponent
+    property Component contentComponent
     required property string icon
 
     implicitWidth: widget.width
@@ -22,6 +22,8 @@ Item {
         text: root.icon
 
         MouseArea {
+            enabled: root.contentComponent != undefined
+
             anchors.fill: parent
 
             cursorShape: Qt.PointingHandCursor
@@ -62,6 +64,8 @@ Item {
             id: rect
 
             anchors.fill: parent
+
+            visible: root.contentComponent != undefined
 
             color: "transparent"
 

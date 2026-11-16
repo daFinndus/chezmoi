@@ -28,7 +28,6 @@ Singleton {
         command: ["sh", "-c", `pactl -f json list sinks | jq '[.[] | select(.ports[0].availability != "not available")]'`]
 
         stdout: StdioCollector {
-
             onStreamFinished: {
                 root.sinks = JSON.parse(this.text.trim());
                 root.getSinkVolume();

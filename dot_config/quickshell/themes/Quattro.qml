@@ -71,6 +71,8 @@ Scope {
 
                 PowerPopup {}
 
+                DunstPopup {}
+
                 InhibitorWidget {
                     background: "transparent"
                 }
