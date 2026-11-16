@@ -29,9 +29,7 @@ PanelWindow {
     color: "transparent"
 
     visible: Wallpapers.menuVisible
-    onVisibleChanged: if (!root.visible) {
-        root.currentIndex = Wallpapers.activeWallpaperIndex;
-    }
+    onVisibleChanged: root.currentIndex = Wallpapers.activeWallpaperIndex
 
     implicitWidth: root.screen.width
     implicitHeight: root.screen.height
