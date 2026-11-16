@@ -20,10 +20,14 @@ change() {
   echo "[PYWAL] Applying pywal colorscheme..."
   wal -i "$WALLPAPER_PATH"
 
-  echo "[DUNST] Restarting dunst, killing and disowning..."
-  pkill dunst
-  dunst &
-  disown
+  if [[ -n $(pgrep dunst) ]]; then
+    echo "[DUNST] Restarting dunst, killing and disowning..."
+    pkill dunst
+    dunst &
+    disown
+  else
+    log "dunst is already down, not restarting..."
+  fi
 }
 
 change "$1"
