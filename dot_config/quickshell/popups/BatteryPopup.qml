@@ -3,88 +3,67 @@ import QtQuick
 import qs.singletons
 import qs.components
 
-Item {
-    id: root
+Popup {
+    id: popup
 
-    implicitWidth: widget.width
-    implicitHeight: widget.height
+    icon: Battery.icon
 
     visible: Battery.batteryAvailable
+    onVisibleChanged: popup.visible ? Battery.fetchInterval = 3000 : Battery.fetchInterval = 1000 * 30
 
-    Widget {
-        id: widget
+    contentComponent: Column {
+        id: rootColumn
 
-        background: "transparent"
-        text: Battery.icon
+        width: 172
+        spacing: Themes.paddingSize
 
-        MouseArea {
-            anchors.fill: parent
-
-            cursorShape: Qt.PointingHandCursor
-            onClicked: Globals.togglePopup(popup)
+        KeyValueRow {
+            label: "Battery"
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].charge + "%" : ""
         }
-    }
 
-    Popup {
-        id: popup
-        target: root
+        KeyValueRow {
+            label: "Status"
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].status : ""
+        }
 
-        onVisibleChanged: popup.visible ? Battery.fetchInterval = 3000 : Battery.fetchInterval = 1000 * 30
+        Separator {}
 
-        contentComponent: Column {
-            id: rootColumn
+        KeyValueRow {
+            label: "Power draw"
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].power_draw + " mW" : ""
+        }
 
-            width: 172
-            spacing: Themes.paddingSize
+        Separator {}
 
-            KeyValueRow {
-                label: "Battery"
-                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].charge + "%" : ""
-            }
+        KeyValueRow {
+            label: "Cyclecount"
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].cycle_count : ""
+        }
 
-            KeyValueRow {
-                label: "Status"
-                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].status : ""
-            }
+        KeyValueRow {
+            label: "Capacity"
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].capacity + "%" : ""
+        }
 
-            Separator {}
+        Separator {}
 
-            KeyValueRow {
-                label: "Power draw"
-                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].power_draw + " mW" : ""
-            }
+        KeyValueRow {
+            label: "Start treshold"
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].start_thresh + "%" : ""
+        }
 
-            Separator {}
+        KeyValueRow {
+            label: "End treshold"
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].end_thresh + "%" : ""
+        }
 
-            KeyValueRow {
-                label: "Cyclecount"
-                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].cycle_count : ""
-            }
+        Separator {}
 
-            KeyValueRow {
-                label: "Capacity"
-                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].capacity + "%" : ""
-            }
-
-            Separator {}
-
-            KeyValueRow {
-                label: "Start treshold"
-                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].start_thresh + "%" : ""
-            }
-
-            KeyValueRow {
-                label: "End treshold"
-                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].end_thresh + "%" : ""
-            }
-
-            Separator {}
-
-            KeyValueRow {
-                label: "Available batteries"
-                description: "Total amount"
-                value: Battery.batteryAvailable ? Battery.battery.length : ""
-            }
+        KeyValueRow {
+            label: "Available batteries"
+            description: "Total amount"
+            value: Battery.batteryAvailable ? Battery.battery.length : ""
         }
     }
 }

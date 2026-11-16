@@ -6,138 +6,118 @@ import Quickshell.Wayland
 import qs.singletons
 import qs.components
 
-Item {
-    id: root
+Popup {
+    id: popup
 
-    implicitWidth: widget.width
-    implicitHeight: widget.height
+    icon: Audio.icon
 
-    Widget {
-        id: widget
+    contentComponent: Column {
+        id: rootColumn
 
-        background: "transparent"
-        text: Audio.icon
+        width: 256
+        spacing: Themes.paddingSize
 
-        MouseArea {
-            anchors.fill: parent
-
-            cursorShape: Qt.PointingHandCursor
-            onClicked: Globals.togglePopup(popup)
-        }
-    }
-
-    Popup {
-        id: popup
-        target: root
-
-        contentComponent: Column {
-            id: rootColumn
-
-            width: 256
+        Row {
+            anchors.horizontalCenter: parent.horizontalCenter
             spacing: Themes.paddingSize
 
-            Row {
-                anchors.horizontalCenter: parent.horizontalCenter
-                spacing: Themes.paddingSize
+            Button {
+                width: 32
+                height: 32
 
-                Button {
-                    width: 32
-                    height: 32
+                textSize: 20
 
-                    textSize: 20
-
-                    text: "\udb81\udcae"
-                    onClick: "playerctl previous"
-                }
-
-                Button {
-                    width: 32
-                    height: 32
-
-                    textSize: 20
-
-                    text: "\udb81\udc0e"
-                    onClick: "playerctl play-pause"
-                }
-
-                Button {
-                    width: 32
-                    height: 32
-
-                    textSize: 20
-
-                    text: "\udb81\udcad"
-                    onClick: "playerctl next"
-                }
+                text: "\udb81\udcae"
+                onClick: "playerctl previous"
             }
 
-            Column {
-                visible: Audio.sinks.length > 0
+            Button {
+                width: 32
+                height: 32
 
-                width: rootColumn.width
-                spacing: Themes.paddingSize
+                textSize: 20
 
-                Separator {}
-
-                SliderBlock {
-                    title: "Output"
-                    value: Audio.sinkVolume
-                    onMoved: par => Audio.setSinkVolume(par)
-                }
-
-                Separator {
-                    shade: "transparent"
-                    height: 4
-                }
-
-                Repeater {
-                    model: Audio.sinks
-                    delegate: Device {
-                        required property var modelData
-
-                        identifier: modelData.name
-                        type: "sink"
-
-                        title: modelData.properties["alsa.card_name"]
-                        description: modelData.properties["alsa.name"]
-
-                        state: modelData.state
-                    }
-                }
+                text: "\udb81\udc0e"
+                onClick: "playerctl play-pause"
             }
 
-            Column {
-                visible: Audio.sources.length > 0
+            Button {
+                width: 32
+                height: 32
 
-                width: rootColumn.width
-                spacing: Themes.paddingSize
+                textSize: 20
 
-                Separator {}
+                text: "\udb81\udcad"
+                onClick: "playerctl next"
+            }
+        }
 
-                SliderBlock {
-                    title: "Input"
-                    value: Audio.sourceVolume
-                    onMoved: par => Audio.setSourceVolume(par)
+        Column {
+            visible: Audio.sinks.length > 0
+
+            width: rootColumn.width
+            spacing: Themes.paddingSize
+
+            Separator {}
+
+            SliderBlock {
+                title: "Output"
+                value: Audio.sinkVolume
+                onMoved: par => Audio.setSinkVolume(par)
+            }
+
+            Separator {
+                shade: "transparent"
+                height: 4
+            }
+
+            Repeater {
+                model: Audio.sinks
+                delegate: Device {
+                    required property var modelData
+
+                    identifier: modelData.name
+                    type: "sink"
+
+                    title: modelData.properties["alsa.card_name"]
+                    description: modelData.properties["alsa.name"]
+
+                    state: modelData.state
                 }
+            }
+        }
 
-                Separator {
-                    shade: "transparent"
-                    height: 4
-                }
+        Column {
+            visible: Audio.sources.length > 0
 
-                Repeater {
-                    model: Audio.sources
-                    delegate: Device {
-                        required property var modelData
+            width: rootColumn.width
+            spacing: Themes.paddingSize
 
-                        identifier: modelData.name
-                        type: "source"
+            Separator {}
 
-                        title: modelData.properties["alsa.card_name"]
-                        description: modelData.properties["alsa.name"]
+            SliderBlock {
+                title: "Input"
+                value: Audio.sourceVolume
+                onMoved: par => Audio.setSourceVolume(par)
+            }
 
-                        state: modelData.state
-                    }
+            Separator {
+                shade: "transparent"
+                height: 4
+            }
+
+            Repeater {
+                model: Audio.sources
+                delegate: Device {
+                    required property var modelData
+
+                    identifier: modelData.name
+                    type: "source"
+
+                    title: modelData.properties["alsa.card_name"]
+                    description: modelData.properties["alsa.name"]
+
+                    state: modelData.state
                 }
             }
         }

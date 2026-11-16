@@ -4,67 +4,47 @@ import Quickshell.Io
 import qs.singletons
 import qs.components
 
-Item {
-    id: root
+Popup {
+    id: popup
 
-    implicitWidth: widget.width
-    implicitHeight: widget.height
+    icon: VPN.icon
 
-    Widget {
-        id: widget
+    contentComponent: Rectangle {
+        id: rect
 
-        background: "transparent"
-        text: VPN.icon
+        color: "transparent"
 
-        MouseArea {
-            anchors.fill: parent
+        implicitWidth: column.width
+        implicitHeight: column.height
 
-            cursorShape: Qt.PointingHandCursor
-            onClicked: Globals.togglePopup(popup)
-        }
-    }
+        Column {
+            id: column
 
-    Popup {
-        id: popup
-        target: root
+            spacing: Themes.paddingSize
 
-        contentComponent: Rectangle {
-            id: rect
+            Repeater {
+                model: VPN.vpnConnections
+                delegate: Button {
+                    id: vpnButton
 
-            color: "transparent"
+                    required property var modelData
 
-            implicitWidth: column.width
-            implicitHeight: column.height
+                    active: modelData.active
 
-            Column {
-                id: column
+                    width: 256
+                    height: 32
 
-                spacing: Themes.paddingSize
+                    onClick: () => VPN.toggleVPN(modelData.name)
 
-                Repeater {
-                    model: VPN.vpnConnections
-                    delegate: Button {
-                        id: vpnButton
+                    KeyValueRow {
+                        width: parent.width - Themes.paddingSize * 2
+                        anchors.centerIn: parent
 
-                        required property var modelData
+                        shade: vpnButton.shade
 
-                        active: modelData.active
-
-                        width: 256
-                        height: 32
-
-                        onClick: () => VPN.toggleVPN(modelData.name)
-
-                        KeyValueRow {
-                            width: parent.width - Themes.paddingSize * 2
-                            anchors.centerIn: parent
-
-                            shade: vpnButton.shade
-
-                            label: modelData.name
-                            value: modelData.active ? "up" : "down"
-                            description: modelData.type
-                        }
+                        label: modelData.name
+                        value: modelData.active ? "up" : "down"
+                        description: modelData.type
                     }
                 }
             }

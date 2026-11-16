@@ -4,34 +4,14 @@ import Quickshell.Io
 import qs.singletons
 import qs.components
 
-Item {
-    id: root
+Popup {
+    id: popup
 
-    implicitWidth: widget.width
-    implicitHeight: widget.height
-
-    Widget {
-        id: widget
-
-        background: "transparent"
-        text: Power.icon
-
-        MouseArea {
-            id: mouseArea
-
-            anchors.fill: parent
-
-            hoverEnabled: true
-            onHoveredChanged: delayTooltip.start()
-
-            cursorShape: Qt.PointingHandCursor
-            onClicked: Globals.togglePopup(popup)
-        }
-    }
+    icon: Power.icon
 
     Tooltip {
         id: tooltip
-        target: root
+        target: popup
         text: Power.text
     }
 
@@ -41,37 +21,32 @@ Item {
         onTriggered: tooltip.available = mouseArea.containsMouse
     }
 
-    Popup {
-        id: popup
-        target: root
+    contentComponent: Rectangle {
+        id: rect
 
-        contentComponent: Rectangle {
-            id: rect
+        color: "transparent"
 
-            color: "transparent"
+        implicitWidth: row.width
+        implicitHeight: row.height
 
-            implicitWidth: row.width
-            implicitHeight: row.height
+        Row {
+            id: row
 
-            Row {
-                id: row
+            spacing: Themes.paddingSize
 
-                spacing: Themes.paddingSize
+            ProfileButton {
+                display: "Power Saver"
+                name: "power-saver"
+            }
 
-                ProfileButton {
-                    display: "Power Saver"
-                    name: "power-saver"
-                }
+            ProfileButton {
+                display: "Balanced"
+                name: "balanced"
+            }
 
-                ProfileButton {
-                    display: "Balanced"
-                    name: "balanced"
-                }
-
-                ProfileButton {
-                    display: "Performance"
-                    name: "performance"
-                }
+            ProfileButton {
+                display: "Performance"
+                name: "performance"
             }
         }
     }

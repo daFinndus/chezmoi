@@ -6,55 +6,76 @@ import Quickshell.Hyprland
 
 import qs.singletons
 
-PopupWindow {
+Item {
     id: root
 
-    required property Item target
     required property Component contentComponent
+    required property string icon
 
-    property bool available: false
+    implicitWidth: widget.width
+    implicitHeight: widget.height
 
-    visible: root.available
+    Widget {
+        id: widget
 
-    color: Globals.withAlpha(Themes.background, Themes.transparency)
+        background: "transparent"
+        text: root.icon
 
-    anchor.item: target
+        MouseArea {
+            anchors.fill: parent
 
-    anchor.gravity: Edges.Top
-    anchor.edges: Edges.Bottom
-
-    anchor.rect.x: target.width / 2
-    anchor.rect.y: Themes.barHeight + root.implicitHeight + 5
-
-    implicitWidth: loader.item ? loader.item.width + Themes.paddingSize * 4 : 0
-    implicitHeight: loader.item ? loader.item.height + Themes.paddingSize * 4 : 0
-
-    HyprlandFocusGrab {
-        id: grab
-
-        active: root.available
-        windows: [root]
-
-        onCleared: Globals.closePopup()
+            cursorShape: Qt.PointingHandCursor
+            onClicked: Globals.togglePopup(popup)
+        }
     }
 
-    Rectangle {
-        id: rect
+    PopupWindow {
+        id: popup
 
-        anchors.fill: parent
+        property bool available: false
 
-        color: "transparent"
+        visible: popup.available
 
-        border.color: Themes.shade
-        border.width: 1
+        color: Globals.withAlpha(Themes.background, Themes.transparency)
 
-        radius: Themes.borderRadius
+        anchor.item: widget
 
-        Loader {
-            id: loader
+        anchor.gravity: Edges.Bottom
+        anchor.edges: Edges.Bottom
 
-            anchors.centerIn: parent
-            sourceComponent: root.contentComponent
+        anchor.rect.x: root.width / 2
+        anchor.rect.y: Themes.barHeight + Themes.paddingSize
+
+        implicitWidth: loader.item ? loader.item.width + Themes.paddingSize * 4 : 0
+        implicitHeight: loader.item ? loader.item.height + Themes.paddingSize * 4 : 0
+
+        HyprlandFocusGrab {
+            id: grab
+
+            active: popup.available
+            windows: [popup]
+
+            onCleared: Globals.closePopup()
+        }
+
+        Rectangle {
+            id: rect
+
+            anchors.fill: parent
+
+            color: "transparent"
+
+            border.color: Themes.shade
+            border.width: 1
+
+            radius: Themes.borderRadius
+
+            Loader {
+                id: loader
+
+                anchors.centerIn: parent
+                sourceComponent: root.contentComponent
+            }
         }
     }
 }

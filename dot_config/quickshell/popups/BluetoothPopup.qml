@@ -3,121 +3,101 @@ import QtQuick
 import qs.singletons
 import qs.components
 
-Item {
-    id: root
+Popup {
+    id: popup
 
-    implicitWidth: widget.width
-    implicitHeight: widget.height
+    icon: Bluetooth.icon
 
-    Widget {
-        id: widget
+    Timer {
+        id: getBluetoothDevices
 
-        background: "transparent"
-        text: Bluetooth.icon
+        running: popup.visible
+        repeat: true
 
-        MouseArea {
-            anchors.fill: parent
+        interval: 3000
 
-            cursorShape: Qt.PointingHandCursor
-            onClicked: Globals.togglePopup(popup)
-        }
+        onTriggered: Bluetooth.fetchDevices()
     }
 
-    Popup {
-        id: popup
-        target: root
+    contentComponent: Column {
+        id: rootColumn
 
-        Timer {
-            id: getBluetoothDevices
+        width: 216
 
-            running: root.visible
-            repeat: true
+        Text {
+            font.family: Themes.fontFamily
+            font.pixelSize: Themes.fontSize * 0.7
+            font.capitalization: Font.AllUppercase
 
-            interval: 3000
+            color: Themes.shade
 
-            onTriggered: Bluetooth.fetchDevices()
+            text: Bluetooth.adapters.length > 0 ? "Adapter: " + Bluetooth.adapters[0].address : "No adapter found"
         }
 
-        contentComponent: Column {
-            id: rootColumn
+        Separator {}
 
-            width: 216
+        Text {
+            font.family: Themes.fontFamily
+            font.pixelSize: Themes.fontSize * 0.7
+            font.capitalization: Font.AllUppercase
 
-            Text {
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-                font.capitalization: Font.AllUppercase
+            color: Globals.withAlpha(Themes.shade, 0.25)
 
-                color: Themes.shade
+            topPadding: 2
+            bottomPadding: 2
 
-                text: Bluetooth.adapters.length > 0 ? "Adapter: " + Bluetooth.adapters[0].address : "No adapter found"
-            }
+            text: Bluetooth.adapters.length > 0 ? "Powered: " + Bluetooth.adapters[0].powered : "No idea"
+        }
+
+        Text {
+            font.family: Themes.fontFamily
+            font.pixelSize: Themes.fontSize * 0.7
+            font.capitalization: Font.AllUppercase
+
+            color: Globals.withAlpha(Themes.shade, 0.25)
+
+            topPadding: 2
+            bottomPadding: 2
+
+            text: Bluetooth.adapters.length > 0 ? "Pairable: " + Bluetooth.adapters[0].pairable : "No idea"
+        }
+
+        Text {
+            font.family: Themes.fontFamily
+            font.pixelSize: Themes.fontSize * 0.7
+            font.capitalization: Font.AllUppercase
+
+            color: Globals.withAlpha(Themes.shade, 0.25)
+
+            topPadding: 2
+            bottomPadding: 2
+
+            text: Bluetooth.adapters.length > 0 ? "Discoverable: " + Bluetooth.adapters[0].discoverable : "No idea"
+        }
+
+        Column {
+            width: rootColumn.width
+
+            visible: Bluetooth.devices.filter(device => device.connected).length > 0
 
             Separator {}
 
-            Text {
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-                font.capitalization: Font.AllUppercase
-
-                color: Globals.withAlpha(Themes.shade, 0.25)
-
-                topPadding: 2
-                bottomPadding: 2
-
-                text: Bluetooth.adapters.length > 0 ? "Powered: " + Bluetooth.adapters[0].powered : "No idea"
+            Section {
+                title: "Connected"
+                object: Bluetooth.devices.filter(device => device.connected)
             }
+        }
 
-            Text {
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-                font.capitalization: Font.AllUppercase
+        Column {
+            width: rootColumn.width
 
-                color: Globals.withAlpha(Themes.shade, 0.25)
+            visible: Bluetooth.devices.filter(device => !device.connected).length > 0
 
-                topPadding: 2
-                bottomPadding: 2
+            Separator {}
 
-                text: Bluetooth.adapters.length > 0 ? "Pairable: " + Bluetooth.adapters[0].pairable : "No idea"
-            }
-
-            Text {
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.7
-                font.capitalization: Font.AllUppercase
-
-                color: Globals.withAlpha(Themes.shade, 0.25)
-
-                topPadding: 2
-                bottomPadding: 2
-
-                text: Bluetooth.adapters.length > 0 ? "Discoverable: " + Bluetooth.adapters[0].discoverable : "No idea"
-            }
-
-            Column {
-                width: rootColumn.width
-
-                visible: Bluetooth.devices.filter(device => device.connected).length > 0
-
-                Separator {}
-
-                Section {
-                    title: "Connected"
-                    object: Bluetooth.devices.filter(device => device.connected)
-                }
-            }
-
-            Column {
-                width: rootColumn.width
-
-                visible: Bluetooth.devices.filter(device => !device.connected).length > 0
-
-                Separator {}
-
-                Section {
-                    title: "Discovered"
-                    object: Bluetooth.devices.filter(device => !device.connected)
-                }
+            Section {
+                title: "Discovered"
+                object: Bluetooth.devices.filter(device => !device.connected)
             }
         }
     }
