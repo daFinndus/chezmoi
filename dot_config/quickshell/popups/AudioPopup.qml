@@ -6,116 +6,138 @@ import Quickshell.Wayland
 import qs.singletons
 import qs.components
 
-Popup {
+Item {
     id: root
 
-    contentComponent: Column {
-        id: rootColumn
+    implicitWidth: widget.width
+    implicitHeight: widget.height
 
-        width: 256
-        spacing: Themes.paddingSize
+    Widget {
+        id: widget
 
-        Row {
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: Themes.paddingSize
+        background: "transparent"
+        text: Audio.icon
 
-            Button {
-                width: 32
-                height: 32
+        MouseArea {
+            anchors.fill: parent
 
-                textSize: 20
-
-                text: "\udb81\udcae"
-                onClick: "playerctl previous"
-            }
-
-            Button {
-                width: 32
-                height: 32
-
-                textSize: 20
-
-                text: "\udb81\udc0e"
-                onClick: "playerctl play-pause"
-            }
-
-            Button {
-                width: 32
-                height: 32
-
-                textSize: 20
-
-                text: "\udb81\udcad"
-                onClick: "playerctl next"
-            }
+            cursorShape: Qt.PointingHandCursor
+            onClicked: Globals.togglePopup(popup)
         }
+    }
 
-        Column {
-            visible: Audio.sinks.length > 0
+    Popup {
+        id: popup
+        target: root
 
-            width: rootColumn.width
+        contentComponent: Column {
+            id: rootColumn
+
+            width: 256
             spacing: Themes.paddingSize
 
-            Separator {}
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: Themes.paddingSize
 
-            SliderBlock {
-                title: "Output"
-                value: Audio.sinkVolume
-                onMoved: par => Audio.setSinkVolume(par)
-            }
+                Button {
+                    width: 32
+                    height: 32
 
-            Separator {
-                shade: "transparent"
-                height: 4
-            }
+                    textSize: 20
 
-            Repeater {
-                model: Audio.sinks
-                delegate: Device {
-                    required property var modelData
+                    text: "\udb81\udcae"
+                    onClick: "playerctl previous"
+                }
 
-                    identifier: modelData.name
-                    type: "sink"
+                Button {
+                    width: 32
+                    height: 32
 
-                    title: modelData.properties["alsa.card_name"]
-                    description: modelData.properties["alsa.name"]
+                    textSize: 20
 
-                    state: modelData.state
+                    text: "\udb81\udc0e"
+                    onClick: "playerctl play-pause"
+                }
+
+                Button {
+                    width: 32
+                    height: 32
+
+                    textSize: 20
+
+                    text: "\udb81\udcad"
+                    onClick: "playerctl next"
                 }
             }
-        }
 
-        Column {
-            visible: Audio.sources.length > 0
+            Column {
+                visible: Audio.sinks.length > 0
 
-            width: rootColumn.width
-            spacing: Themes.paddingSize
+                width: rootColumn.width
+                spacing: Themes.paddingSize
 
-            Separator {}
+                Separator {}
 
-            SliderBlock {
-                title: "Input"
-                value: Audio.sourceVolume
-                onMoved: par => Audio.setSourceVolume(par)
+                SliderBlock {
+                    title: "Output"
+                    value: Audio.sinkVolume
+                    onMoved: par => Audio.setSinkVolume(par)
+                }
+
+                Separator {
+                    shade: "transparent"
+                    height: 4
+                }
+
+                Repeater {
+                    model: Audio.sinks
+                    delegate: Device {
+                        required property var modelData
+
+                        identifier: modelData.name
+                        type: "sink"
+
+                        title: modelData.properties["alsa.card_name"]
+                        description: modelData.properties["alsa.name"]
+
+                        state: modelData.state
+                    }
+                }
             }
 
-            Separator {
-                shade: "transparent"
-                height: 4
-            }
+            Column {
+                visible: Audio.sources.length > 0
 
-            Repeater {
-                model: Audio.sources
-                delegate: Device {
-                    required property var modelData
+                width: rootColumn.width
+                spacing: Themes.paddingSize
 
-                    identifier: modelData.name
-                    type: "source"
+                Separator {}
 
-                    title: modelData.properties["alsa.card_name"]
-                    description: modelData.properties["alsa.name"]
+                SliderBlock {
+                    title: "Input"
+                    value: Audio.sourceVolume
+                    onMoved: par => Audio.setSourceVolume(par)
+                }
 
-                    state: modelData.state
+                Separator {
+                    shade: "transparent"
+                    height: 4
+                }
+
+                Repeater {
+                    model: Audio.sources
+                    delegate: Device {
+                        required property var modelData
+
+                        identifier: modelData.name
+                        type: "source"
+
+                        title: modelData.properties["alsa.card_name"]
+                        description: modelData.properties["alsa.name"]
+
+                        state: modelData.state
+                    }
                 }
             }
         }

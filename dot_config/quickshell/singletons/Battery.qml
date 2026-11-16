@@ -24,7 +24,7 @@ Singleton {
     readonly property var batteryIcons: ["\udb80\udc8e", "\udb80\udc7a", "\udb80\udc7b", "\udb80\udc7c", "\udb80\udc7d", "\udb80\udc7e", "\udb80\udc7f", "\udb80\udc80", "\udb80\udc81", "\udb80\udc82", "\udb80\udc79"]
     readonly property string icon: {
         if (root.battery.length <= 0) {
-            return "";
+            return "Not available";
         } else if (root.battery[root.selectedBattery].status === "Charging") {
             return "\udb80\udc84";
         } else {

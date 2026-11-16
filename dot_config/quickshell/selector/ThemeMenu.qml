@@ -29,7 +29,7 @@ PanelWindow {
     color: "transparent"
 
     visible: Themes.menuVisible
-    onVisibleChanged: if (root.visible) {
+    onVisibleChanged: if (!root.visible) {
         root.currentIndex = Themes.activeThemeIndex;
     }
 
@@ -201,11 +201,12 @@ PanelWindow {
                     Image {
                         id: image
 
-                        asynchronous: true
                         anchors.fill: parent
                         fillMode: Image.PreserveAspectCrop
 
-                        // Only load the 3 images to the right and left, one middle
+                        asynchronous: true
+                        cache: true
+
                         source: loader.active ? loader.modelData.path : ""
                         visible: loader.active
                     }

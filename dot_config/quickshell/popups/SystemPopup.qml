@@ -4,127 +4,182 @@ import QtQuick.Layouts
 import qs.singletons
 import qs.components
 
-Popup {
+Item {
     id: root
 
-    onVisibleChanged: Hardware.makeUpdates = root.visible
+    implicitWidth: widget.width
+    implicitHeight: widget.height
 
-    contentComponent: Column {
-        id: rootColumn
+    Widget {
+        id: widget
 
-        width: Math.max(headerRow.width, coreGrid.width)
+        background: "transparent"
+        text: System.icon
 
-        RowLayout {
-            id: headerRow
+        MouseArea {
+            anchors.fill: parent
 
-            spacing: 96
-
-            Column {
-                Text {
-                    color: Themes.shade
-
-                    font.family: Themes.fontFamily
-                    font.pixelSize: Themes.fontSize
-
-                    font.capitalization: Font.Capitalize
-
-                    text: "System Monitor"
-                }
-
-                Text {
-                    topPadding: 4
-
-                    color: Globals.withAlpha(Themes.shade, 0.75)
-
-                    font.family: Themes.fontFamily
-                    font.pixelSize: Themes.fontSize * 0.7
-
-                    font.capitalization: Font.Capitalize
-
-                    text: "Uptime: " + System.uptime
-                }
-            }
-
-            Button {
-                Layout.alignment: Qt.AlignRight
-
-                onClickClosePopup: true
-
-                width: 72
-
-                text: "\uf0ad btop"
-                onClick: "kitty --class kitty --title btop -e btop"
-            }
+            cursorShape: Qt.PointingHandCursor
+            onClicked: Globals.togglePopup(popup)
         }
+    }
 
-        Separator {}
+    Popup {
+        id: popup
 
-        Section {
-            title: "CPU Usage"
+        target: root
+        onVisibleChanged: Hardware.makeUpdates = popup.visible
 
-            percentage: Hardware.cpuUsage
-            temperature: Hardware.cpuTemp
+        contentComponent: Column {
+            id: rootColumn
 
-            Grid {
-                id: coreGrid
+            width: Math.max(headerRow.width, coreGrid.width)
 
-                property double margin: 4
+            RowLayout {
+                id: headerRow
 
-                // This property specifies the cores per line
-                property int coreLines: 4
+                spacing: 96
 
-                columns: Hardware.cpuCores.length / coreGrid.coreLines
-                rows: coreGrid.coreLines
+                Column {
+                    Text {
+                        color: Themes.shade
 
-                columnSpacing: coreGrid.margin
-                rowSpacing: Themes.paddingSize
+                        font.family: Themes.fontFamily
+                        font.pixelSize: Themes.fontSize
 
-                Repeater {
-                    model: Hardware.cpuCores
-                    delegate: Section {
-                        required property var modelData
+                        font.capitalization: Font.Capitalize
 
-                        // margin will set margin of title and stat
-                        // barMargin will set margin of the bar
-                        margin: coreGrid.margin
+                        text: "System Monitor"
+                    }
 
-                        width: Math.max((headerRow.width / (Hardware.cpuCores.length / coreGrid.coreLines)), 56)
+                    Text {
+                        topPadding: 4
 
-                        title: `C${modelData.core + 1}`
-                        percentage: modelData.usage
+                        color: Globals.withAlpha(Themes.shade, 0.75)
+
+                        font.family: Themes.fontFamily
+                        font.pixelSize: Themes.fontSize * 0.7
+
+                        font.capitalization: Font.Capitalize
+
+                        text: "Uptime: " + System.uptime
+                    }
+                }
+
+                Button {
+                    Layout.alignment: Qt.AlignRight
+
+                    onClickClosePopup: true
+
+                    width: 72
+
+                    text: "\uf0ad btop"
+                    onClick: "kitty --class kitty --title btop -e btop"
+                }
+            }
+
+            Separator {}
+
+            Section {
+                title: "CPU Usage"
+
+                percentage: Hardware.cpuUsage
+                temperature: Hardware.cpuTemp
+
+                Grid {
+                    id: coreGrid
+
+                    property double margin: 4
+
+                    // This property specifies the cores per line
+                    property int coreLines: 4
+
+                    columns: Hardware.cpuCores.length / coreGrid.coreLines
+                    rows: coreGrid.coreLines
+
+                    columnSpacing: coreGrid.margin
+                    rowSpacing: Themes.paddingSize
+
+                    Repeater {
+                        model: Hardware.cpuCores
+                        delegate: Section {
+                            required property var modelData
+
+                            // margin will set margin of title and stat
+                            // barMargin will set margin of the bar
+                            margin: coreGrid.margin
+
+                            width: Math.max((headerRow.width / (Hardware.cpuCores.length / coreGrid.coreLines)), 56)
+
+                            title: `C${modelData.core + 1}`
+                            percentage: modelData.usage
+                        }
+                    }
+                }
+
+                Text {
+                    topPadding: -2
+
+                    font.family: Themes.fontFamily
+                    font.pixelSize: Themes.fontSize * 0.65
+
+                    color: Globals.withAlpha(Themes.shade, 0.5)
+
+                    text: "Load: " + Hardware.cpuLoad
+                }
+            }
+
+            Separator {}
+
+            Section {
+                title: "GPU Usage"
+                percentage: Hardware.gpuLoad
+                temperature: Hardware.gpuTemp
+            }
+
+            Separator {}
+
+            Section {
+                title: "RAM Usage"
+                percentage: Hardware.ramLoad
+
+                // This is for showing absolute data and swapspace
+                RowLayout {
+                    width: parent.width
+
+                    Text {
+                        topPadding: -2
+
+                        font.family: Themes.fontFamily
+                        font.pixelSize: Themes.fontSize * 0.65
+
+                        color: Globals.withAlpha(Themes.shade, 0.5)
+
+                        text: "Available: " + Globals.formatSizeUnit((Hardware.ramTotal - Hardware.ramUsed)) + " of " + Globals.formatSizeUnit(Hardware.ramTotal)
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                    }
+
+                    Text {
+                        topPadding: -2
+
+                        font.family: Themes.fontFamily
+                        font.pixelSize: Themes.fontSize * 0.65
+
+                        color: Globals.withAlpha(Themes.shade, 0.5)
+
+                        text: "Swap: " + Globals.formatSizeUnit(Hardware.swapUsed) + " of " + Globals.formatSizeUnit(Hardware.swapTotal)
                     }
                 }
             }
 
-            Text {
-                topPadding: -2
+            Separator {}
 
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.65
-
-                color: Globals.withAlpha(Themes.shade, 0.5)
-
-                text: "Load: " + Hardware.cpuLoad
-            }
-        }
-
-        Separator {}
-
-        Section {
-            title: "GPU Usage"
-            percentage: Hardware.gpuLoad
-            temperature: Hardware.gpuTemp
-        }
-
-        Separator {}
-
-        Section {
-            title: "RAM Usage"
-            percentage: Hardware.ramLoad
-
-            // This is for showing absolute data and swapspace
-            RowLayout {
-                width: parent.width
+            Section {
+                title: "Root Partition Space"
+                percentage: Hardware.rootLoad
 
                 Text {
                     topPadding: -2
@@ -134,12 +189,15 @@ Popup {
 
                     color: Globals.withAlpha(Themes.shade, 0.5)
 
-                    text: "Available: " + Globals.formatSizeUnit((Hardware.ramTotal - Hardware.ramUsed)) + " of " + Globals.formatSizeUnit(Hardware.ramTotal)
+                    text: Globals.formatSizeUnit(Hardware.rootUsed) + " / " + Globals.formatSizeUnit(Hardware.rootTotal)
                 }
+            }
 
-                Item {
-                    Layout.fillWidth: true
-                }
+            Separator {}
+
+            Section {
+                title: "Home Partition Space"
+                percentage: Hardware.homeLoad
 
                 Text {
                     topPadding: -2
@@ -149,44 +207,8 @@ Popup {
 
                     color: Globals.withAlpha(Themes.shade, 0.5)
 
-                    text: "Swap: " + Globals.formatSizeUnit(Hardware.swapUsed) + " of " + Globals.formatSizeUnit(Hardware.swapTotal)
+                    text: Globals.formatSizeUnit(Hardware.homeUsed) + " / " + Globals.formatSizeUnit(Hardware.homeTotal)
                 }
-            }
-        }
-
-        Separator {}
-
-        Section {
-            title: "Root Partition Space"
-            percentage: Hardware.rootLoad
-
-            Text {
-                topPadding: -2
-
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.65
-
-                color: Globals.withAlpha(Themes.shade, 0.5)
-
-                text: Globals.formatSizeUnit(Hardware.rootUsed) + " / " + Globals.formatSizeUnit(Hardware.rootTotal)
-            }
-        }
-
-        Separator {}
-
-        Section {
-            title: "Home Partition Space"
-            percentage: Hardware.homeLoad
-
-            Text {
-                topPadding: -2
-
-                font.family: Themes.fontFamily
-                font.pixelSize: Themes.fontSize * 0.65
-
-                color: Globals.withAlpha(Themes.shade, 0.5)
-
-                text: Globals.formatSizeUnit(Hardware.homeUsed) + " / " + Globals.formatSizeUnit(Hardware.homeTotal)
             }
         }
     }

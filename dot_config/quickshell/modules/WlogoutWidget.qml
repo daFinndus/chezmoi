@@ -10,7 +10,7 @@ Widget {
     property int systemIndex: 0
     onSystemIndexChanged: root.text = Wlogout.getText(root.systemIndex)
 
-    text: Wlogout.icon
+    text: "Wlogout"
 
     Keys.enabled: !Themes.iconMode
     Keys.onPressed: event => {
@@ -35,7 +35,7 @@ Widget {
         hoverEnabled: !Themes.iconMode
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: Themes.iconMode ? Globals.togglePopup(popup) : Wlogout.startSystemFunction(Wlogout.systemFunctions[root.systemIndex].command)
+        onClicked: Wlogout.startSystemFunction(Wlogout.systemFunctions[root.systemIndex].command)
 
         onEntered: {
             if (!Themes.iconMode) {
@@ -60,10 +60,5 @@ Widget {
                 }
             }
         }
-    }
-
-    WlogoutPopup {
-        id: popup
-        target: root
     }
 }

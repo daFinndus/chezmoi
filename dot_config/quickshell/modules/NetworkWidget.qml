@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Network.icon
+    text: "Network"
 
     MouseArea {
         id: mouseArea
@@ -19,11 +19,6 @@ Widget {
 
         acceptedButtons: Qt.LeftButton
 
-        onClicked: Themes.iconMode ? Globals.togglePopup(popup) : Network.startIwctl()
-    }
-
-    NetworkPopup {
-        id: popup
-        target: root
+        onClicked: Network.startIwctl()
     }
 }

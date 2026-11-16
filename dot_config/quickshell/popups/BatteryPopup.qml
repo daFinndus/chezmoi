@@ -3,61 +3,81 @@ import QtQuick
 import qs.singletons
 import qs.components
 
-Popup {
+Item {
     id: root
 
-    onVisibleChanged: if (root.visible) {
-        Battery.fetchInterval = 3000;
-    } else {
-        Battery.fetchInterval = 1000 * 30;
+    implicitWidth: widget.width
+    implicitHeight: widget.height
+
+    visible: Battery.batteryAvailable
+
+    Widget {
+        id: widget
+
+        background: "transparent"
+        text: Battery.icon
+
+        MouseArea {
+            anchors.fill: parent
+
+            cursorShape: Qt.PointingHandCursor
+            onClicked: Globals.togglePopup(popup)
+        }
     }
 
-    contentComponent: Column {
-        id: rootColumn
+    Popup {
+        id: popup
+        target: root
 
-        width: 172
-        spacing: Themes.paddingSize
+        onVisibleChanged: popup.visible ? Battery.fetchInterval = 3000 : Battery.fetchInterval = 1000 * 30
 
-        KeyValueRow {
-            label: "Battery"
-            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].charge + "%" : ""
-        }
+        contentComponent: Column {
+            id: rootColumn
 
-        KeyValueRow {
-            label: "Status"
-            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].status : ""
-        }
+            width: 172
+            spacing: Themes.paddingSize
 
-        Separator {}
+            KeyValueRow {
+                label: "Battery"
+                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].charge + "%" : ""
+            }
 
-        KeyValueRow {
-            label: "Cyclecount"
-            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].cycle_count : ""
-        }
+            KeyValueRow {
+                label: "Status"
+                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].status : ""
+            }
 
-        KeyValueRow {
-            label: "Capacity"
-            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].capacity + "%" : ""
-        }
+            Separator {}
 
-        Separator {}
+            KeyValueRow {
+                label: "Cyclecount"
+                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].cycle_count : ""
+            }
 
-        KeyValueRow {
-            label: "Start treshold"
-            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].start_thresh + "%" : ""
-        }
+            KeyValueRow {
+                label: "Capacity"
+                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].capacity + "%" : ""
+            }
 
-        KeyValueRow {
-            label: "End treshold"
-            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].end_thresh + "%" : ""
-        }
+            Separator {}
 
-        Separator {}
+            KeyValueRow {
+                label: "Start treshold"
+                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].start_thresh + "%" : ""
+            }
 
-        KeyValueRow {
-            label: "Available batteries"
-            description: "Total amount"
-            value: Battery.batteryAvailable ? Battery.battery.length : ""
+            KeyValueRow {
+                label: "End treshold"
+                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].end_thresh + "%" : ""
+            }
+
+            Separator {}
+
+            KeyValueRow {
+                label: "Available batteries"
+                description: "Total amount"
+                value: Battery.batteryAvailable ? Battery.battery.length : ""
+            }
         }
     }
 }

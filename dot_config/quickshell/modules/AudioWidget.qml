@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Audio.icon
+    text: "Audio"
 
     MouseArea {
         id: mouseArea
@@ -18,11 +18,5 @@ Widget {
         cursorShape: Qt.PointingHandCursor
 
         onEntered: root.forceActiveFocus()
-        onClicked: Globals.togglePopup(popup)
-    }
-
-    AudioPopup {
-        id: popup
-        target: root
     }
 }

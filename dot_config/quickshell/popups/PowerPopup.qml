@@ -4,35 +4,74 @@ import Quickshell.Io
 import qs.singletons
 import qs.components
 
-Popup {
+Item {
     id: root
 
-    contentComponent: Rectangle {
-        id: rect
+    implicitWidth: widget.width
+    implicitHeight: widget.height
 
-        color: "transparent"
+    Widget {
+        id: widget
 
-        implicitWidth: row.width
-        implicitHeight: row.height
+        background: "transparent"
+        text: Power.icon
 
-        Row {
-            id: row
+        MouseArea {
+            id: mouseArea
 
-            spacing: Themes.paddingSize
+            anchors.fill: parent
 
-            ProfileButton {
-                display: "Power Saver"
-                name: "power-saver"
-            }
+            hoverEnabled: true
+            onHoveredChanged: delayTooltip.start()
 
-            ProfileButton {
-                display: "Balanced"
-                name: "balanced"
-            }
+            cursorShape: Qt.PointingHandCursor
+            onClicked: Globals.togglePopup(popup)
+        }
+    }
 
-            ProfileButton {
-                display: "Performance"
-                name: "performance"
+    Tooltip {
+        id: tooltip
+        target: root
+        text: Power.text
+    }
+
+    Timer {
+        id: delayTooltip
+        interval: 150
+        onTriggered: tooltip.available = mouseArea.containsMouse
+    }
+
+    Popup {
+        id: popup
+        target: root
+
+        contentComponent: Rectangle {
+            id: rect
+
+            color: "transparent"
+
+            implicitWidth: row.width
+            implicitHeight: row.height
+
+            Row {
+                id: row
+
+                spacing: Themes.paddingSize
+
+                ProfileButton {
+                    display: "Power Saver"
+                    name: "power-saver"
+                }
+
+                ProfileButton {
+                    display: "Balanced"
+                    name: "balanced"
+                }
+
+                ProfileButton {
+                    display: "Performance"
+                    name: "performance"
+                }
             }
         }
     }

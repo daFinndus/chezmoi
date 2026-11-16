@@ -5,30 +5,52 @@ import Quickshell.Wayland
 import qs.singletons
 import qs.components
 
-Popup {
+Item {
     id: root
 
-    contentComponent: Grid {
-        id: grid
+    implicitWidth: widget.width
+    implicitHeight: widget.height
 
-        width: 256
+    Widget {
+        id: widget
 
-        columns: 2
+        background: "transparent"
+        text: Wlogout.icon
 
-        spacing: Themes.paddingSize / 2
+        MouseArea {
+            anchors.fill: parent
 
-        Repeater {
-            model: Wlogout.systemFunctions
-            delegate: Button {
-                required property var modelData
+            cursorShape: Qt.PointingHandCursor
+            onClicked: Globals.togglePopup(popup)
+        }
+    }
 
-                width: grid.width / 2
-                height: 32
+    Popup {
+        id: popup
+        target: root
 
-                onClickClosePopup: true
+        contentComponent: Grid {
+            id: grid
 
-                text: modelData.text
-                onClick: modelData.command
+            width: 256
+
+            columns: 2
+
+            spacing: Themes.paddingSize / 2
+
+            Repeater {
+                model: Wlogout.systemFunctions
+                delegate: Button {
+                    required property var modelData
+
+                    width: grid.width / 2
+                    height: 32
+
+                    onClickClosePopup: true
+
+                    text: modelData.text
+                    onClick: modelData.command
+                }
             }
         }
     }

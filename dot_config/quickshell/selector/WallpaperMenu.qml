@@ -29,7 +29,7 @@ PanelWindow {
     color: "transparent"
 
     visible: Wallpapers.menuVisible
-    onVisibleChanged: if (root.visible) {
+    onVisibleChanged: if (!root.visible) {
         root.currentIndex = Wallpapers.activeWallpaperIndex;
     }
 
@@ -126,7 +126,7 @@ PanelWindow {
                 // Distance from modeldata index to currently active card
                 property real scaleFactor: Math.max(0.2, 1.0 - Math.abs(loader.distance) * 0.1)
 
-                active: root.visible && Math.abs(loader.distance) <= 13
+                active: Math.abs(loader.distance) <= root.cardAmount
 
                 width: root.cardWidth * loader.scaleFactor
                 height: root.cardHeight * loader.scaleFactor
@@ -206,22 +206,17 @@ PanelWindow {
                         }
                     }
 
-                    AnimatedImage {
+                    Image {
                         id: image
-
-                        // I believe this in combination with caching
-                        // Takes up some RAM, but it's so much smoother
-                        asynchronous: true
-                        cache: true
 
                         anchors.fill: parent
                         fillMode: Image.PreserveAspectCrop
 
-                        // Only load the 3 images to the right and left, one middle
+                        asynchronous: true
+                        cache: true
+
                         source: loader.active ? loader.modelData.path : ""
                         visible: loader.active
-
-                        playing: root.visible
                     }
 
                     // Cover right triangle

@@ -7,7 +7,7 @@ import qs.components
 Widget {
     id: root
 
-    text: Bluetooth.icon
+    text: "Bluetooth"
 
     MouseArea {
         id: mouseArea
@@ -17,7 +17,7 @@ Widget {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
 
-        onClicked: Themes.iconMode ? Globals.togglePopup(popup) : Bluetooth.toggleAdapter()
+        onClicked: Bluetooth.toggleAdapter()
 
         onWheel: event => {
             // Not needed in icon mode
@@ -31,10 +31,5 @@ Widget {
                 Bluetooth.deviceIndex = (Bluetooth.deviceIndex + 1) % Bluetooth.devices.length;
             }
         }
-    }
-
-    BluetoothPopup {
-        id: popup
-        target: root
     }
 }

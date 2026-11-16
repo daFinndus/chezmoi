@@ -5,6 +5,7 @@ import Quickshell.Wayland
 
 import qs.singletons
 import qs.modules
+import qs.popups
 import qs.components
 
 Scope {
@@ -36,13 +37,9 @@ Scope {
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
 
-                BatteryWidget {
-                    background: "transparent"
-                }
+                BatteryPopup {}
 
-                SystemWidget {
-                    background: "transparent"
-                }
+                SystemPopup {}
 
                 WorkspaceWidget {
                     background: "transparent"
@@ -72,33 +69,21 @@ Scope {
                     background: "transparent"
                 }
 
-                PowerWidget {
-                    background: "transparent"
-                }
+                PowerPopup {}
 
                 InhibitorWidget {
                     background: "transparent"
                 }
 
-                BluetoothWidget {
-                    background: "transparent"
-                }
+                BluetoothPopup {}
 
-                VirtualWidget {
-                    background: "transparent"
-                }
+                VirtualPopup {}
 
-                NetworkWidget {
-                    background: "transparent"
-                }
+                NetworkPopup {}
 
-                AudioWidget {
-                    background: "transparent"
-                }
+                AudioPopup {}
 
-                WlogoutWidget {
-                    background: "transparent"
-                }
+                WlogoutPopup {}
             }
         }
     }
