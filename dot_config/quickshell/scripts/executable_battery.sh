@@ -9,6 +9,8 @@ fetch_information() {
   cycle_count=$(fetch_metadata "cycle_count")
   status=$(fetch_metadata "status")
 
+  power_draw=$(fetch_metadata "power_now" | tr -d '[mW]')
+
   start_thresh=$(fetch_metadata "start_threshold" | tr -d '[%]')
   end_thresh=$(fetch_metadata "end_threshold" | tr -d '[%]')
 
@@ -19,6 +21,7 @@ fetch_information() {
     --arg manufacturer "$manufacturer" \
     --arg model "$model" \
     --argjson cycle_count "$cycle_count" \
+    --argjson power_draw "$power_draw" \
     --arg status "$status" \
     --argjson start_thresh "$start_thresh" \
     --argjson end_thresh "$end_thresh" \
@@ -28,6 +31,7 @@ fetch_information() {
 	  manufacturer: $manufacturer,
 	  model: $model,
 	  cycle_count: $cycle_count,
+	  power_draw: $power_draw,
 	  status: $status,
 	  start_thresh: $start_thresh,
 	  end_thresh: $end_thresh,

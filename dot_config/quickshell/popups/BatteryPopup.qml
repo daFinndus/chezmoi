@@ -50,6 +50,13 @@ Item {
             Separator {}
 
             KeyValueRow {
+                label: "Power draw"
+                value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].power_draw + " mW" : ""
+            }
+
+            Separator {}
+
+            KeyValueRow {
                 label: "Cyclecount"
                 value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].cycle_count : ""
             }
