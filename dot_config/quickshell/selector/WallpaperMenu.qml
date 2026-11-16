@@ -73,8 +73,8 @@ PanelWindow {
                     root.currentIndex = (root.currentIndex + 1) % Wallpapers.wallpapers.length;
                     break;
                 case Qt.Key_Return:
-                    Wallpapers.menuVisible = false;
                     Wallpapers.setWallpaper(Wallpapers.wallpapers[root.currentIndex].path);
+                    Wallpapers.menuVisible = false;
                     break;
                 case Qt.Key_Delete:
                     Globals.logDebug("Going to delete " + Wallpapers.wallpapers[root.currentIndex].path);

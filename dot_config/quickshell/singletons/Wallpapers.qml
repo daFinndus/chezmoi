@@ -80,6 +80,7 @@ Singleton {
     }
 
     function setWallpaper(path: string) {
+        Globals.logDebug("Setting wallpaper: " + path);
         setWallpaper.command = [`${Quickshell.env("XDG_DATA_HOME")}/../bin/set-wallpaper.sh`, path];
         setWallpaper.running = true;
     }

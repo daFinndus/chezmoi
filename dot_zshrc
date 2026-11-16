@@ -62,6 +62,9 @@ bindkey -N emacs
 # This is for metasploit
 export RUBYOPT="-W0"
 
+# This is for python
+export PATH="$HOME/.local/bin:$PATH"
+
 # pnpm
 export PNPM_HOME="/home/finn/.local/share/pnpm"
 case ":$PATH:" in
