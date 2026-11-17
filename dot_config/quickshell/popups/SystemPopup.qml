@@ -9,7 +9,8 @@ Popup {
 
     icon: System.icon
 
-    onVisibleChanged: Hardware.makeUpdates = popup.visible
+    // Minimize usage on Popup visibility
+    onAvailableChanged: Hardware.makeUpdates = popup.available
 
     contentComponent: Column {
         id: rootColumn

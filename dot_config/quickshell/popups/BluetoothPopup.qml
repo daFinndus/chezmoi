@@ -8,10 +8,11 @@ Popup {
 
     icon: Bluetooth.icon
 
+    // Minimize usage on Popup visibility
     Timer {
         id: getBluetoothDevices
 
-        running: popup.visible
+        running: popup.available
         repeat: true
 
         interval: 3000

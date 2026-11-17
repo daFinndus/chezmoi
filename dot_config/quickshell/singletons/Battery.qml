@@ -61,7 +61,9 @@ Singleton {
         command: ["sudo", "tlp-stat", "-P"]
 
         stdout: SplitParser {
-            onRead: root.refreshBattery()
+            onRead: if (!getData.running) {
+                root.refreshBattery();
+            }
         }
     }
 

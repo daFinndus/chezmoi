@@ -12,6 +12,8 @@ Item {
     property Component contentComponent
     required property string icon
 
+    property bool available: false
+
     implicitWidth: widget.width
     implicitHeight: widget.height
 
@@ -27,16 +29,14 @@ Item {
             anchors.fill: parent
 
             cursorShape: Qt.PointingHandCursor
-            onClicked: Globals.togglePopup(popup)
+            onClicked: Globals.togglePopup(root)
         }
     }
 
     PopupWindow {
         id: popup
 
-        property bool available: false
-
-        visible: popup.available
+        visible: root.available
 
         color: Globals.withAlpha(Themes.background, Themes.transparency)
 
@@ -54,7 +54,7 @@ Item {
         HyprlandFocusGrab {
             id: grab
 
-            active: popup.available
+            active: root.available
             windows: [popup]
 
             onCleared: Globals.closePopup()

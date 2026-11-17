@@ -9,7 +9,9 @@ Popup {
     icon: Battery.icon
 
     visible: Battery.batteryAvailable
-    onVisibleChanged: popup.visible ? Battery.fetchInterval = 3000 : Battery.fetchInterval = 1000 * 30
+
+    // Minimize usage on Popup visibility
+    onAvailableChanged: popup.available ? Battery.fetchInterval = 3000 : Battery.fetchInterval = 1000 * 30
 
     contentComponent: Column {
         id: rootColumn
@@ -32,6 +34,11 @@ Popup {
         KeyValueRow {
             label: "Power draw"
             value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].power_draw + " mW" : ""
+        }
+
+        KeyValueRow {
+            label: "Remaining usage"
+            value: Battery.batteryAvailable ? Battery.battery[Battery.selectedBattery].current_watt + " mW" : ""
         }
 
         Separator {}

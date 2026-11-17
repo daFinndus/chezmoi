@@ -9,8 +9,9 @@ Popup {
 
     icon: Network.icon
 
-    onVisibleChanged: {
-        if (root.visible && !Network.fetchedISP) {
+    // Minimize usage on Popup visibility
+    onAvailableChanged: {
+        if (popup.available && !Network.fetchedISP) {
             // Only fetch maximum speeds when not already fetched
             // Otherwise they have to be triggered actively
             Network.fetchMaximumSpeeds();
