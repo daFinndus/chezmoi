@@ -1,5 +1,9 @@
 # TODO
 
+## Add auto hide
+
+- https://github.com/dedenholm/hyprminimal-quickshell-bar/blob/main/shell.qml
+
 ## Portability and capability detection
 
 - Detect commands and services (`pactl`, `playerctl`, `iwctl`, `bluetoothctl`, `acpi`, `inotifywait`, `jq`, and compositor tools).
