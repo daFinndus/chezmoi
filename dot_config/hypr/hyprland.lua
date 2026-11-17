@@ -53,9 +53,10 @@ hl.config({
         -- Blur settings
         blur = {
             enabled = true,
-            size = 8,
+            size = 4,
             passes = 2,
-            vibrancy = 0.1696,
+	    brightness = 0.5,
+            vibrancy = 1,
         },
 
         wobble = {
