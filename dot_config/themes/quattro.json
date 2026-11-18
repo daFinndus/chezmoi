@@ -1,7 +1,7 @@
 {
   "name" : "quattro",
   "fontFamily" : "Cascadia Code NF",
-  "fontSize" : 14,
+  "fontSize" : 13,
   "transparency" : 0.75,
   "background" : 0,
   "shade" : 7,

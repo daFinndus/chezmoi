@@ -59,7 +59,7 @@ Singleton {
     property double transparency: 0.5
 
     // Rectangle geometry
-    property int barHeight: 22
+    property int barHeight: 10
     property int borderWidth: 0
     property int borderRadius: 0
     property int paddingSize: 12
