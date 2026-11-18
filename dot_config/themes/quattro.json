@@ -2,7 +2,7 @@
   "name" : "quattro",
   "fontFamily" : "Cascadia Code NF",
   "fontSize" : 13,
-  "transparency" : 0.75,
+  "transparency" : 0.25,
   "background" : 0,
   "shade" : 7,
   "animationDuration" : 250,
