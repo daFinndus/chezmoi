@@ -27,7 +27,7 @@ Popup {
                     color: Themes.shade
 
                     font.family: Themes.fontFamily
-                    font.pixelSize: Themes.fontSize
+                    font.pixelSize: Themes.fontSize - 2
 
                     font.capitalization: Font.Capitalize
 

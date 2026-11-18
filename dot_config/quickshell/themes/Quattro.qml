@@ -28,65 +28,67 @@ Scope {
         implicitWidth: panel.screen.width
         implicitHeight: Themes.barHeight
 
-        Rectangle {
-            color: Globals.withAlpha(Themes.background, Themes.transparency)
-            anchors.fill: parent
-
-            Row {
-                anchors.left: parent.left
-                anchors.leftMargin: 12
-                anchors.verticalCenter: parent.verticalCenter
-
-                BatteryPopup {}
-
-                SystemPopup {}
-
-                WorkspaceWidget {
-                    background: "transparent"
-                    accent: Themes.shade
-                }
+        Behavior on implicitHeight {
+            NumberAnimation {
+                duration: Themes.animationDuration
+                easing.type: Easing.OutCubic
             }
+        }
 
-            TimeWidget {
-                anchors.centerIn: parent
+        Row {
+            anchors.left: parent.left
+            anchors.leftMargin: 12
+            anchors.verticalCenter: parent.verticalCenter
 
+            BatteryPopup {}
+
+            SystemPopup {}
+
+            WorkspaceWidget {
                 background: "transparent"
-                shade: Themes.shade
+                accent: Themes.shade
+            }
+        }
 
-                text: Time.day
+        TimeWidget {
+            anchors.centerIn: parent
 
-                icon: false
+            background: "transparent"
+            shade: Themes.shade
+
+            text: Time.day
+
+            icon: false
+        }
+
+        Row {
+            anchors.right: parent.right
+            anchors.rightMargin: 12
+            anchors.verticalCenter: parent.verticalCenter
+
+            TrayWidget {}
+
+            UpdateWidget {
+                background: "transparent"
             }
 
-            Row {
-                anchors.right: parent.right
-                anchors.rightMargin: 12
-                anchors.verticalCenter: parent.verticalCenter
+            PowerPopup {}
 
-                TrayWidget {}
+            DunstPopup {}
 
-                UpdateWidget {
-                    background: "transparent"
-                }
-
-                PowerPopup {}
-
-                DunstPopup {}
-
-                InhibitorWidget {
-                    background: "transparent"
-                }
-
-                BluetoothPopup {}
-
-                VirtualPopup {}
-
-                NetworkPopup {}
-
-                AudioPopup {}
-
-                WlogoutPopup {}
+            InhibitorWidget {
+                background: "transparent"
             }
+
+            BluetoothPopup {}
+
+            VirtualPopup {}
+
+            NetworkPopup {}
+
+            AudioPopup {}
+
+            WlogoutPopup {}
         }
     }
 }

@@ -13,6 +13,7 @@ Item {
     required property string icon
 
     property bool available: false
+    property var onClick: undefined
 
     implicitWidth: widget.width
     implicitHeight: widget.height

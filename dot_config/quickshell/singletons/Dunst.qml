@@ -10,7 +10,7 @@ Singleton {
     property bool running: false
     readonly property string icon: root.running ? "\udb80\udc9a" : "\udb80\udc9b"
 
-    function toggleDaemon() {
+    function toggleDaemon(): void {
         toggleDunst.running = true;
     }
 
