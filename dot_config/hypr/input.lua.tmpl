@@ -36,6 +36,12 @@ hl.device({
   kb_variant = "altgr-intl",
 })
 
+hl.device({
+  name = "dell-kb216-wired-keyboard",
+  kb_layout = "de",
+  kb_variant = ""
+})
+
 {{- if eq .device "kabuki" }}
 -- Gestures
 hl.gesture({
