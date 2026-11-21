@@ -13,4 +13,7 @@ hl.on("hyprland.start", function()
 	-- This is so quickshell is always started on the main monitor
 	hl.exec_cmd("hyprctl dispatch 'hl.dsp.focus({ workspace = '1' })'")
 	hl.exec_cmd("qs -d")
+
+	-- This is so balanced acts as the default power profile
+    hl.exec_cmd("tlpctl set balanced")
 end)
