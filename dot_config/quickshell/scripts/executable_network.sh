@@ -110,40 +110,30 @@ fetch_network_speed() {
 }
 
 get_interfaces() {
-  local interfaces=$(nmcli --get-values NAME,TYPE,DEVICE,STATE connection show)
+  information=$(nmcli --get-values GENERAL.CONNECTION,GENERAL.TYPE,GENERAL.DEVICE,IP4.ADDRESS,IP4.GATEWAY,IP4.DNS device show)
 
-  echo "$interfaces" | while read -r interface; do
-    if [[ -n "$interface" ]]; then
-      name=$(echo "$interface" | cut -d ":" -f 1)
-      type=$(echo "$interface" | cut -d ":" -f 2)
-      device=$(echo "$interface" | cut -d ":" -f 3)
-      [[ $(echo "$interface" | cut -d ":" -f 4) == "activated" ]] && active=true || active=false
+  name=$(echo "$information" | head -n 1)
+  type=$(echo "$information" | sed -n 2p)
+  device=$(echo "$information" | sed -n 3p)
+  address=$(echo "$information" | sed -n 4p)
+  gateway=$(echo "$information" | sed -n 5p)
+  dns=$(echo "$information" | sed -n 6p)
 
-      information=$(nmcli --get-values IPV4.ADDRESSES,IPV4.GATEWAY,IPV4.DNS connection show $name)
-
-      address=$(echo "$information" | head -n 1)
-      gateway=$(echo "$information" | sed -n 2p)
-      dns=$(echo "$information" | tail -n 1)
-
-      jq -n \
-        --arg name "$name" \
-        --arg type "$type" \
-        --arg device "$device" \
-        --argjson active "$active" \
-        --arg address "$address" \
-        --arg gateway "$gateway" \
-        --arg dns "$dns" \
-        '{
+  jq -n \
+    --arg name "$name" \
+    --arg type "$type" \
+    --arg device "$device" \
+    --arg address "$address" \
+    --arg gateway "$gateway" \
+    --arg dns "$dns" \
+    '{
             name: $name,
             type: $type,
             device: $device,
-            active: $active,
             address: $address,
             gateway: $gateway,
             dns: $dns
-        }'
-    fi
-  done | jq -s "."
+    }' | jq -s '.'
 }
 
 case "$1" in
