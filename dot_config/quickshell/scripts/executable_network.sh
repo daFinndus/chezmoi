@@ -14,7 +14,7 @@ fetch_wireless_networks() {
     if [[ -n $network ]]; then
       parse_network "$network"
     fi
-  done | jq -s 'sort_by(.band != "5 GHz")'
+  done | jq -s 'sort_by(.active == false)'
 }
 
 # This will fetch networks from nmcli
