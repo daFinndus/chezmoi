@@ -56,8 +56,6 @@ Scope {
             background: "transparent"
             shade: Themes.shade
 
-            text: Time.day
-
             icon: false
         }
 

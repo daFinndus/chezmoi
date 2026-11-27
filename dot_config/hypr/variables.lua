@@ -8,7 +8,7 @@ filemanager = "kitty --class kitty --title yazi -e yazi"
 menu = "rofi -show drun -show-icons"
 browser = "helium-browser"
 
-screenshot = 'hyprshot -m region -o "$HOME/Pictures/Screenshots"'
+screenshot = 'hyprshot -m region -s -o "$HOME/Pictures/Screenshots"'
 
 wallpaperScript = os.getenv("XDG_DATA_HOME") .. "/../bin/set-wallpaper.sh"
 
